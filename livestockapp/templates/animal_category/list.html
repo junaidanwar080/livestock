@@ -1,0 +1,41 @@
+{% extends 'navbar.html' %}
+{% block content %}
+   
+<div class="container my-3">
+  <h4 class="text-center alert alert-info py-3">List of Category</h4>
+  {% if tasks %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Is Active</th>
+        <th scope="col">Created On</th>
+        <th scope="col">Updated On</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% comment %} Run a loop here and iterate all the tasks {% endcomment %}
+     {% for cat in tasks %}
+     <tr>
+       <th scope="row">{{forloop.counter}}</th>
+       <td>{{cat.name}}</td>
+       <td>{{cat.description}}</td>
+       <td>{{cat.is_active}}</td>  
+       <td>{{cat.created_on|date:"d-m-Y" }}</td>  
+       <td>{{cat.updated_on |date:"d-m-Y"}}</td> 
+       <td><a href="/edit/{{cat.category_id}}" class="btn btn-sm btn-warning"/>Edit</td>
+       <td><a href="/delete/{{cat.category_id}}" class="btn btn-sm btn-danger"/>Delete</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <h4 class="text-center alert alert-warning">No Record</h4>
+{% endif %}
+</div>    
+{% endblock content %}
