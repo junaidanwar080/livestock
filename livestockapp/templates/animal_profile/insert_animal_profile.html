@@ -9,7 +9,7 @@
     {% endif %}  
 <div class="container my-3">
   <h4 class="  text-center alert alert-info">Add Category</h4>
-  <form action="{% url 'insert_animal_profile' %}" method="POST" >
+  <form action="/insert_animal_profile" method="POST" >
     {% if error2 %}
     <div class="alert alert-danger" role="alert">
       Please Enter Token No !!    
@@ -77,8 +77,8 @@
         <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <div class="autocomplete">
       <select id="category_id" name="category_id"  class="form-control">
-       {% for ani in animals %}
-        <option value="{{ani.category_id}}">{{ani.cat_name}}</option>  
+       {% for x in ani %}
+        <option value="{{x.category_id}}">{{x.name}}</option>  
        {% endfor %}
       </select> </div>
     </div>

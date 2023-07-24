@@ -59,13 +59,11 @@ def cat_updated(request, category_id):
             return redirect(reverse('show'))       
         
 
-
-
-
-        
 # Create your views For Animal Profile.
 def animal_pro_insert(request):
+    
     if request.method == "POST":
+        print('came here')
         token_no = request.POST['token_no']
         if token_no == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error2': True})
@@ -115,9 +113,10 @@ def animal_pro_insert(request):
             description=description, 
             )
         ins.save()
-        ani=Category.objects.all()
-        return redirect(reverse('animal_pro_show'), { "ani": ani})
-    return render(request,'animal_profile/insert_animal_profile.html', )
+        
+        return redirect(reverse('animal_pro_show'))
+    ani=Category.objects.all()
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani} )
 
 def animal_pro_show(request):
     allTasks = Animal_profile.objects.all()
