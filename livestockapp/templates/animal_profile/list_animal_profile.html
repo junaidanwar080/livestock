@@ -1,0 +1,71 @@
+{% extends 'navbar.html' %}
+{% block content %}
+   
+<div class="container my-3">
+  <h4 class="text-center alert alert-info py-3">List of Animal Profile</h4>
+{% if animal_pro %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Token No</th>
+        <th scope="col">Name</th>
+        <th scope="col">Color</th>
+        <th scope="col">Weight</th>
+        <th scope="col">Category Id</th>
+        <th scope="col">Image</th>
+        <th scope="col">Purchase Price</th>
+        <th scope="col">Purchased Date</th>
+        <th scope="col">Purchased By</th>
+        <th scope="col">Date Of Birth</th>
+        <th scope="col">Description</th>
+        <th scope="col">Gender</th>
+        <th scope="col">is_Pragnent</th>
+        <th scope="col">pregnancy Start Date</th>
+        <th scope="col">pregnancy End Date</th>
+        <th scope="col">Status</th>
+        <th scope="col">Created By</th>
+        <th scope="col">Created On</th>
+        <th scope="col">Updated By</th>
+        <th scope="col">Updated On</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% comment %} Run a loop here and iterate all the animal_pro {% endcomment %}
+     {% for ani in animal_pro %}
+     <tr>
+       <th scope="row">{{forloop.counter}}</th>
+       <td>{{ani.token_no}}</td>
+       <td>{{ani.name}}</td>
+       <td>{{ani.color}}</td>
+       <td>{{ani.weight}}</td>
+       <td>{{ani.category_id}}</td>
+       <td>{{ani.image}}</td>
+       <td>{{ani.purchase_price}}</td>
+       <td>{{ani.purchased_by}}</td>
+       <td>{{ani.purchased_on}}</td>
+       <td>{{ani.date_of_birth}}</td>
+       <td>{{ani.description}}</td>
+       <td>{{ani.gender}}</td>  
+       <td>{{ani.is_pragnent}}</td>
+       <td>{{ani.pragnancy_start_date}}</td>
+       <td>{{ani.pragnancy_end_date}}</td>
+       <td>{{ani.status}}</td>
+       <td>{{ani.created_by}}</td>
+       <td>{{ani.created_on}}</td>
+       <td>{{ani.updated_by}}</td>
+       <td>{{ani.updated_on}}</td>
+       <td><a href="/edit/{{ani.id}}" class="btn btn-sm btn-warning"/>Edit</td>
+       <td><a href="/delete/{{ani.id}}" class="btn btn-sm btn-danger"/>Delete</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <h4 class="text-center alert alert-warning">No Record</h4>
+{% endif %}
+</div>    
+{% endblock content %}

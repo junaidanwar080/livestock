@@ -1,0 +1,155 @@
+{% extends 'navbar.html' %}
+{% block content %}
+    {% if success %} 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success:</strong> Your category has been added to the list 
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+    </div>
+    {% endif %}  
+<div class="container my-3">
+  <h4 class="  text-center alert alert-info">Add Category</h4>
+  <form action="{% url 'insert_animal_profile' %}" method="POST" >
+    {% if error2 %}
+    <div class="alert alert-danger" role="alert">
+      Please Enter Token No !!    
+    </div>
+{% endif %}  
+{% if error3 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter Name !!    
+</div>
+{% endif %} 
+{% if error4 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter Color !!    
+</div>
+{% endif %} 
+{% if error5 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter Category !!    
+</div>
+{% endif %} 
+{% if error6 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter Gender!!    
+</div>
+{% endif %} 
+{% if error7 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter is_Pragnent Field!!    
+</div>
+{% endif %} 
+{% if error8 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter pregnancy_start_date !!    
+</div>
+{% endif %} 
+{% if error9 %}
+<div class="alert alert-danger" role="alert">
+  Please Enter is_Active Field !!    
+</div>
+{% endif %} 
+  
+
+    {% csrf_token %}
+    <div class="from-group">
+      <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
+      <input type="text" class="form-control" id="token_no" name="token_no"  >
+    </div>
+    <div class="from-group">
+        <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
+        
+        <input type="text" class="form-control" id="ani_name" name="ani_name"  >
+      </div>
+   
+      <div class="from-group">
+        <label class=" control-label">Color :<span style="color:red; font-weight:bold;">*</span></label>
+       
+        <input type="text" class="form-control" id="color" name="color"  >
+      </div>
+      <div class="from-group">
+        <label class=" control-label">Weight :</label>
+        
+        <input type="text" class="form-control" id="weight" name="weight"  >
+      </div>
+      <div class="from-group">
+        <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
+        <div class="autocomplete">
+      <select id="category_id" name="category_id"  class="form-control">
+       {% for result in results %}
+        <option value="{{result.category_id}}">{{result.cat_name}}</option>  
+       {% endfor %}
+      </select> </div>
+    </div>
+      <div class="from-group">
+        <label for="Purchase_price">Purchase Price :</label>
+        
+        <input type="text" class="form-control" id="Purchase_price" name="Purchase_price"  >
+      </div>
+    
+      <div class="from-group">
+        <label for="Purchased_date">Purchased Date :</label>
+        
+        <input type="text" class="form-control" id="Purchased_date" name="Purchased_date"  >
+      </div>
+    
+      <div class="from-group">
+        <label for="Purchased_by">Purchased By :</label>
+        
+        <input type="text" class="form-control" id="Purchased_by" name="Purchased_by"  >
+      </div>
+    
+      <div class="from-group">
+        <label class=" control-label">Date of Birth :</label>
+        
+        <input type="text" class="form-control" id="date_of_birth" name="date_of_birth"  >
+      </div>
+    
+      <div class="form-group">
+		<label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
+		
+		<select name="gender" class="form-control" required="required">
+		<option value="<?php echo $row->gender;?>"></option>
+		<option value="male">Male</option>
+		<option value="female">Female</option>
+		</select>
+		</div>
+	
+
+      <div class="from-group">
+        <label class=" control-label">is_Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
+        
+        <input type="text" class="form-control" id="is_pragnent" name="is_pragnent"  >
+      </div>
+   
+      <div class="from-group">
+        <label class=" control-label">Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
+        
+        <input type="text" class="form-control" id="pregnancy_start_date" name="pregnancy_start_date"  >
+      </div>
+   
+      <div class="from-group">
+        <label class=" control-label">Pregnancy End Date :</label>
+        
+        <input type="text" class="form-control" id="pregnancy_end_date" name="pregnancy_end_date"  >
+      </div>
+  
+     <div class="from-group">
+      <label for="description" >is_Active :<span style="color:red; font-weight:bold;">*</span></label>
+      
+     <input type="checkbox"  id="is_active" name="is_active"  >
+       
+  </div>
+    <div class="from-group">
+      <label for="description" >Description :</label>
+      
+      <textarea id="description" class="form-control" name="description" rows="3" cols="50"></textarea>
+    </div>   
+   
+    <div>
+    <button type="submit" class="btn btn-success my-3" >Submit</button>  
+    </div>
+  </form>
+      </div>     
+      {% endblock content %}
