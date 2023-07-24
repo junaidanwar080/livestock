@@ -77,8 +77,8 @@
         <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <div class="autocomplete">
       <select id="category_id" name="category_id"  class="form-control">
-       {% for result in results %}
-        <option value="{{result.category_id}}">{{result.cat_name}}</option>  
+       {% for ani in animals %}
+        <option value="{{ani.category_id}}">{{ani.cat_name}}</option>  
        {% endfor %}
       </select> </div>
     </div>

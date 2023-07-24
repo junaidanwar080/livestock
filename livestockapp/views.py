@@ -115,8 +115,8 @@ def animal_pro_insert(request):
             description=description, 
             )
         ins.save()
-        results=Category.objects.all()
-        return redirect(reverse('animal_pro_show'), { "results": results})
+        ani=Category.objects.all()
+        return redirect(reverse('animal_pro_show'), { "ani": ani})
     return render(request,'animal_profile/insert_animal_profile.html', )
 
 def animal_pro_show(request):
