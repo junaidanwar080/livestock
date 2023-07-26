@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-8 offset-2">
             <h4 class="text-center alert alert-info">Update DATA </h4>
-            <form action="/update/{{cat.category_id}}" method="POST">
+            <form action="/update_animal/{{animal.id}}" method="POST">
               {% if error %}
               <div class="alert alert-danger" role="alert">
                 Please Enter Your Name !!               
@@ -15,19 +15,19 @@
                </div>
                 {% endif %}
               {% csrf_token %}  
-              <input type="hidden" class="form-control" name="category_id" required maxlength="50" value="{{cat.category_id}}" readonly/>
+              <input type="hidden" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly/>
 
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="name">Name:</label>
                   <div class="col-sm-4">
-                 <input type="text" class="form-control" name="name" value="{{cat.name}}" />
+                 <input type="text" class="form-control" name="name" value="{{animal.name}}" />
                   </div>
                   
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="name">Description:</label>
                   <div class="col-sm-4">
-                 <input type="text" class="form-control" name="description" value="{{cat.description}}" />
+                 <input type="text" class="form-control" name="description" value="{{animal.description}}" />
                   </div>
                   
                 </div>

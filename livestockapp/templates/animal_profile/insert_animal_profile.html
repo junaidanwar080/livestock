@@ -7,9 +7,60 @@
       <span aria-hidden="true">&times;</span></button>
     </div>
     {% endif %}  
+  <!--  <script>
+      
+    $("#is_pragnent").hide();
+ 
+$("#gender").on("change", function(){  
+    if ($(this).val()=="female")
+       $("#is_pragnent").show();
+    else
+       $("#is_pragnent").hide();
+});
+      </script>-->
+    <script>
+      function changeDropdown()
+      {
+        var state=document.getElementById("gender").value;
+        if(state == "male")
+        {
+          document.getElementById("is_pragnent").style.visibility="hidden";
+          document.getElementById("pragnancy_start_date").style.visibility="hidden";
+          document.getElementById("pragnancy_end_date").style.visibility="hidden";
+
+
+        }
+        else
+        {
+          document.getElementById("is_pragnent").style.visibility="visible";
+          document.getElementById("pragnancy_start_date").style.visibility="visible";
+          document.getElementById("pragnancy_end_date").style.visibility="visible";
+
+        }
+        
+      }
+    </script>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        $(".hiddenFields").hide();
+      });
+        function showHide()
+        {
+            if($('.is_pragnent').is(":checked"))   
+                $(".hiddenFields").show();
+            else
+                $(".hiddenFields").hide();
+        }
+
+
+     
+      
+  
+  </script>
+ 
 <div class="container my-3">
   <h4 class="  text-center alert alert-info">Add Category</h4>
-  <form action="/insert_animal_profile" method="POST" >
+  <form action='/insert_animal_profile' method="POST" >
     {% if error2 %}
     <div class="alert alert-danger" role="alert">
       Please Enter Token No !!    
@@ -35,14 +86,10 @@
   Please Enter Gender!!    
 </div>
 {% endif %} 
-{% if error7 %}
-<div class="alert alert-danger" role="alert">
-  Please Enter is_Pragnent Field!!    
-</div>
-{% endif %} 
+
 {% if error8 %}
 <div class="alert alert-danger" role="alert">
-  Please Enter pregnancy_start_date !!    
+  Please Enter pragnancy_start_date !!    
 </div>
 {% endif %} 
 {% if error9 %}
@@ -73,31 +120,31 @@
         
         <input type="text" class="form-control" id="weight" name="weight"  >
       </div>
-      <div class="from-group">
-        <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
+     <div class="from-group">
+        <!--<label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <div class="autocomplete">
       <select id="category_id" name="category_id"  class="form-control">
        {% for x in ani %}
         <option value="{{x.category_id}}">{{x.name}}</option>  
        {% endfor %}
       </select> </div>
-    </div>
+    </div>-->
       <div class="from-group">
-        <label for="Purchase_price">Purchase Price :</label>
+        <label for="purchase_price">Purchase Price :</label>
         
-        <input type="text" class="form-control" id="Purchase_price" name="Purchase_price"  >
+        <input type="text" class="form-control" id="purchase_price" name="purchase_price"  >
       </div>
     
       <div class="from-group">
-        <label for="Purchased_date">Purchased Date :</label>
+        <label for="purchased_date">Purchased Date :</label>
         
-        <input type="text" class="form-control" id="Purchased_date" name="Purchased_date"  >
+        <input type="text" class="form-control" id="purchased_on" name="purchased_on"  >
       </div>
     
       <div class="from-group">
-        <label for="Purchased_by">Purchased By :</label>
+        <label for="purchased_by">Purchased By :</label>
         
-        <input type="text" class="form-control" id="Purchased_by" name="Purchased_by"  >
+        <input type="text" class="form-control" id="purchased_by" name="purchased_by"  >
       </div>
     
       <div class="from-group">
@@ -109,36 +156,38 @@
       <div class="form-group">
 		<label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
 		
-		<select name="gender" class="form-control" required="required">
+		<select onchange="changeDropdown(this.value);" name="gender" class="form-control" required="required" id="gender" class="gender">
 		<option value="<?php echo $row->gender;?>"></option>
-		<option value="male">Male</option>
+		<option value="male" >Male</option>
 		<option value="female">Female</option>
-		</select>
-		</div>
-	
-
-      <div class="from-group">
-        <label class=" control-label">is_Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
-        
-        <input type="text" class="form-control" id="is_pragnent" name="is_pragnent"  >
-      </div>
-   
-      <div class="from-group">
-        <label class=" control-label">Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
-        
-        <input type="text" class="form-control" id="pregnancy_start_date" name="pregnancy_start_date"  >
-      </div>
-   
-      <div class="from-group">
-        <label class=" control-label">Pregnancy End Date :</label>
-        
-        <input type="text" class="form-control" id="pregnancy_end_date" name="pregnancy_end_date"  >
-      </div>
+  </select>
+  </div>
+    
   
-     <div class="from-group">
-      <label for="description" >is_Active :<span style="color:red; font-weight:bold;">*</span></label>
+    
+    <div class="from-group" id="is_pragnent">
+      <label class=" control-label">is_Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
       
-     <input type="checkbox"  id="is_active" name="is_active"  >
+      <input  class="is_pragnent" type="checkbox" name="is_pragnent" onchange="showHide(this.checked)" name="checkbox" >
+    </div>
+
+      <div class ="hiddenFields">
+      <div class="from-group" id="pragnancy_start_date">
+        <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
+        
+        <input type="text" class="form-control"  name="pragnancy_start_date"  >
+      </div>
+   
+      <div class="from-group" id="pragnancy_end_date">
+        <label for="pragnancy_end_date" class=" control-label">Pregnancy End Date :</label>
+        
+        <input type="text" class="form-control"  name="pragnancy_end_date"  >
+      </div>
+    </div>
+     <div class="from-group">
+      <label for="status" >is_Active :<span style="color:red; font-weight:bold;">*</span></label>
+      
+     <input type="checkbox"  id="status" name="status"  >
        
   </div>
     <div class="from-group">
@@ -153,3 +202,4 @@
   </form>
       </div>     
       {% endblock content %}
+    

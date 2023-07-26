@@ -60,7 +60,7 @@ def cat_updated(request, category_id):
         
 
 # Create your views For Animal Profile.
-def animal_pro_insert(request):
+def insert_animal_profile(request):
     
     if request.method == "POST":
         print('came here')
@@ -74,51 +74,49 @@ def animal_pro_insert(request):
         if color == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error4': True})    
         weight = request.POST['weight']
-        category_id = request.POST['category_id']
-        if category_id == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error5': True})    
-        Purchase_price = request.POST['Purchase_price']
-        Purchased_date = request.POST['Purchased_date']    
-        Purchased_by = request.POST['Purchased_by']    
-        date_of_birth = request.POST['date_of_birth']    
+        #category_id = request.POST['category_id']
+       # if category_id == "":
+           #  return render(request,'animal_profile/insert_animal_profile.html', {'error5': True})    
+       
+        purchase_price = request.POST['purchase_price']
+        purchased_on = request.POST['purchased_on']
+        purchased_by = request.POST['purchased_by']
+        date_of_birth = request.POST['date_of_birth']
         gender = request.POST['gender']
         if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True})  
         is_pragnent = request.POST['is_pragnent']
         if is_pragnent == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error7': True})    
-        pregnancy_start_date = request.POST['pregnancy_start_date']
-        if pregnancy_start_date == "":
+          return render(request,'animal_profile/insert_animal_profile.html', {'error7': True})    
+        pragnancy_start_date = request.POST['pragnancy_start_date']
+        if pragnancy_start_date == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error8': True})    
-        pregnancy_end_date = request.POST['pregnancy_end_date']
-        is_active = request.POST['is_active']
-        if is_active == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True})        
-        description = request.POST['description']                 
-        ins=Animal_profile(
-            token_no=token_no,
-            name=name,
-            color=color,
-            weight=weight,
-            category_id_id=category_id,
-            Purchase_price=Purchase_price,
-            Purchased_date=Purchased_date,
-            Purchased_by=Purchased_by,
-            date_of_birth=date_of_birth,
-            gender=gender,
-            is_pragnent=is_pragnent,
-            pregnancy_start_date=pregnancy_start_date,
-            pregnancy_end_date=pregnancy_end_date,
-            is_active=is_active,
-            description=description, 
-            )
+        pragnancy_end_date = request.POST['pragnancy_end_date']  
+        status = request.POST['status']
+        if status == "":
+            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True}) 
+        description = request.POST['description'] 
+        ins=Animal_profile(token_no=token_no,name=name,color=color,weight=weight,
+                           #category_id=category_id,
+                           purchase_price=purchase_price,
+                           purchased_on=purchased_on,
+                           purchased_by=purchased_by,
+                           date_of_birth=date_of_birth,
+                           gender=gender,
+                           is_pragnent=1,
+                           pragnancy_start_date=pragnancy_start_date,
+                           pragnancy_end_date=pragnancy_end_date,
+                           status=1,
+                           updated_by=1,
+                           description=description)
+            
         ins.save()
-        
-        return redirect(reverse('animal_pro_show'))
-    ani=Category.objects.all()
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani} )
+        return redirect(reverse('list_animal_profile'))
+   # ani=Category.objects.all()
+    #print(ani)
+    return render(request,'animal_profile/insert_animal_profile.html') #{'ani': ani} )
 
-def animal_pro_show(request):
+def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
     context = {'animal_pro': allTasks}
     return render(request,'animal_profile/list_animal_profile.html', context)
@@ -127,14 +125,14 @@ def animal_pro_show(request):
 def animal_pro_delete(request,id):
     delete = Animal_profile.objects.get(id=id)
     delete.delete()
-    return redirect('/animal_pro_show')
+    return redirect('/list_animal_profile')
 
  #This Function Will Edit/Update in Animal profile
 def animal_pro_edit(request , id):
-    cat = Animal_profile.objects.get(id=id)
-    return render(request, 'animal_profile/update_animal_profile.html',{'cat':cat})
+    animal = Animal_profile.objects.get(id=id)
+    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal})
 
-def animal_pro_updated(request, id):
+def update_animal(request, id):
     if request.method == 'POST':
         id = request.POST['id']
         name = request.POST['name']
@@ -149,4 +147,4 @@ def animal_pro_updated(request, id):
             edit.description = description    
             edit.updated_on = date       
             edit.save()
-            return redirect(reverse('animal_pro_show')) 
+            return redirect(reverse('list_animal_profile')) 
