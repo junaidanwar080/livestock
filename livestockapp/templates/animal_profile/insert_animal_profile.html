@@ -6,19 +6,34 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span></button>
     </div>
-    {% endif %}  
-  <!--  <script>
-      
-    $("#is_pragnent").hide();
- 
-$("#gender").on("change", function(){  
-    if ($(this).val()=="female")
-       $("#is_pragnent").show();
-    else
-       $("#is_pragnent").hide();
-});
-      </script>-->
+    {% endif %} 
     <script>
+      
+$('#status').change(function(){
+  if($(this).attr('checked')){
+       $(this).val('1');
+  }else{
+       $(this).val('0');
+  }
+});
+     
+    </script> 
+   <!-- <script type="text/javascript">
+      $( document ).ready(function() {
+        $("#is_pragnent").hide();
+      });
+      $(function () {
+          $("#gender").change(function () {
+              if ($(this).val() == "female") {
+                  $("#is_Pragnent").show();
+              } else {
+                  $("#is_pragnent").hide();
+              }
+          });
+      });
+  </script>-->
+    <script>
+     
       function changeDropdown()
       {
         var state=document.getElementById("gender").value;
@@ -121,14 +136,14 @@ $("#gender").on("change", function(){
         <input type="text" class="form-control" id="weight" name="weight"  >
       </div>
      <div class="from-group">
-        <!--<label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
+        <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <div class="autocomplete">
       <select id="category_id" name="category_id"  class="form-control">
-       {% for x in ani %}
+        {% for x in ani %}
         <option value="{{x.category_id}}">{{x.name}}</option>  
        {% endfor %}
       </select> </div>
-    </div>-->
+    </div>
       <div class="from-group">
         <label for="purchase_price">Purchase Price :</label>
         
@@ -164,13 +179,13 @@ $("#gender").on("change", function(){
   </div>
     
   
-    
+    <div class ="hiddenFields1">
     <div class="from-group" id="is_pragnent">
       <label class=" control-label">is_Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
       
       <input  class="is_pragnent" type="checkbox" name="is_pragnent" onchange="showHide(this.checked)" name="checkbox" >
     </div>
-
+  </div>
       <div class ="hiddenFields">
       <div class="from-group" id="pragnancy_start_date">
         <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
@@ -187,7 +202,7 @@ $("#gender").on("change", function(){
      <div class="from-group">
       <label for="status" >is_Active :<span style="color:red; font-weight:bold;">*</span></label>
       
-     <input type="checkbox"  id="status" name="status"  >
+     <input type="checkbox"  id="status" name="status"  value="1" >
        
   </div>
     <div class="from-group">

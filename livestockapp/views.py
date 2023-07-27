@@ -74,9 +74,9 @@ def insert_animal_profile(request):
         if color == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error4': True})    
         weight = request.POST['weight']
-        #category_id = request.POST['category_id']
-       # if category_id == "":
-           #  return render(request,'animal_profile/insert_animal_profile.html', {'error5': True})    
+        category_id = request.POST['category_id']
+        if category_id == "":
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True})    
        
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
@@ -97,7 +97,7 @@ def insert_animal_profile(request):
             return render(request,'animal_profile/insert_animal_profile.html', {'error9': True}) 
         description = request.POST['description'] 
         ins=Animal_profile(token_no=token_no,name=name,color=color,weight=weight,
-                           #category_id=category_id,
+                           category_id_id=category_id,
                            purchase_price=purchase_price,
                            purchased_on=purchased_on,
                            purchased_by=purchased_by,
@@ -106,15 +106,15 @@ def insert_animal_profile(request):
                            is_pragnent=1,
                            pragnancy_start_date=pragnancy_start_date,
                            pragnancy_end_date=pragnancy_end_date,
-                           status=1,
+                           status=status,
                            updated_by=1,
                            description=description)
             
         ins.save()
         return redirect(reverse('list_animal_profile'))
-   # ani=Category.objects.all()
-    #print(ani)
-    return render(request,'animal_profile/insert_animal_profile.html') #{'ani': ani} )
+    ani=Category.objects.all()
+    print(ani)
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani} )
 
 def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
