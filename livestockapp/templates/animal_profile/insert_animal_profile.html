@@ -7,17 +7,7 @@
       <span aria-hidden="true">&times;</span></button>
     </div>
     {% endif %} 
-    <script>
-      
-$('#status').change(function(){
-  if($(this).attr('checked')){
-       $(this).val('1');
-  }else{
-       $(this).val('0');
-  }
-});
-     
-    </script> 
+ 
    <!-- <script type="text/javascript">
       $( document ).ready(function() {
         $("#is_pragnent").hide();
@@ -58,6 +48,19 @@ $('#status').change(function(){
     <script type="text/javascript">
       $( document ).ready(function() {
         $(".hiddenFields").hide();
+
+        
+
+        $("#status").on('click',function(){
+          var status = $("#status").val();
+          if ($("#status").is(':checked')) {
+            $("#status").val(1);
+          } else {
+            $("#status").val(0);
+          }
+        })
+
+
       });
         function showHide()
         {
@@ -172,7 +175,7 @@ $('#status').change(function(){
 		<label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
 		
 		<select onchange="changeDropdown(this.value);" name="gender" class="form-control" required="required" id="gender" class="gender">
-		<option value="<?php echo $row->gender;?>"></option>
+		<option value="">Select Gender</option>
 		<option value="male" >Male</option>
 		<option value="female">Female</option>
   </select>
@@ -183,26 +186,26 @@ $('#status').change(function(){
     <div class="from-group" id="is_pragnent">
       <label class=" control-label">is_Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
       
-      <input  class="is_pragnent" type="checkbox" name="is_pragnent" onchange="showHide(this.checked)" name="checkbox" >
+      <input type="checkbox"  class="is_pragnent" name="is_pragnent" onchange="showHide(this.checked)"  value="0">
     </div>
   </div>
       <div class ="hiddenFields">
       <div class="from-group" id="pragnancy_start_date">
         <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
         
-        <input type="text" class="form-control"  name="pragnancy_start_date"  >
+        <input type="date" class="form-control"  name="pragnancy_start_date"  >
       </div>
    
       <div class="from-group" id="pragnancy_end_date">
         <label for="pragnancy_end_date" class=" control-label">Pregnancy End Date :</label>
         
-        <input type="text" class="form-control"  name="pragnancy_end_date"  >
+        <input type="date" class="form-control"  name="pragnancy_end_date"  >
       </div>
     </div>
      <div class="from-group">
       <label for="status" >is_Active :<span style="color:red; font-weight:bold;">*</span></label>
       
-     <input type="checkbox"  id="status" name="status"  value="1" >
+     <input type="checkbox"  id="status" name="status"  value="0" >
        
   </div>
     <div class="from-group">
@@ -217,4 +220,7 @@ $('#status').change(function(){
   </form>
       </div>     
       {% endblock content %}
+
+
+
     

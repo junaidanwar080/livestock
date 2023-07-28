@@ -63,7 +63,7 @@ def cat_updated(request, category_id):
 def insert_animal_profile(request):
     
     if request.method == "POST":
-        print('came here')
+       
         token_no = request.POST['token_no']
         if token_no == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error2': True})
