@@ -8,67 +8,52 @@
     </div>
     {% endif %} 
  
-   <!-- <script type="text/javascript">
-      $( document ).ready(function() {
-        $("#is_pragnent").hide();
-      });
-      $(function () {
-          $("#gender").change(function () {
-              if ($(this).val() == "female") {
-                  $("#is_Pragnent").show();
-              } else {
-                  $("#is_pragnent").hide();
-              }
-          });
-      });
-  </script>-->
-    <script>
-     
-      function changeDropdown()
-      {
-        var state=document.getElementById("gender").value;
-        if(state == "male")
-        {
-          document.getElementById("is_pragnent").style.visibility="hidden";
-          document.getElementById("pragnancy_start_date").style.visibility="hidden";
-          document.getElementById("pragnancy_end_date").style.visibility="hidden";
 
-
-        }
-        else
-        {
-          document.getElementById("is_pragnent").style.visibility="visible";
-          document.getElementById("pragnancy_start_date").style.visibility="visible";
-          document.getElementById("pragnancy_end_date").style.visibility="visible";
-
-        }
-        
-      }
-    </script>
     <script type="text/javascript">
       $( document ).ready(function() {
-        $(".hiddenFields").hide();
+        $("#hiddenFields").hide();
 
         
 
         $("#status").on('click',function(){
           var status = $("#status").val();
           if ($("#status").is(':checked')) {
-            $("#status").val(1);
+            $("#status_val").val(1);
           } else {
-            $("#status").val(0);
+            $("#status_val").val(0);
           }
         })
 
+        // 
+        $("#is_pragnant").on('click',function(){
+          var is_pragnant = $("#is_pragnant").val();
+          // alert(is_pragnent)
+
+          if($('#is_pragnant').is(":checked")){
+            $("#pragnant_val").val(1);
+              $("#hiddenFields").show();
+          } else{
+            $("#pragnant_val").val(0);
+            $("#hiddenFields").hide();
+          }
+              
+              
+      })
+
 
       });
-        function showHide()
+
+      function changeDropdown(){
+        var state=document.getElementById("gender").value;
+        if(state == "male")
         {
-            if($('.is_pragnent').is(":checked"))   
-                $(".hiddenFields").show();
-            else
-                $(".hiddenFields").hide();
+          document.getElementById("hiddenFields1").style.visibility="hidden";
         }
+        else
+        {
+          document.getElementById("hiddenFields1").style.visibility="visible";
+        }
+      }
 
 
      
@@ -168,7 +153,7 @@
       <div class="from-group">
         <label class=" control-label">Date of Birth :</label>
         
-        <input type="text" class="form-control" id="date_of_birth" name="date_of_birth"  >
+        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"  value="{{date}}">
       </div>
     
       <div class="form-group">
@@ -182,30 +167,32 @@
   </div>
     
   
-    <div class ="hiddenFields1">
-    <div class="from-group" id="is_pragnent">
+  <div id ="hiddenFields1">
+    <div class="from-group" >
       <label class=" control-label">is_Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
       
-      <input type="checkbox"  class="is_pragnent" name="is_pragnent" onchange="showHide(this.checked)"  value="0">
+      <input type="checkbox"  name="is_pragnant" id="is_pragnant" >
+      <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
+
     </div>
   </div>
-      <div class ="hiddenFields">
+    <div id ="hiddenFields">
       <div class="from-group" id="pragnancy_start_date">
         <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
-        
-        <input type="date" class="form-control"  name="pragnancy_start_date"  >
+        <input type="date" class="form-control"  name="pragnancy_start_date"  value="{{date}}">
       </div>
    
       <div class="from-group" id="pragnancy_end_date">
         <label for="pragnancy_end_date" class=" control-label">Pregnancy End Date :</label>
         
-        <input type="date" class="form-control"  name="pragnancy_end_date"  >
+        <input type="date" class="form-control"  name="pragnancy_end_date" value="" >
       </div>
     </div>
      <div class="from-group">
       <label for="status" >is_Active :<span style="color:red; font-weight:bold;">*</span></label>
       
-     <input type="checkbox"  id="status" name="status"  value="0" >
+     <input type="checkbox"  id="status" name="status">
+     <input type="text"  id="status_val" name="status_val"  value="0" hidden>
        
   </div>
     <div class="from-group">

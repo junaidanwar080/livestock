@@ -20,7 +20,7 @@ class Animal_profile(models.Model):
     category_id = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/',null=True)
     purchase_price = models.IntegerField(null=True) 
-    purchased_by = models.IntegerField(default=1,blank=True,null=True) 
+    purchased_by = models.CharField(blank=True,null=True, max_length=50) 
     purchased_on = models.DateTimeField(blank=True, null=True)
     date_of_birth = models.DateTimeField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)

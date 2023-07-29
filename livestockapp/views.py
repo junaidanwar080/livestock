@@ -7,7 +7,8 @@ from django.utils import timezone
 import datetime
 
 
-date = datetime.datetime.now() 
+x = datetime.datetime.now() 
+date = x.strftime('%Y-%m-%d')
 
 
 # Create your views For Category.
@@ -65,37 +66,40 @@ def insert_animal_profile(request):
     if request.method == "POST":
        
         token_no = request.POST['token_no']
-        if token_no == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True})
         name = request.POST['ani_name']
-        if name == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True})    
+        pragnant_val = request.POST['pragnant_val']
+        is_pragnant = int(pragnant_val)
         color = request.POST['color']
-        if color == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True})    
-        weight = request.POST['weight']
         category_id = request.POST['category_id']
-        if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True})    
-       
+        weight = request.POST['weight']
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
         gender = request.POST['gender']
-        if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True})  
-        is_pragnent = request.POST['is_pragnent']
-        if is_pragnent == "":
-          return render(request,'animal_profile/insert_animal_profile.html', {'error7': True})    
         pragnancy_start_date = request.POST['pragnancy_start_date']
-        if pragnancy_start_date == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error8': True})    
         pragnancy_end_date = request.POST['pragnancy_end_date']  
-        status = request.POST['status']
+        status = request.POST['status_val']
+        description = request.POST['description'] 
+        
+        ani=Category.objects.all()
+        if token_no == "":
+            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani})
+        if name == "":
+            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani})    
+        if color == "":
+            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani})    
+        if category_id == "":
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani})    
+        if purchase_price == '':
+            purchase_price = 0
+        if gender == "":
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani})  
+        if is_pragnant == 1 and pragnancy_start_date == "":
+            return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani})    
         if status == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error9': True}) 
-        description = request.POST['description'] 
+        
         ins=Animal_profile(token_no=token_no,name=name,color=color,weight=weight,
                            category_id_id=category_id,
                            purchase_price=purchase_price,
@@ -103,7 +107,7 @@ def insert_animal_profile(request):
                            purchased_by=purchased_by,
                            date_of_birth=date_of_birth,
                            gender=gender,
-                           is_pragnent=1,
+                           is_pragnent=is_pragnant,
                            pragnancy_start_date=pragnancy_start_date,
                            pragnancy_end_date=pragnancy_end_date,
                            status=status,
@@ -111,10 +115,10 @@ def insert_animal_profile(request):
                            description=description)
             
         ins.save()
+        
         return redirect(reverse('list_animal_profile'))
     ani=Category.objects.all()
-    print(ani)
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani} )
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani ,'date':date } )
 
 def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
