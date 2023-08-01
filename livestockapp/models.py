@@ -17,7 +17,7 @@ class Animal_profile(models.Model):
     name = models.CharField(max_length=50,null=True) 
     color = models.CharField(max_length=50,null=True) 
     weight = models.CharField(max_length=50,null=True) 
-    category_id = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/',null=True)
     purchase_price = models.IntegerField(null=True) 
     purchased_by = models.CharField(blank=True,null=True, max_length=50) 
