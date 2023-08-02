@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 x = datetime.now() 
-date = x.strftime('%d-%m-%y')
+date = x.strftime('%Y-%m-%d')
 
 #datetime.datetime.strptime('5/10/1955', '%d/%m/%Y').strftime('%Y-%m-%d')
 
@@ -90,21 +90,21 @@ def insert_animal_profile(request):
         
         ani=Category.objects.all()
         if token_no == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani})
+            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'date':date})
         if name == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date})    
         if color == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date})    
         if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani})    
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date})    
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani})  
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date})  
         if is_pragnant == 1 and pragnancy_start_date == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani,'date':date})    
         if status == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani}) 
+            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date}) 
         
         ins=Animal_profile(token_no=token_no,name=name,color=color,weight=weight,
                            category_id=category_id,
@@ -140,7 +140,8 @@ def animal_pro_delete(request,id):
  #This Function Will Edit/Update in Animal profile
 def animal_pro_edit(request , id):
     animal = Animal_profile.objects.get(id=id)
-    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal})
+    ani=Category.objects.all()
+    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani})
 
 def update_animal(request, id):
     if request.method == 'POST':

@@ -100,33 +100,32 @@
   Please Enter is_Active Field !!    
 </div>
 {% endif %} 
-  
+
 
     {% csrf_token %}
-    <div class="from-group">
-      <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
-      <input type="text" class="form-control" id="token_no" name="token_no"  >
-    </div>
-    <div class="from-group">
+    <div class="row align-center">
+      <div class="from-group" style='margin-right:5%;'>
+        <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="text" class="form-control" id="token_no" name="token_no"  >
+      </div>
+      <div class="from-group" style='margin-right:5%;'>
         <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
-        
         <input type="text" class="form-control" id="ani_name" name="ani_name"  >
       </div>
-   
-      <div class="from-group">
+      <div class="from-group" style='margin-right:5%;'>
         <label class=" control-label">Color :<span style="color:red; font-weight:bold;">*</span></label>
-       
         <input type="text" class="form-control" id="color" name="color"  >
       </div>
-      <div class="from-group">
+      <div class="from-group" >
         <label class=" control-label">Weight :</label>
-        
         <input type="text" class="form-control" id="weight" name="weight"  >
       </div>
+    </div>
      <div class="from-group">
         <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <div class="autocomplete">
       <select id="category_id" name="category_id"  class="form-control">
+        <option value="">Select Category</option>
         {% for x in ani %}
         <option value="{{x.category_id}}">{{x.name}}</option>  
        {% endfor %}
@@ -137,11 +136,10 @@
         
         <input type="text" class="form-control" id="purchase_price" name="purchase_price"  >
       </div>
-    
       <div class="from-group">
         <label for="purchased_date">Purchased Date :</label>
         
-        <input type="date" class="form-control" id="purchased_on" name="purchased_on"  >
+        <input type="date" class="form-control" id="purchased_on" name="purchased_on" value="{{date}}" >
       </div>
     
       <div class="from-group">
