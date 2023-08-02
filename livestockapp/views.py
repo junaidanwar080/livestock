@@ -4,10 +4,10 @@ from django.http import HttpResponse
 from django.urls import reverse
 from livestockapp.models import Category,Animal_profile
 from django.utils import timezone
-import datetime
+from datetime import datetime
 
 
-x = datetime.datetime.now() 
+x = datetime.now() 
 date = x.strftime('%d-%m-%y')
 
 #datetime.datetime.strptime('5/10/1955', '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -76,11 +76,15 @@ def insert_animal_profile(request):
         weight = request.POST['weight']
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
+        purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
+        date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
         pragnancy_start_date = request.POST['pragnancy_start_date']
+        pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
         pragnancy_end_date = request.POST['pragnancy_end_date']  
+        pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
         status = request.POST['status_val']
         description = request.POST['description'] 
         
@@ -100,7 +104,7 @@ def insert_animal_profile(request):
         if is_pragnant == 1 and pragnancy_start_date == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani})    
         if status == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True}) 
+            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani}) 
         
         ins=Animal_profile(token_no=token_no,name=name,color=color,weight=weight,
                            category_id=category_id,
