@@ -156,11 +156,11 @@ def update_animal(request, id):
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
         gender = request.POST['gender']
-        pragnant_val = request.POST['pragnant_val']
+        pragnant_val = request.POST['is_pragnant']
         is_pragnant = int(pragnant_val)
         pragnancy_start_date = request.POST['pragnancy_start_date']
         pragnancy_end_date = request.POST['pragnancy_end_date']
-        status = request.POST['status_val']
+        status = request.POST['status']
         description = request.POST['description']
 
         anim=Category.objects.all()

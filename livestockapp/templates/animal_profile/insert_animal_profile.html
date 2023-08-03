@@ -103,7 +103,8 @@
 
 
     {% csrf_token %}
-    <div class="row align-center">
+    
+    <div class="row align-center mb-3 col-sm">
       <div class="from-group" style='margin-right:5%;'>
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="text" class="form-control" id="token_no" name="token_no"  >
@@ -120,8 +121,8 @@
         <label class=" control-label">Weight :</label>
         <input type="text" class="form-control" id="weight" name="weight"  >
       </div>
-    </div>
-     <div class="from-group">
+   
+     <div class="from-group " style='margin-right:9%;'>
         <label class="from-group my-3" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <div class="autocomplete">
       <select id="category_id" name="category_id"  class="form-control">
@@ -131,30 +132,30 @@
        {% endfor %}
       </select> </div>
     </div>
-      <div class="from-group">
-        <label for="purchase_price">Purchase Price :</label>
+      <div class="from-group " style='margin-right:5%; margin-top:2%;'>
+        <label for="purchase_price my-5">Purchase Price :</label>
         
         <input type="text" class="form-control" id="purchase_price" name="purchase_price"  >
       </div>
-      <div class="from-group">
+      <div class="from-group" style='margin-right:5%; margin-top:2%;'>
         <label for="purchased_date">Purchased Date :</label>
         
         <input type="date" class="form-control" id="purchased_on" name="purchased_on" value="{{date}}" >
       </div>
     
-      <div class="from-group">
+      <div class="from-group" style='margin-left:4%; margin-top:2%;'>
         <label for="purchased_by">Purchased By :</label>
         
         <input type="text" class="form-control" id="purchased_by" name="purchased_by"  >
       </div>
-    
-      <div class="from-group">
+   
+      <div class="from-group" style='margin-right:5%; margin-top:2%;'>
         <label class=" control-label">Date of Birth :</label>
         
         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" >
       </div>
     
-      <div class="form-group">
+      <div class="form-group" style='margin-left:3%; margin-top:2%;'>
 		<label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
 		
 		<select onchange="changeDropdown(this.value);" name="gender" class="form-control" required="required" id="gender" class="gender">
@@ -165,7 +166,7 @@
   </div>
     
   
-  <div id ="hiddenFields1">
+  <div id ="hiddenFields1" style='margin-left:11%; margin-top:5%;'>
     <div class="from-group" >
       <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
       
@@ -174,31 +175,31 @@
 
     </div>
   </div>
-    <div id ="hiddenFields">
-      <div class="from-group" id="pragnancy_start_date">
+    <div id ="hiddenFields" style="margin-top:4%; margin-left:11%">
+      <div class="from-group" id="pragnancy_start_date" >
         <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="date" class="form-control"  name="pragnancy_start_date"  >
       </div>
    
-      <div class="from-group" id="pragnancy_end_date">
-        <label for="pragnancy_end_date" class=" control-label">Pregnancy End Date :</label>
+      <div class="from-group" id="pragnancy_end_date" >
+        <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
         
         <input type="date" class="form-control"  name="pragnancy_end_date" value="" >
       </div>
     </div>
-     <div class="from-group">
+     <div class="from-group" style='margin-right:65%;'>
       <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
       
      <input type="checkbox"  id="status" name="status">
      <input type="text"  id="status_val" name="status_val"  value="0" hidden>
-       
+     </div>    
   </div>
-    <div class="from-group">
+    <div class="from-group" style='margin-right:5%;'>
       <label for="description" >Description :</label>
       
       <textarea id="description" class="form-control" name="description" rows="3" cols="50"></textarea>
     </div>   
-   
+ 
     <div>
     <button type="submit" class="btn btn-success my-3" >Submit</button>  
     </div>

@@ -25,7 +25,7 @@ class Animal_profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)
     gender = models.CharField(max_length=50,null=True)
-    is_pragnent  = models.IntegerField(null=True)
+    is_pragnent  = models.IntegerField( null=True)
     pragnancy_start_date  = models.DateField(blank=True, null=True)
     pragnancy_end_date  = models.DateField(blank=True, null=True) 
     status =  models.BooleanField(default=True,null=True)
