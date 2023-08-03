@@ -76,15 +76,27 @@ def insert_animal_profile(request):
         weight = request.POST['weight']
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
+        
+        
         purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
+        print(purchased_on)
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
-        date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
+        if date_of_birth == '':
+            date_of_birth = None
+        else:
+            date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
         pragnancy_start_date = request.POST['pragnancy_start_date']
-        pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
+        if pragnancy_start_date == '':
+            pragnancy_start_date = None
+        else:
+            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
         pragnancy_end_date = request.POST['pragnancy_end_date']  
-        pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+        if pragnancy_end_date == '':
+            pragnancy_end_date = None
+        else:
+            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
         status = request.POST['status_val']
         description = request.POST['description'] 
         
