@@ -6,15 +6,43 @@
   
 
 {% extends 'navbar.html' %}
+
 {% block content %}
-    {% if success %} 
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success:</strong> Your category has been added to the list 
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span></button>
-    </div>
-    {% endif %} 
- 
+
+<div>
+<div class="container-fluid " >
+  <div class="row min-vh-100 flex-column flex-md-row " style="margin-left:-13%;">
+    <aside class="col-12 col-md-3 col-xl-2 p-0 bg-dark ">
+      <nav class="navbar navbar-expand-md navbar-dark bd-dark flex-md-column flex-row align-items-center py-2 text-center sticky-top " id="sidebar">
+        <div class="text-center p-3">
+          <img src="https://impreza.us-themes.com/wp-content/uploads/paolo-bendandi-D-8XODEIr_s-unsplash.jpg" alt="profile picture" class="img-fluid rounded-circle my-4 p-1 d-none d-md-block shadow"/>
+         <a href="#" class="navbar-brand mx-0 font-weight-bold  text-nowrap" >XcentPupil</a>
+        </div>
+            <button type="button" class="navbar-toggler border-0 order-1" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse order-last" id="nav">
+          <ul class="navbar-nav flex-column w-100 justify-content-center">
+          <li class="nav-item">
+            <a href="#" class="nav-link active"> Edit Profile</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link"> Projects</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link"> Tasks </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link"> Users Info </a>
+          </li>
+        </ul>
+        </div>      
+      </nav>   
+    </aside>
+
+  </div>
+   
 
     <script type="text/javascript">
       $( document ).ready(function() {
@@ -50,7 +78,8 @@
 
       });
 
-      function changeDropdown(){
+      function changeDropdown(){ 
+       
         var state=document.getElementById("gender").value;
         if(state == "male")
         {
@@ -69,47 +98,49 @@
   </script>
  
 {% comment %} <div class="container my-3"> {% endcomment %}
-  <div class="alert alert-dark" role="alert"><b>Basic Info</b></div>
+  <div  style="margin-left:30%; margin-top:-42%; "><b></b></div>
   <form action='/insert_animal_profile' method="POST" >
+    <div class="alert alert-dark mt-5 row offset-2" role="alert" style="margin-top:50%;"><b >Basic Info</b></div>
     {% if error2 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Token No !!    
     </div>
     {% endif %}  
     {% if error3 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Name !!    
     </div>
     {% endif %} 
     {% if error4 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Color !!    
     </div>
     {% endif %} 
     {% if error5 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Category !!    
     </div>
     {% endif %} 
     {% if error6 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Gender!!    
     </div>
     {% endif %} 
 
     {% if error8 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter pragnancy_start_date !!    
     </div>
     {% endif %} 
     {% if error9 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter is_Active Field !!    
     </div>
     {% endif %} 
 
 
     {% csrf_token %}
+    <div class="container-fluid" style="margin-left:10%;">
     <div class="row">
       <div class="col">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
@@ -212,6 +243,7 @@
     <div>
       <button type="submit" class="btn btn-success my-3" >Submit</button>  
     </div>
+  </div>
   </form>
           
       {% endblock content %}

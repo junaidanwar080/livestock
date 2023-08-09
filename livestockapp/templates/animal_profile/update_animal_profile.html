@@ -1,8 +1,7 @@
 {% extends 'navbar.html' %}
 {% block content %}
-    <div class="row">
-        <div class="sm-4 offset-2">
-            <h4 class="text-center alert alert-info">Update DATA </h4>
+   
+            <h4 class="alert alert-dark" role="alert" style="margin-top:4%">Update DATA </h4>
             <form action="/update_animal/{{animal.id}}" method="POST">
               {% if error2 %}
               <div class="alert alert-danger" role="alert">
@@ -41,34 +40,36 @@
           </div>
           {% endif %}
               {% csrf_token %}  
-              <div class="row align-center mb-3 sm">
+              <div class="row align-center mb-4 sm">
               <input type="hidden" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly/>
 
-                <div class="form-group row " style='margin-right:5%;'>
+              <div class="row">
+                <div class="col">
                   <label class="form-label" for="token_no">Token No:</label>
                   
                  <input type="text" class="form-control" name="token_no" value="{{animal.token_no}}" />
                   </div>            
-                
-                <div class="form-group row" style='margin-right:5%;'>
+                </div>
+               <div class="col-3">
                   <label class="form-label" for="name">Name:</label>
                   
                  <input type="text" class="form-control" name="name" value="{{animal.name}}" />
                   </div>            
                
-                <div class="form-group row" style='margin-right:5%;'>
+               <div class="col-3">
                   <label class="form-label" for="color">Color:</label>
                   
                  <input type="text" class="form-control" name="color" value="{{animal.color}}" />
                   </div>            
                 
-                <div class="form-group row" style='margin-right:5%;'>
+               <div class="col-3">
                   <label class="form-label" for="weight">Weight:</label>
                   
                  <input type="text" class="form-control" name="weight" value="{{animal.weight}}" />
                   </div>            
                 
-                <div class="form-group row" style='margin-right:5%;'>
+                  <div class="row-6">
+                    <div class="col-12" >
                   <label class="form-label" style='margin-right:25%;'>Category</label>
                       <div class="autocomplete " >
                           <select name="category_id" id="category_id" class="form-control" >
@@ -82,32 +83,26 @@
                  {% endfor %}
                 </select> </div>
               </div>
-                <div class="form-group row" style='margin-left:11%;'>
-                  <label class="form-label" for="purchase_price">Purchase Price:</label>
-                  
+            </div>
+            <div class="col-3" >
+                  <label class="form-label" for="purchase_price">Purchase Price:</label>                 
                  <input type="text" class="form-control" name="purchase_price" value="{{animal.purchase_price}}" />
-                  </div>            
-               
-                <div class="form-group row" style='margin-right:5%;'>
-                  <label class="form-label" for="purchased_on">Purchased Date:</label>
-                  
+                  </div>                          
+               <div class="col-3" >
+                  <label class="form-label" for="purchased_on">Purchased Date:</label>                  
                  <input type="date" class="form-control" name="purchased_on" value="{{animal.purchased_on|date:"Y-m-d"}}" />
-                  </div>            
-              
-                <div class="form-group row" style='margin-right:5%;'>
-                  <label class="form-label" for="purchased_by">Purchased By:</label>
-                  
+                  </div>                         
+               <div class="col-3" >
+                  <label class="form-label" for="purchased_by">Purchased By:</label>                 
                  <input type="text" class="form-control" name="purchased_by" value="{{animal.purchased_by}}" />
                   </div>            
-               
-                <div class="form-group row" style='margin-right:5%;'>
-                  <label class="form-label" for="date_of_birth">Date of Birth:</label>
-                  
+                  <div class="row-1">
+                    <div class="col-12" >
+                  <label class="form-label" for="date_of_birth">Date of Birth:</label>                 
                  <input type="date" class="form-control" name="date_of_birth" value="{{animal.date_of_birth|date:"Y-m-d"}}" />
-                  </div>            
-              
-                
-                <div class="form-group row" style='margin-right:5%;'>
+                  </div>                          
+                </div>
+              <div class="col-3" >
                   <label class="form-label" for="gender">Gender:</label>
                   
                     <select name="gender" class="form-control" required="required" id="gender" class="gender" >
@@ -117,10 +112,15 @@
                       <option value="female" selected>Female</option>
                       {% endif %}
                     </select>
-                  </div>            
-               
+                  </div>
+                  <div class="col" >
+                  </div>
+                  <div class="col" >
+                  </div>
+              
                 
-                <div class="form-group row" style='margin-right:5%;'>
+              <div class="col-1" >
+                <div class="row">
                   <label class="form-label" for="is_pragnant">is Pragnent:</label>
                   
                     {% if animal.is_pragnent == 1 %}
@@ -129,27 +129,24 @@
                     <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
                     <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
                     {% endif %}
-              
+                </div>
                   </div>            
-                
-                <div class="form-group row" style='margin-left:5%;'>
+                  <div class="col-2" >
+                    <div class="row">
                   <label class="form-label" for="pragnancy_start_date">Pregnancy Start Date:</label>
                  
                  <input type="date" class="form-control" name="pragnancy_start_date" value="{{animal.pragnancy_start_date|date:"Y-m-d"}}" />
                   </div>            
-           
-                <div class="form-group row" style='margin-right:5%;'>
+                </div>
+              <div class="col-3" >
                   <label class="form-label" for="pragnancy_end_date">Pregnancy End Date:</label>
  
                   
                  <input type="date" class="form-control" name="pragnancy_end_date" value="{{animal.pragnancy_end_date|date:"Y-m-d"}}" />
                   </div>            
                
-                <div class="form-group row" style='margin-right:5%;'>
+              <div class="col-3" >
                   <label class="form-label" for="status">is Active:</label>
-                  
-                   
-                
                 {% if animal.status == 1 %}
                 <input type="checkbox" checked id="status" name="status" value="{{animal.status}}">
                     {% else %}
@@ -158,16 +155,16 @@
        
                   </div>
                
-                <div class="form-group row">
+                <div class="col-12">
                   <label class="form-label" for="name">Description:</label>
                   
                  <input type="text" class="form-control" name="description" value="{{animal.description}}" />
-                  </div>
                   
-                
+                  
+                </div>
               </div> 
                <button type="submit" class="btn btn-success " >Update</button>
-               
+            </div>
     </form>
       </div>
     </div>

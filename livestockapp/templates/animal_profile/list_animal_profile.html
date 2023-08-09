@@ -49,13 +49,19 @@
        <td>{{ani.gender}}</td> 
       {% if  ani.is_pragnent == 1 %}
       <td>Yes</td>
+      {% else %}
+      <td></td>
       {% endif %}
        <td>{{ani.pragnancy_start_date|date:"d-m-Y"}}</td>
        <td>{{ani.pragnancy_end_date|date:"d-m-Y"}}</td>
        {% if  ani.status == 1 %}
        <td>{{ani.status}}</td>
-      <td>Active</td>
-      {% endif %}
+       <td>Active</td>
+       {% else %}
+       <td></td>
+       <td></td>
+       {% endif %}
+
        <td><a href="/animal_pro_edit/{{ani.id}}" class="btn btn-sm btn-warning"/>Edit</td>
        <td><a href="/animal_pro_delete/{{ani.id}}" class="btn btn-sm btn-danger"/>Delete</td>
       </tr>
