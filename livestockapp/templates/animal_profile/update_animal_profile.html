@@ -1,171 +1,265 @@
-{% extends 'navbar.html' %}
-{% block content %}
-   
-            <h4 class="alert alert-dark" role="alert" style="margin-top:4%">Update DATA </h4>
-            <form action="/update_animal/{{animal.id}}" method="POST">
-              {% if error2 %}
-              <div class="alert alert-danger" role="alert">
-                Please Enter Token No !!    
-              </div>
-          {% endif %}  
-          {% if error3 %}
-          <div class="alert alert-danger" role="alert">
-            Please Enter Name !!    
-          </div>
-          {% endif %} 
-          {% if error4 %}
-          <div class="alert alert-danger" role="alert">
-            Please Enter Color !!    
-          </div>
-          {% endif %} 
-          {% if error5 %}
-          <div class="alert alert-danger" role="alert">
-            Please Enter Category !!    
-          </div>
-          {% endif %} 
-          {% if error6 %}
-          <div class="alert alert-danger" role="alert">
-            Please Enter Gender!!    
-          </div>
-          {% endif %} 
-          
-          {% if error8 %}
-          <div class="alert alert-danger" role="alert">
-            Please Enter pragnancy_start_date !!    
-          </div>
-          {% endif %} 
-          {% if error9 %}
-          <div class="alert alert-danger" role="alert">
-            Please Enter is_Active Field !!    
-          </div>
-          {% endif %}
-              {% csrf_token %}  
-              <div class="row align-center mb-4 sm">
-              <input type="hidden" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly/>
+<html>
+  <head>
+    <title>Animal Profile</title>
+  </head>
+<body>
+  
 
-              <div class="row">
-                <div class="col">
-                  <label class="form-label" for="token_no">Token No:</label>
-                  
-                 <input type="text" class="form-control" name="token_no" value="{{animal.token_no}}" />
-                  </div>            
-                </div>
-               <div class="col-3">
-                  <label class="form-label" for="name">Name:</label>
-                  
-                 <input type="text" class="form-control" name="name" value="{{animal.name}}" />
-                  </div>            
-               
-               <div class="col-3">
-                  <label class="form-label" for="color">Color:</label>
-                  
-                 <input type="text" class="form-control" name="color" value="{{animal.color}}" />
-                  </div>            
-                
-               <div class="col-3">
-                  <label class="form-label" for="weight">Weight:</label>
-                  
-                 <input type="text" class="form-control" name="weight" value="{{animal.weight}}" />
-                  </div>            
-                
-                  <div class="row-6">
-                    <div class="col-12" >
-                  <label class="form-label" style='margin-right:25%;'>Category</label>
-                      <div class="autocomplete " >
-                          <select name="category_id" id="category_id" class="form-control" >
-           
-                  {% for y in ani %}
-                            {% if animal.category_id == y.category_id %}
-                  <option  value="{{y.category_id}}" selected>{{y.name}}</option>  
-                  {% else %}
-                  <option  value="{{y.category_id}}">{{y.name}}</option> 
-                  {% endif %}
-                 {% endfor %}
-                </select> </div>
-              </div>
-            </div>
-            <div class="col-3" >
-                  <label class="form-label" for="purchase_price">Purchase Price:</label>                 
-                 <input type="text" class="form-control" name="purchase_price" value="{{animal.purchase_price}}" />
-                  </div>                          
-               <div class="col-3" >
-                  <label class="form-label" for="purchased_on">Purchased Date:</label>                  
-                 <input type="date" class="form-control" name="purchased_on" value="{{animal.purchased_on|date:"Y-m-d"}}" />
-                  </div>                         
-               <div class="col-3" >
-                  <label class="form-label" for="purchased_by">Purchased By:</label>                 
-                 <input type="text" class="form-control" name="purchased_by" value="{{animal.purchased_by}}" />
-                  </div>            
-                  <div class="row-1">
-                    <div class="col-12" >
-                  <label class="form-label" for="date_of_birth">Date of Birth:</label>                 
-                 <input type="date" class="form-control" name="date_of_birth" value="{{animal.date_of_birth|date:"Y-m-d"}}" />
-                  </div>                          
-                </div>
-              <div class="col-3" >
-                  <label class="form-label" for="gender">Gender:</label>
-                  
-                    <select name="gender" class="form-control" required="required" id="gender" class="gender" >
-                      {% if animal.gender == 'male' %}
-                        <option value="male" selected >Male</option>
-                      {% else  %}
-                      <option value="female" selected>Female</option>
-                      {% endif %}
-                    </select>
-                  </div>
-                  <div class="col" >
-                  </div>
-                  <div class="col" >
-                  </div>
-              
-                
-              <div class="col-1" >
-                <div class="row">
-                  <label class="form-label" for="is_pragnant">is Pragnent:</label>
-                  
-                    {% if animal.is_pragnent == 1 %}
-                    <input type="checkbox" checked name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
-                    {% else %}
-                    <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
-                    <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
-                    {% endif %}
-                </div>
-                  </div>            
-                  <div class="col-2" >
-                    <div class="row">
-                  <label class="form-label" for="pragnancy_start_date">Pregnancy Start Date:</label>
-                 
-                 <input type="date" class="form-control" name="pragnancy_start_date" value="{{animal.pragnancy_start_date|date:"Y-m-d"}}" />
-                  </div>            
-                </div>
-              <div class="col-3" >
-                  <label class="form-label" for="pragnancy_end_date">Pregnancy End Date:</label>
- 
-                  
-                 <input type="date" class="form-control" name="pragnancy_end_date" value="{{animal.pragnancy_end_date|date:"Y-m-d"}}" />
-                  </div>            
-               
-              <div class="col-3" >
-                  <label class="form-label" for="status">is Active:</label>
-                {% if animal.status == 1 %}
-                <input type="checkbox" checked id="status" name="status" value="{{animal.status}}">
-                    {% else %}
-                    <input type="checkbox"  id="status" name="status" value="{{animal.status}}">
-                    {% endif %}
-       
-                  </div>
-               
-                <div class="col-12">
-                  <label class="form-label" for="name">Description:</label>
-                  
-                 <input type="text" class="form-control" name="description" value="{{animal.description}}" />
-                  
-                  
-                </div>
-              </div> 
-               <button type="submit" class="btn btn-success " >Update</button>
-            </div>
-    </form>
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+
+<div  >
+  <div class="row min-vh-100 flex-column flex-md-row " style="margin-left:-13%;">
+    <aside class="col-12 col-md-3 col-xl-2 p-0 bg-dark ">
+      <nav class="navbar navbar-expand-md navbar-dark bd-dark flex-md-column flex-row align-items-center py-2 text-center sticky-top " id="sidebar">
+        <div class="text-center p-3">
+          <img src="https://impreza.us-themes.com/wp-content/uploads/paolo-bendandi-D-8XODEIr_s-unsplash.jpg" alt="profile picture" class="img-fluid rounded-circle my-4 p-1 d-none d-md-block shadow"/>
+         <a href="#" class="navbar-brand mx-0 font-weight-bold  text-nowrap" >XcentPupil</a>
+        </div>
+            <button type="button" class="navbar-toggler border-0 order-1" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+        
+        <div class="collapse navbar-collapse order-last" id="nav">
+          <ul class="navbar-nav flex-column w-100 justify-content-center">
+            <li class="nav-item">
+              <a href="#" class="nav-link active"> Edit Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Projects</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Tasks </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Users Info </a>
+            </li>
+          </ul>
+        </div>      
+      </nav>   
+    </aside>
+  </div>
+</div>
+  
+{% comment %} <div class="container my-3"> 
+  <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
+<div style=" margin-top:-42%; margin-right:5%">
+  <div class="alert alert-dark mt-5" role="alert" style="margin-top:50%; margin-left:10%"><b >Basic Info</b></div>
+  <form action='/update_animal/{{animal.id}}' method="POST" >
+    
+    {% if error2 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Token No !!    
+    </div>
+    {% endif %}  
+    {% if error3 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Name !!    
+    </div>
+    {% endif %} 
+    {% if error4 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Color !!    
+    </div>
+    {% endif %} 
+    {% if error5 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Category !!    
+    </div>
+    {% endif %} 
+    {% if error6 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Gender!!    
+    </div>
+    {% endif %} 
+
+    {% if error8 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter pragnancy_start_date !!    
+    </div>
+    {% endif %} 
+    {% if error9 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter is_Active Field !!    
+    </div>
+    {% endif %} 
+
+
+    {% csrf_token %}
+    <div class="container-fluid" style="margin-left:10%;">
+    <div class="row">
+      <div class="col">
+        <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="text" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly/>
+        <input type="text" class="form-control" id="token_no" name="token_no" value= "{{animal.token_no}}" >
+      </div>
+      <div class="col">
+          <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
+          <input type="text" class="form-control" id="ani_name" name="ani_name" value="{{animal.name}}" >
+      </div>
+      <div class="col">
+        <label class=" control-label">Color :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="text" class="form-control" id="color" name="color"  value="{{animal.color}}">
+      </div>
+      <div class="col">
+        <label class=" control-label">Weight :</label>
+        <input type="text" class="form-control" id="weight" name="weight"  value="{{animal.weight}}">
       </div>
     </div>
-    {% endblock content %}
+    
+    <div class="row">
+      <div class="col" >
+        <label class="from-group" >Category :<span style="color:red; font-weight:bold;">*</span></label>
+        <select name="category_id" id="category_id" class="form-control" >
+          {% for y in ani %}
+            {% if animal.category_id == y.category_id %}
+              <option  value="{{y.category_id}}" selected>{{y.name}}</option>  
+            {% else %}
+              <option  value="{{y.category_id}}">{{y.name}}</option> 
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col" >
+        <label for="purchase_price ">Purchase Price :</label>
+        <input type="text" class="form-control" id="purchase_price" name="purchase_price" value="{{animal.purchase_price}}" >
+      </div>
+      <div class="col" >
+        <label for="purchased_date">Purchased Date :</label>
+        <input type="date" class="form-control" id="purchased_on" name="purchased_on" value="{{animal.purchased_on|date:'Y-m-d'}}" >
+      </div>
+    
+      <div class="col" >
+        <label for="purchased_by">Purchased By :</label>
+        
+        <input type="text" class="form-control" id="purchased_by" name="purchased_by" value="{{animal.purchased_by}}" >
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" >
+        <label class=" control-label">Date of Birth :</label>
+        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="{{animal.date_of_birth|date:'Y-m-d'}}">
+      </div>
+      <div class="col" >
+		    <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
+        <select name="gender" class="form-control" required="required" id="gender" class="gender" >
+          {% if animal.gender == 'male' %}
+            <option value="male" selected >Male</option>
+          {% else  %}
+          <option value="female" selected>Female</option>
+          {% endif %}
+        </select>
+      </div>
+      <div class="col" >
+      </div>
+      <div class="col" >
+      </div>
+    </div>
+
+    <div class="row">
+      <div id ="hiddenFields1" class='col'>
+        <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
+        {% if animal.is_pragnent == 1 %}
+          <input type="checkbox" checked name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
+        {% else %}
+          <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
+          <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row" id="hiddenFields">
+      <div class="col"  >
+        <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+        <input type="date" class="form-control"  name="pragnancy_end_date" value="{{animal.pragnancy_end_date|date:'Y-m-d'}}" >
+      </div>
+      <div  class="col">
+        <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="date" class="form-control"  name="pragnancy_start_date"  value="{{animal.pragnancy_start_date|date:'Y-m-d'}}">
+      </div>
+      <div class="col" >
+      </div>
+      <div class="col" >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col" >
+        <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
+        {% if animal.status == 1 %}
+          <input type="checkbox" checked id="status" name="status" value="{{animal.status}}">
+        {% else %}
+          <input type="checkbox"  id="status" name="status" value="{{animal.status}}">
+        {% endif %}
+        <input type="text"  id="status_val" name="status_val"  value="0" hidden>
+      </div>    
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="description" >Description :</label>
+        <textarea id="description" class="form-control" name="description" rows="3" cols="50">{{animal.description}}</textarea>
+      </div>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-success my-3" >Update</button>  
+    </div>
+  </div>
+  </form>
+</div>
+          
+      {% endblock content %}
+
+
+
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $("#hiddenFields").hide();
+          
+  
+          
+  
+          $("#status").on('click',function(){
+            var status = $("#status").val();
+            if ($("#status").is(':checked')) {
+              $("#status_val").val(1);
+            } else {
+              $("#status_val").val(0);
+            }
+          })
+  
+          // 
+          $("#is_pragnant").on('click',function(){
+            var is_pragnant = $("#is_pragnant").val();
+            // alert(is_pragnent)
+  
+            if($('#is_pragnant').is(":checked")){
+              $("#pragnant_val").val(1);
+                $("#hiddenFields").show();
+            } else{
+              $("#pragnant_val").val(0);
+              $("#hiddenFields").hide();
+            }
+                
+                
+        });
+  
+  
+        });
+  
+        function changeDropdown(){ 
+         
+          var state=document.getElementById("gender").value;
+          if(state == "male")
+          {
+            document.getElementById("hiddenFields1").style.visibility="hidden";
+          }
+          else
+          {
+            document.getElementById("hiddenFields1").style.visibility="visible";
+          }
+        }
+    </script>  
+</body>
+</html>

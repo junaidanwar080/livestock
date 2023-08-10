@@ -9,8 +9,8 @@
 
 {% block content %}
 
-<div>
-<div class="container-fluid " >
+
+<div  >
   <div class="row min-vh-100 flex-column flex-md-row " style="margin-left:-13%;">
     <aside class="col-12 col-md-3 col-xl-2 p-0 bg-dark ">
       <nav class="navbar navbar-expand-md navbar-dark bd-dark flex-md-column flex-row align-items-center py-2 text-center sticky-top " id="sidebar">
@@ -19,86 +19,33 @@
          <a href="#" class="navbar-brand mx-0 font-weight-bold  text-nowrap" >XcentPupil</a>
         </div>
             <button type="button" class="navbar-toggler border-0 order-1" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+              <span class="navbar-toggler-icon"></span>
+            </button>
         
         <div class="collapse navbar-collapse order-last" id="nav">
           <ul class="navbar-nav flex-column w-100 justify-content-center">
-          <li class="nav-item">
-            <a href="#" class="nav-link active"> Edit Profile</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link"> Projects</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link"> Tasks </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link"> Users Info </a>
-          </li>
-        </ul>
+            <li class="nav-item">
+              <a href="#" class="nav-link active"> Edit Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Projects</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Tasks </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Users Info </a>
+            </li>
+          </ul>
         </div>      
       </nav>   
     </aside>
-
   </div>
-   
-
-    <script type="text/javascript">
-      $( document ).ready(function() {
-        $("#hiddenFields").hide();
-
-        
-
-        $("#status").on('click',function(){
-          var status = $("#status").val();
-          if ($("#status").is(':checked')) {
-            $("#status_val").val(1);
-          } else {
-            $("#status_val").val(0);
-          }
-        })
-
-        // 
-        $("#is_pragnant").on('click',function(){
-          var is_pragnant = $("#is_pragnant").val();
-          // alert(is_pragnent)
-
-          if($('#is_pragnant').is(":checked")){
-            $("#pragnant_val").val(1);
-              $("#hiddenFields").show();
-          } else{
-            $("#pragnant_val").val(0);
-            $("#hiddenFields").hide();
-          }
-              
-              
-      })
-
-
-      });
-
-      function changeDropdown(){ 
-       
-        var state=document.getElementById("gender").value;
-        if(state == "male")
-        {
-          document.getElementById("hiddenFields1").style.visibility="hidden";
-        }
-        else
-        {
-          document.getElementById("hiddenFields1").style.visibility="visible";
-        }
-      }
-
-
-     
-      
+</div>
   
-  </script>
- 
-{% comment %} <div class="container my-3"> {% endcomment %}
-  <div  style="margin-left:30%; margin-top:-42%; "><b></b></div>
+{% comment %} <div class="container my-3"> 
+  <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
+  <div style=" margin-top:-42%; ">
   <form action='/insert_animal_profile' method="POST" >
     <div class="alert alert-dark mt-5 row offset-2" role="alert" style="margin-top:50%;"><b >Basic Info</b></div>
     {% if error2 %}
@@ -245,11 +192,58 @@
     </div>
   </div>
   </form>
+</div>
           
       {% endblock content %}
 
 
 
-    
+      <script type="text/javascript">
+        $( document ).ready(function() {
+          $("#hiddenFields").hide();
+  
+          
+  
+          $("#status").on('click',function(){
+            var status = $("#status").val();
+            if ($("#status").is(':checked')) {
+              $("#status_val").val(1);
+            } else {
+              $("#status_val").val(0);
+            }
+          })
+  
+          // 
+          $("#is_pragnant").on('click',function(){
+            var is_pragnant = $("#is_pragnant").val();
+            // alert(is_pragnent)
+  
+            if($('#is_pragnant').is(":checked")){
+              $("#pragnant_val").val(1);
+                $("#hiddenFields").show();
+            } else{
+              $("#pragnant_val").val(0);
+              $("#hiddenFields").hide();
+            }
+                
+                
+        });
+  
+  
+        });
+  
+        function changeDropdown(){ 
+         
+          var state=document.getElementById("gender").value;
+          if(state == "male")
+          {
+            document.getElementById("hiddenFields1").style.visibility="hidden";
+          }
+          else
+          {
+            document.getElementById("hiddenFields1").style.visibility="visible";
+          }
+        }
+    </script>  
 </body>
 </html>

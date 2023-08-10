@@ -76,8 +76,6 @@ def insert_animal_profile(request):
         weight = request.POST['weight']
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
-        
-        
         purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
         print(purchased_on)
         purchased_by = request.POST['purchased_by']
@@ -131,7 +129,6 @@ def insert_animal_profile(request):
                            status=status,
                            updated_by=1,
                            description=description)
-            
         ins.save()
         
         return redirect(reverse('list_animal_profile'))
