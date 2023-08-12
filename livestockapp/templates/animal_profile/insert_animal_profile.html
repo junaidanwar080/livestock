@@ -151,21 +151,37 @@
       </div>
     </div>
 
-    <div class="row">
-      <div id ="hiddenFields1" class='col'>
+    <div class="row" id ="hiddenFields1">
+      <div  class='col'>
         <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="checkbox"  name="is_pragnant" id="is_pragnant" >
         <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
       </div>
     </div>
-
     <div class="row" id="hiddenFields">
+      <div  class='col' >
+        <label class=" control-label">Pragnancy Confirmed :</label>
+        <input type="checkbox"  name="Pragnancy_Confirmed" id="Pragnancy_Confirmed" >
+        <input type="text"  name="Confirmed_val" id="Confirmed_val" value="0" hidden>
+      </div>
+      <div  class='col'>
+        <label class=" control-label">Pragnancy Finished :</label>
+        <input type="checkbox"  name="Pragnancy_finished " id="Pragnancy_finished " >
+        <input type="text"  name="finished_val" id="finished_val" value="0" hidden>
+      </div>
+      <div  class='col'>
+        <label class=" control-label">Miscarriage:</label>
+        <input type="checkbox"  name="Miscarriage" id="Miscarriage" >
+        <input type="text"  name="Miscarriage_val" id="Miscarriage_val" value="0" hidden>
+      </div>
+
+    
       <div class="col"  >
         <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
         <input type="date" class="form-control"  name="pragnancy_end_date" value="" >
       </div>
       <div  class="col">
-        <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
+        <label class=" control-label" >Pregnancy Start Date :</label>
         <input type="date" class="form-control"  name="pragnancy_start_date"  >
       </div>
       <div class="col" >
@@ -194,7 +210,6 @@
   </form>
 </div>
           
-      {% endblock content %}
 
 
 
@@ -220,16 +235,22 @@
   
             if($('#is_pragnant').is(":checked")){
               $("#pragnant_val").val(1);
-                $("#hiddenFields").show();
+              $("#Confirmed_val").val(1);
+              $("#finished_val").val(1);
+              $("#Miscarriage_val").val(1);
+              $("#hiddenFields").show();
             } else{
               $("#pragnant_val").val(0);
+              $("#Confirmed_val").val(0);
+              $("#finished_val").val(0);
+              $("#Miscarriage_val").val(0);
               $("#hiddenFields").hide();
             }
-                
-                
-        });
-  
-  
+            
+            
+          });
+          
+          
         });
   
         function changeDropdown(){ 
@@ -245,5 +266,6 @@
           }
         }
     </script>  
+    {% endblock content %}
 </body>
 </html>

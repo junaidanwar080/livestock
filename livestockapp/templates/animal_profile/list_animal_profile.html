@@ -47,13 +47,19 @@
        <td>{{ani.date_of_birth|date:"d-m-Y"}}</td>
        <td>{{ani.description}}</td>
        <td>{{ani.gender}}</td> 
-      {% if  ani.is_pragnent == 1 %}
-      <td>Yes</td>
-      {% else %}
-      <td></td>
-      {% endif %}
+       {% if  ani.is_pragnent == 1 %}
+      
+       <td>Yes</td>
+       {% else %}
+       <td></td>
+       {% endif %}
+       {% if  ani.gender == male %}
+       <td></td>
+       <td></td>
+       {% else %}
        <td>{{ani.pragnancy_start_date|date:"d-m-Y"}}</td>
        <td>{{ani.pragnancy_end_date|date:"d-m-Y"}}</td>
+       {% endif %}
        {% if  ani.status == 1 %}
        <td>{{ani.status}}</td>
        <td>Active</td>

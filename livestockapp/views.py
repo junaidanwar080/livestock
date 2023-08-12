@@ -156,7 +156,7 @@ def update_animal(request, id):
     if request.method == 'POST':
         id = request.POST['id']
         token_no = request.POST['token_no']
-        name = request.POST['name']
+        name = request.POST['ani_name']
         color = request.POST['color']
         weight = request.POST['weight']
         category_id = request.POST['category_id']
@@ -164,12 +164,24 @@ def update_animal(request, id):
         purchased_on = request.POST['purchased_on']
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
+        if date_of_birth == '':
+            date_of_birth = None
+        else:
+            date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        pragnant_val = request.POST['is_pragnant']
-        is_pragnant = int(pragnant_val)
+        is_pragnant = request.POST['pragnant_val']
+        
         pragnancy_start_date = request.POST['pragnancy_start_date']
+        if pragnancy_start_date == '':
+            pragnancy_start_date = None
+        else:
+            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
         pragnancy_end_date = request.POST['pragnancy_end_date']
-        status = request.POST['status']
+        if pragnancy_end_date == '':
+            pragnancy_end_date = None
+        else:
+            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+        status = request.POST['status_val']
         description = request.POST['description']
 
         anim=Category.objects.all()
@@ -202,7 +214,7 @@ def update_animal(request, id):
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.is_pragnent=is_pragnant,
+            edit.is_pragnant=is_pragnant,
             edit.pragnancy_start_date = pragnancy_start_date
             edit.pragnancy_end_date = pragnancy_end_date
             edit.status=status
