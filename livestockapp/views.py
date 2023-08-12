@@ -162,6 +162,10 @@ def update_animal(request, id):
         category_id = request.POST['category_id']
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
+        if purchased_on == '':
+            purchased_on = None
+        else:
+            purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
         if date_of_birth == '':
@@ -170,14 +174,16 @@ def update_animal(request, id):
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
         is_pragnant = request.POST['pragnant_val']
+        print(is_pragnant)
+        category_id=int(category_id)
         
         pragnancy_start_date = request.POST['pragnancy_start_date']
-        if pragnancy_start_date == '':
+        if gender == 'male' or is_pragnant == '0':
             pragnancy_start_date = None
         else:
             pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
         pragnancy_end_date = request.POST['pragnancy_end_date']
-        if pragnancy_end_date == '':
+        if gender == 'male'or is_pragnant == '0':
             pragnancy_end_date = None
         else:
             pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
@@ -203,23 +209,24 @@ def update_animal(request, id):
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True}) 
        
         else:  
+            print(category_id)
             edit = Animal_profile.objects.get(id = id)  
-            edit.token_no = token_no    
-            edit.name = name 
-            edit.color = color 
+            edit.token_no = token_no
+            edit.name = name
+            edit.color = color
             edit.weight = weight
-            edit.category_id = category_id
-            edit.purchase_price = purchase_price
+            edit.category_id =category_id
+            edit.purchase_price = int(purchase_price)
             edit.purchased_on = purchased_on
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.is_pragnant=is_pragnant,
+            edit.is_pragnent=is_pragnant
             edit.pragnancy_start_date = pragnancy_start_date
             edit.pragnancy_end_date = pragnancy_end_date
             edit.status=status
-            edit.description = description    
-            edit.updated_on = date       
+            edit.description = description  
+            edit.updated_on = date    
             edit.save()
             return redirect(reverse('list_animal_profile')) 
     animals=Category.objects.all()

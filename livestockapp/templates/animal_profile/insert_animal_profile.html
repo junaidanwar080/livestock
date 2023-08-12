@@ -213,59 +213,71 @@
 
 
 
-      <script type="text/javascript">
-        $( document ).ready(function() {
-          $("#hiddenFields").hide();
+<script type="text/javascript">
+  $(document).ready(function() {
+    gender = $("#gender").val();
+    if(gender == 'male'){
+      $("#pragnant_val").val(0);
+      $("#hiddenFields1").hide();
+      $("#hiddenFields").hide();
+    }else{
+    if($('#is_pragnant').is(":checked")){
+      $("#pragnant_val").val(1);
+        $("#hiddenFields").show();
+      } else{
+      $("#pragnant_val").val(0);
+      $("#hiddenFields").hide();
+    }
+
+  }
+
+   
+ 
+    $("#status").on('click',function(){
+      var status = $("#status").val();
+      if ($("#status").is(':checked')) {
+        $("#status_val").val(1);
+      } else {
+        $("#status_val").val(0);
+      }
+    })
+
+
+
+    // 
+    $("#is_pragnant").on('click',function(){
+     
+      var is_pragnant = $("#is_pragnant").val();
+      if($('#is_pragnant').is(":checked")){
+        $("#pragnant_val").val(1);
+          $("#hiddenFields").show();
+        } else{
+        $("#pragnant_val").val(0);
+        $("#hiddenFields").hide();
+      }    
+    });
+
+    $("#gender").on('change',function(){
+      var gender = $("#gender").val();
   
-          
-  
-          $("#status").on('click',function(){
-            var status = $("#status").val();
-            if ($("#status").is(':checked')) {
-              $("#status_val").val(1);
-            } else {
-              $("#status_val").val(0);
-            }
-          })
-  
-          // 
-          $("#is_pragnant").on('click',function(){
-            var is_pragnant = $("#is_pragnant").val();
-            // alert(is_pragnent)
-  
-            if($('#is_pragnant').is(":checked")){
-              $("#pragnant_val").val(1);
-              $("#Confirmed_val").val(1);
-              $("#finished_val").val(1);
-              $("#Miscarriage_val").val(1);
-              $("#hiddenFields").show();
-            } else{
-              $("#pragnant_val").val(0);
-              $("#Confirmed_val").val(0);
-              $("#finished_val").val(0);
-              $("#Miscarriage_val").val(0);
-              $("#hiddenFields").hide();
-            }
-            
-            
-          });
-          
-          
-        });
-  
-        function changeDropdown(){ 
+      if(gender == "male"){
+       
+        $("#hiddenFields1").hide();
+        $("#hiddenFields").hide();
+        $("#pragnant_val").val(0);
+      }
+      else{
+        $("#hiddenFields1").show();
+       
+      }
          
-          var state=document.getElementById("gender").value;
-          if(state == "male")
-          {
-            document.getElementById("hiddenFields1").style.visibility="hidden";
-          }
-          else
-          {
-            document.getElementById("hiddenFields1").style.visibility="visible";
-          }
-        }
-    </script>  
-    {% endblock content %}
+    });
+  
+  
+});
+
+</script>  
+
+{% endblock content %}
 </body>
 </html>
