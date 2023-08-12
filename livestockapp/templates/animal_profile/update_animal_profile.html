@@ -144,7 +144,7 @@
       </div>
       <div class="col" >
 		    <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
-       <select onchange="changeDropdown(this.value);" name="gender" class="form-control" required="required" id="gender" class="gender">
+       <select  name="gender" class="form-control" required="required" id="gender" class="gender">
           {% if animal.gender == 'male' %}
             <option value="male" selected >Male</option>
             <option value="female" >Female</option>
@@ -172,6 +172,7 @@
           {% endif %}
           <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
       </div>
+      
     </div>
 
     <div class="row" id="hiddenFields">
@@ -218,7 +219,23 @@
 
       <script type="text/javascript">
         $(document).ready(function() {
-          $("#hiddenFields").hide();
+          gender = $("#gender").val();
+          if(gender == 'male'){
+            $("#pragnant_val").val(0);
+            $("#hiddenFields1").hide();
+            $("#hiddenFields").hide();
+          }else{
+          if($('#is_pragnant').is(":checked")){
+            $("#pragnant_val").val(1);
+              $("#hiddenFields").show();
+            } else{
+            $("#pragnant_val").val(0);
+            $("#hiddenFields").hide();
+          }
+
+        }
+
+         
           
   
           
@@ -237,25 +254,34 @@
           // 
           $("#is_pragnant").on('click',function(){
             var is_pragnant = $("#is_pragnant").val();
-            // alert(is_pragnent)
-            
             if($('#is_pragnant').is(":checked")){
-            
               $("#pragnant_val").val(1);
                 $("#hiddenFields").show();
               } else{
               $("#pragnant_val").val(0);
               $("#hiddenFields").hide();
-         
+            }    
+          });
+
+          $("#gender").on('change',function(){
+            var gender = $("#gender").val();
+        
+            if(gender == "male"){
+              $("#hiddenFields1").hide();
+              $("#hiddenFields").hide();
+              $("#pragnant_val").val(0);
             }
-            
-                
-        });
+            else{
+              $("#hiddenFields1").show();
+              $("#hiddenFields").show();
+            }
+               
+          });
         
         
       });
       
-      function changeDropdown(){ 
+      {% comment %} function changeDropdown(){ 
         
         var state=document.getElementById("gender").value;
         if(state == "male")
@@ -267,7 +293,7 @@
           {
             document.getElementById("hiddenFields1").style.visibility="visible";
           }
-        }
+        } {% endcomment %}
       </script>  
      
       {% endblock content %}
