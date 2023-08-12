@@ -246,6 +246,7 @@
               } else{
               $("#pragnant_val").val(0);
               $("#hiddenFields").hide();
+         
             }
             
                 
@@ -260,7 +261,7 @@
         if(state == "male")
         {
             document.getElementById("hiddenFields1").style.visibility="hidden";
-           
+            document.getElementById(input.attr('hiddenFields1')).value = '';
           }
           else
           {
