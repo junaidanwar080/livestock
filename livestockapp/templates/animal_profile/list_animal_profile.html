@@ -4,7 +4,7 @@
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Animal Profile</h4>
 {% if animal_pro %}
-  <table class="table table-bordered">
+  <table class="table table-bordered"  id="animalTable">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -31,7 +31,6 @@
       </tr>
     </thead>
     <tbody>
-        {% comment %} Run a loop here and iterate all the animal_pro {% endcomment %}
      {% for ani in animal_pro %}
      <tr>
        <th scope="row">{{forloop.counter}}</th>
@@ -83,77 +82,23 @@
 
 
 
-{% comment %} 
-
-<div>
-  <table width="100%" id="dtExample" class="display " cellspacing="0">
-      <thead>
-          <tr>
-              <th>S.No</th>
-              <th>Name</th>
-              <th>Age</th>
-              <th>City</th>
-              <th>State</th>
-          </tr>
-      </thead>
-  </table>
-</div> {% endcomment %}
-
-
 <script>
-  $(document).ready(function () {
-    fnLoadDataTableInstance()
-})
-function fnLoadDataTableInstance() {
-    var dataSource = [
-        { name: 'Gowtham', age: 28, city: 'Coimbatore', state: 'Tamil Nadu' },
-        { name: 'Sudhan', age: 38, city: 'Ooty', state: 'Tamil Nadu' },
-        { name: 'Vignesh', age: 34, city: 'Erode', state: 'Tamil Nadu' },
-        { name: 'CSK', age: 34, city: 'Coimbatore', state: 'Tamil Nadu' },
-        { name: 'Arvind', age: 28, city: 'Coimbatore', state: 'Tamil Nadu' },
-        { name: 'Rahul', age: 38, city: 'Ooty', state: 'Tamil Nadu' },
-        { name: 'Raji', age: 34, city: 'Erode', state: 'Tamil Nadu' },
-        { name: 'Ananthi', age: 34, city: 'Coimbatore', state: 'Tamil Nadu' },
-    ]
+  $(document).ready(function() {
+    // Initialize DataTable
+    $('#animalTable').DataTable({
+      "paging": true,      // Enable pagination
+      "ordering": true,    // Enable sorting
+      "searching": true,   // Enable search
+      "info": true,        // Show info about entries and pagination
+      "responsive": true,  // Enable responsive behavior
+      "columnDefs": [
+        // Specify column-specific options if needed
+        // Example: {"targets": [0], "searchable": false, "orderable": false}
+      ]
+    });
+  });
 
-    $('#dtExample').DataTable({
-        dom: 'Bfrtip',
-        data: dataSource,
-        columns: [
-            {
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
-            { data: 'name' },
-            { data: 'age' },
-            { data: 'city' },
-            { data: 'state' }
-        ],
-
-        "paging": true,
-        "info": true,
-        "language": {
-            "emptyTable": "No data available"
-        },
-        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-            $("td:first", nRow).html(iDisplayIndex + 1);
-            return nRow;
-        },
-    })
-}
-
-
-  {% comment %} $(document).ready( function () {
-    $('#dtExample').DataTable();
-} );
-
-
-$('#dtExample')
-        .on( 'order.dt',  function () { alert( 'Order' ); } )
-        .on( 'search.dt', function () { alert( 'Search' ); } )
-        .on( 'page.dt',   function () { alert( 'Page' ); } )
-.DataTable(); {% endcomment %}
+   
 </script>
 
 {% endblock content %}
