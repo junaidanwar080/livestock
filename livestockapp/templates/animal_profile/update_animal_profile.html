@@ -47,7 +47,7 @@
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
 <div style=" margin-top:-42%; margin-right:5%">
   <div class="alert alert-dark mt-5" role="alert" style="margin-top:50%; margin-left:10%"><b >Basic Info</b></div>
-  <form action='/update_animal/{{animal.id}}' method="POST" >
+  <form action='/update_animal/{{animal.animal_id}}' method="POST" >
     
     {% if error2 %}
     <div class="alert alert-danger offset-2" role="alert">
@@ -92,7 +92,7 @@
     <div class="row">
       <div class="col">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="text" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly hidden/>
+        <input type="text" class="form-control" name="animal_id" required maxlength="50" value="{{animal.animal_id}}" readonly hidden/>
         <input type="text" class="form-control" id="token_no" name="token_no" value= "{{animal.token_no}}" >
       </div>
       <div class="col">

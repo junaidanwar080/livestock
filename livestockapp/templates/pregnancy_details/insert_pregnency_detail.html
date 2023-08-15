@@ -1,0 +1,178 @@
+<html>
+  <head>
+    <title>Pragnancy Detail</title>
+  </head>
+<body>
+  
+
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+
+<div  >
+  <div class="row min-vh-100 flex-column flex-md-row " style="margin-left:-13%;">
+    <aside class="col-12 col-md-3 col-xl-2 p-0 bg-dark ">
+      <nav class="navbar navbar-expand-md navbar-dark bd-dark flex-md-column flex-row align-items-center py-2 text-center sticky-top " id="sidebar">
+        <div class="text-center p-3">
+          <img src="https://impreza.us-themes.com/wp-content/uploads/paolo-bendandi-D-8XODEIr_s-unsplash.jpg" alt="profile picture" class="img-fluid rounded-circle my-4 p-1 d-none d-md-block shadow"/>
+         <a href="#" class="navbar-brand mx-0 font-weight-bold  text-nowrap" >XcentPupil</a>
+        </div>
+            <button type="button" class="navbar-toggler border-0 order-1" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+        
+        <div class="collapse navbar-collapse order-last" id="nav">
+          <ul class="navbar-nav flex-column w-100 justify-content-center">
+            <li class="nav-item">
+              <a href="#" class="nav-link active"> Edit Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Projects</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Tasks </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Users Info </a>
+            </li>
+          </ul>
+        </div>      
+      </nav>   
+    </aside>
+  </div>
+</div>
+  
+{% comment %} <div class="container my-3"> 
+  <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
+  <div style=" margin-top:-42%; ">
+  <form action='/insert_pregnency_detail' method="POST" >
+    <div class="alert alert-dark mt-5 row offset-2" role="alert" style="margin-top:50%;"><b >Basic Info</b></div>
+    {% if error2 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Token No !!    
+    </div>
+    {% endif %}  
+    {% if error3 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Name !!    
+    </div>
+    {% endif %} 
+    {% if error4 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Color !!    
+    </div>
+    {% endif %} 
+    {% if error5 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Category !!    
+    </div>
+    {% endif %} 
+    {% if error6 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter Gender!!    
+    </div>
+    {% endif %} 
+
+    {% if error8 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter pragnancy_start_date !!    
+    </div>
+    {% endif %} 
+    {% if error9 %}
+    <div class="alert alert-danger offset-2" role="alert">
+      Please Enter is_Active Field !!    
+    </div>
+    {% endif %} 
+
+
+    {% csrf_token %}
+    <div class="container-fluid" style="margin-left:10%;">
+    <div class="row">
+      <div class="col">
+        <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
+        <select id="animal_id" name="animal_id"  class="form-control">
+          <option value="">Select Token No</option>
+          {% for x in det %}
+          <option value="{{x.animal_id}}">{{x.token_no}}</option>  
+        {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+          <label class=" control-label">Start Date :</label>
+          <input type="date" class="form-control" id="start_date" name="start_date"  >
+      </div>
+      <div class="col">
+        <label class=" control-label">Expected End Date :</label>
+        <input type="date" class="form-control" id="expected_end_date" name="expected_end_date"  >
+      </div>
+      <div class="col">
+       
+        <label class=" control-label">is Pregnancy Confirmed :</label>
+        <select type="text" class="form-control" id="is_pregnancy_confirmed" name="is_pregnancy_confirmed"  >
+            <option value="">Select Options</option>
+            <option value="True" >Yes</option>
+            <option value="False">No</option>
+          </select>
+       
+      </div>
+    </div>
+    
+    <div class="row">
+      
+      <div class="col-3" >
+        <label class=" control-label">Pragnancy Checked Date:</label>
+        <input type="date" class="form-control" id="pregnancy_checked_on" name="pregnancy_checked_on" value="{{date}}"  >
+      </div>
+      <div class="col-3" >
+        
+        <label for="is_delivery_completed">is Delivery Confirm :</label>
+        <select type="date" class="form-control" id="is_delivery_completed" name="is_delivery_completed" >
+            <option value="">Select Options</option>
+            <option value="True" >Yes</option>
+            <option value="False">No</option>
+          </select>
+      </div>
+      
+      <div class="col-3" >
+        <label for="actual_delivery_date">Actual Delivery Date:</label>
+        
+        <input type="date" class="form-control" id="actual_delivery_date" name="actual_delivery_date"  >
+      </div>
+   
+      
+          <div class="col-3" >
+              <label class=" control-label">is Miscarriage :</label>
+              <select type="text" class="form-control" id="is_miscarriage" name="is_miscarriage" >
+                  <option value="">Select Options</option>
+                  <option value="True" >Yes</option>
+                  <option value="False">No</option>
+                </select>
+            </div>
+      </div>
+    
+      <div class = "row">
+        <div  class='col-3'>
+          <label class=" control-label">Miscarriage Date :</label>
+          <input type="date"  class="form-control" name="miscarriage_date" id="miscarriage_date" >
+         
+        </div>
+      </div>
+      <div class="col" >
+      </div>
+      
+      
+      <div class="row">
+          <div  class='col' >
+            <label for="description" >Description :</label>
+            <textarea id="description" class="form-control" name="description" rows="3" cols="50"></textarea>
+          </div> 
+    <div>
+    </div>
+</div>
+<button type="submit" class="btn btn-success my-3" >Submit</button>  
+  </form>
+</div>
+{% endblock content %}
+</body>
+</html>

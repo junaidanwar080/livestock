@@ -12,7 +12,7 @@ class Category(models.Model):
     
 #Animal Profile
 class Animal_profile(models.Model):
-    id = models.AutoField(primary_key=True)  
+    animal_id = models.AutoField(primary_key=True)  
     token_no = models.CharField(max_length=50,null=True)
     name = models.CharField(max_length=50,null=True) 
     color = models.CharField(max_length=50,null=True) 
@@ -34,4 +34,25 @@ class Animal_profile(models.Model):
     updated_by = models.IntegerField(null=True , blank= True) 
     updated_on = models.DateField(blank=True,null=True)
     def __str__(self):
-       return self.id
+       return self.animal_id
+    
+#PregnancyDetails
+class PregnancyDetails(models.Model):
+    Pregnancy_id = models.AutoField(primary_key=True)  
+    start_date = models.DateField(blank=True, null=True) 
+    expected_end_date = models.DateField(blank=True, null=True) 
+    is_pregnancy_confirmed = models.BooleanField( null=True)
+    pregnancy_checked_on = models.DateField(blank=True, null=True) 
+    description = models.TextField(blank=True, null=True) 
+    is_delivery_completed = models.BooleanField( null=True)
+    actual_delivery_date = models.DateField(blank=True, null=True) 
+    is_miscarriage = models.BooleanField(blank=True, null=True)
+    miscarriage_date = models.DateField(blank=True, null=True) 
+    animal = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="animals_id")
+    created_by = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="create_by")
+    created_on = models.DateField(blank=True, null=True) 
+    updated_by = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="update_by")
+    updated_on = models.DateField(blank=True, null=True) 
+    def __str__(self):
+       return self.description
+    
