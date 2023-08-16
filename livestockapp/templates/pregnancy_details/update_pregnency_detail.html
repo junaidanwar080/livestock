@@ -73,7 +73,7 @@
       <div class="col">
         <label class=" control-label">is Pregnancy Confirmed :</label>
         <select type="text" class="form-control" id="is_pregnancy_confirmed" name="is_pregnancy_confirmed" >
-         {% if detail.is_pregnancy_confirmed == "True" %}
+         {% if detail.is_pregnancy_confirmed == 1 %}
           <option value="True" selected >Yes</option>
           <option value="False" >No</option>         
         {% else  %}
@@ -91,7 +91,7 @@
       <div class="col-3" >
         <label for="is_delivery_completed">is Delivery Confirm :</label>
         <select type="date" class="form-control" id="is_delivery_completed" name="is_delivery_completed"  >
-          {% if detail.is_delivery_completed == 'True' %}
+          {% if detail.is_delivery_completed == 1 %}
           <option value="True" selected >Yes</option>
           <option value="False" >No</option>         
         {% else  %}
@@ -107,7 +107,7 @@
           <div class="col-3" >
             <label class=" control-label">is Miscarriage :</span></label>
        <select  name="is_miscarriage" class="form-control" required="required" id="is_miscarriage" class="is_miscarriage">
-          {% if detail.is_miscarriage == 'True' %}
+          {% if detail.is_miscarriage == 1 %}
             <option value="True" selected >Yes</option>
             <option value="False" >No</option>           
           {% else  %}

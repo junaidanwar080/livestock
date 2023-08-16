@@ -2,13 +2,12 @@
 {% block content %}
    
 <div class="container my-3">
-  <h4 class="text-center alert alert-info py-3">List of detegory</h4>
+  <h4 class="text-center alert alert-info py-3">List of Pragnancy Detail</h4>
   {% if animal_det %}
-  <table class="table table-bordered">
+  <table class="table table-bordered" id="animalDetail">
     <thead>
       <tr>
-        <th scope="col">#</th>
-       
+        <th scope="col">#</th>      
         <th scope="col">Start Date</th>
         <th scope="col">Expected End Date</th>
         <th scope="col">is Pregnancy Confirmed</th>
@@ -59,4 +58,28 @@
   <h4 class="text-center alert alert-warning">No Record</h4>
 {% endif %}
 </div>    
+
+
+
+<script>
+  $(document).ready(function() {
+    // Initialize DataTable
+    $('#animalDetail').DataTable({
+      "paging": true,      // Enable pagination
+      "ordering": true,    // Enable sorting
+      "searching": true,   // Enable search
+      "info": true,        // Show info about entries and pagination
+      "responsive": true,  // Enable responsive behavior
+      "columnDefs": [
+        // Specify column-specific options if needed
+        // Example: {"targets": [0], "searchable": false, "orderable": false}
+      ]
+    });
+  });  
+</script>
+
+
+
+
+
 {% endblock content %}
