@@ -161,8 +161,7 @@ def update_animal(request, animal_id):
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
         is_pragnant = request.POST['pragnant_val']
-        print(is_pragnant)
-        category_id=int(category_id)
+        
         pragnancy_start_date = request.POST['pragnancy_start_date']
         if gender == 'male' or is_pragnant == '0':
             pragnancy_start_date = None
@@ -193,11 +192,10 @@ def update_animal(request, animal_id):
         if status == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True})       
         else:  
-            print(category_id)
-            edit = Animal_profile.objects.get(animal_id = animal_id)  
-            edit.token_no = token_no
-            edit.name = name
-            edit.color = color
+            edit = Animal_profile.objects.get(id = id)  
+            edit.token_no = token_no    
+            edit.name = name 
+            edit.color = color 
             edit.weight = weight
             edit.category_id =category_id
             edit.purchase_price = int(purchase_price)
