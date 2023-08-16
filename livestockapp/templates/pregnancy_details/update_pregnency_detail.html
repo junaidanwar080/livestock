@@ -3,13 +3,8 @@
     <title>Pragnancy Detail</title>
   </head>
 <body>
-  
-
 {% extends 'navbar.html' %}
-
 {% block content %}
-
-
 <div  >
   <div class="row min-vh-100 flex-column flex-md-row " style="margin-left:-13%;">
     <aside class="col-12 col-md-3 col-xl-2 p-0 bg-dark ">
@@ -20,8 +15,7 @@
         </div>
             <button type="button" class="navbar-toggler border-0 order-1" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
-            </button>
-        
+            </button>       
         <div class="collapse navbar-collapse order-last" id="nav">
           <ul class="navbar-nav flex-column w-100 justify-content-center">
             <li class="nav-item">
@@ -41,8 +35,7 @@
       </nav>   
     </aside>
   </div>
-</div>
-  
+</div> 
 {% comment %} <div class="container my-3"> 
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
   <div style=" margin-top:-42%; ">
@@ -60,7 +53,7 @@
         <input type="text" class="form-control" name="Pregnancy_id" required maxlength="50" value="{{detail.Pregnancy_id}}" readonly hidden/>
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
         <select id="animal_id" name="animal_id"  class="form-control">         
-         {% for y in det %}
+        {% for y in det %}
           {% if detail.animal_id == y.animal_id %}
             <option  value="{{y.animal_id}}" selected>{{y.token_no}}</option>  
           {% else %}
@@ -78,7 +71,6 @@
         <input type="date" class="form-control" id="expected_end_date" name="expected_end_date" value="{{detail.expected_end_date|date:'Y-m-d'}}" >
       </div>
       <div class="col">
-       
         <label class=" control-label">is Pregnancy Confirmed :</label>
         <select type="text" class="form-control" id="is_pregnancy_confirmed" name="is_pregnancy_confirmed" >
          {% if detail.is_pregnancy_confirmed == "True" %}
@@ -88,52 +80,40 @@
         <option value="False" selected>No</option>
         <option value="True" >Yes</option>
         {% endif %}
-          
-
-          </select>
-       
+          </select>      
       </div>
-    </div>
-    
-    <div class="row">
-      
+    </div>   
+    <div class="row"> 
       <div class="col-3" >
         <label class=" control-label">Pragnancy Checked Date:</label>
         <input type="date" class="form-control" id="pregnancy_checked_on" name="pregnancy_checked_on" value="{{date}}" value="{{detail.pregnancy_checked_on|date:'Y-m-d'}}" >
       </div>
       <div class="col-3" >
-        
         <label for="is_delivery_completed">is Delivery Confirm :</label>
         <select type="date" class="form-control" id="is_delivery_completed" name="is_delivery_completed"  >
           {% if detail.is_delivery_completed == 'True' %}
           <option value="True" selected >Yes</option>
-          <option value="False" >No</option>
-          
+          <option value="False" >No</option>         
         {% else  %}
         <option value="False" selected>No</option>
         <option value="True" >Yes</option>
-        {% endif %} 
-        
+        {% endif %}         
           </select>
-      </div>
-      
+      </div>      
       <div class="col-3" >
-        <label for="actual_delivery_date">Actual Delivery Date:</label>
-        
+        <label for="actual_delivery_date">Actual Delivery Date:</label>       
         <input type="date" class="form-control" id="actual_delivery_date" name="actual_delivery_date" value="{{detail.actual_delivery_date|date:'Y-m-d'}}"  >
       </div>
           <div class="col-3" >
-            <label class=" control-label">is Miscarriage : <span style="color:red; font-weight:bold;">*</span></label>
+            <label class=" control-label">is Miscarriage :</span></label>
        <select  name="is_miscarriage" class="form-control" required="required" id="is_miscarriage" class="is_miscarriage">
           {% if detail.is_miscarriage == 'True' %}
             <option value="True" selected >Yes</option>
-            <option value="False" >No</option>
-            
+            <option value="False" >No</option>           
           {% else  %}
           <option value="False" selected>NO</option>
           <option value="True" >Yes</option>
-          {% endif %}
-          
+          {% endif %}         
         </select>
             </div>
       </div>    
