@@ -157,6 +157,38 @@
           <input type="date"  class="form-control" name="miscarriage_date" id="miscarriage_date" >
          
         </div>
+        <div class="col-3">
+       
+          <label class=" control-label">Infartility :</label>
+          <select type="text" class="form-control" id="infartility" name="infartility">
+              <option value="">Select Options</option>
+              <option value="True" >Yes</option>
+              <option value="False">No</option>
+            </select>
+         
+        </div>
+        <div class="row" id ="hiddenFields1">
+          <div  class='col'>
+            <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
+            <input type="checkbox"  name="is_pragnant" id="is_pragnant" >
+            <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
+          </div>
+        </div>
+        <div class="row" id="hiddenFields">
+          
+          <div class="col"  >
+            <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+            <input type="date" class="form-control"  name="pragnancy_end_date" value="" >
+          </div>
+          <div  class="col">
+            <label class=" control-label" >Pregnancy Start Date :</label>
+            <input type="date" class="form-control"  name="pragnancy_start_date"  >
+          </div>
+          <div class="col" >
+          </div>
+          <div class="col" >
+          </div>
+        </div>
       </div>
       <div class="col" >
       </div>
@@ -173,6 +205,53 @@
 <button type="submit" class="btn btn-success my-3" >Submit</button>  
   </form>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    gender = $("#gender").val();
+    if(gender == 'male'){
+      $("#pragnant_val").val(0);
+      $("#hiddenFields1").hide();
+      $("#hiddenFields").hide();
+    }else{
+    if($('#is_pragnant').is(":checked")){
+      $("#pragnant_val").val(1);
+        $("#hiddenFields").show();
+      } else{
+      $("#pragnant_val").val(0);
+      $("#hiddenFields").hide();
+    }
+
+  }
+
+
+    // 
+    $("#is_pragnant").on('click',function(){
+      var is_pragnant = $("#is_pragnant").val();
+      if($('#is_pragnant').is(":checked")){
+        $("#pragnant_val").val(1);
+          $("#hiddenFields").show();
+        } else{
+        $("#pragnant_val").val(0);
+        $("#hiddenFields").hide();
+      }    
+    });
+});
+
+
+</script> 
 {% endblock content %}
 </body>
 </html>

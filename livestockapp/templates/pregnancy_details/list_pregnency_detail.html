@@ -17,6 +17,10 @@
         <th scope="col">Actual Delivery Date</th>
         <th scope="col">is Miscarriage</th>
         <th scope="col">Miscarriage Date</th>
+        <th scope="col">Infartility</th>
+        <th scope="col">is_Pragnent</th>
+        <th scope="col">pregnancy Start Date</th>
+        <th scope="col">pregnancy End Date</th>
         <th scope="col">Animal id</th>
         <th scope="col">Created by</th>
         <th scope="col">Created on</th>
@@ -43,6 +47,15 @@
        <td>{{det.actual_delivery_date|date:"d-m-Y"}}</td> 
        <td>{{det.is_miscarriage}}</td>  
        <td>{{det.miscarriage_date|date:"d-m-Y"}}</td>
+       <td>{{det.infartility}}</td> 
+       {% if  det.is_pragnent %}
+      
+       <td>Yes</td>
+       {% else %}
+       <td></td>
+       {% endif %}
+       <td>{{det.pragnancy_start_date|date:"d-m-Y"}}</td>
+       <td>{{det.pragnancy_end_date|date:"d-m-Y"}}</td>
        <td>{{det.animal_id}}</td>  
        <td>{{det.created_by}}</td>  
        <td>{{det.created_on|date:"d-m-Y" }}</td>  

@@ -111,7 +111,7 @@
             <option value="True" selected >Yes</option>
             <option value="False" >No</option>           
           {% else  %}
-          <option value="False" selected>NO</option>
+          <option value="False" selected>No</option>
           <option value="True" >Yes</option>
           {% endif %}         
         </select>
@@ -122,10 +122,49 @@
           <label class=" control-label">Miscarriage Date :</label>
           <input type="date"  class="form-control" name="miscarriage_date" id="miscarriage_date" value="{{detail.miscarriage_date|date:'Y-m-d'}}" >         
         </div>
+        <div class="col-3" >
+          <label class=" control-label">Infartility :</span></label>
+     <select  name="infartility" class="form-control" required="required" id="infartility" class="infartility">
+        {% if detail.infartility == 1 %}
+          <option value="True" selected >Yes</option>
+          <option value="False" >No</option>           
+        {% else  %}
+        <option value="False" selected>No</option>
+        <option value="True" >Yes</option>
+        {% endif %}         
+      </select>
+          </div>
+          <div class="row">
+            <div id ="hiddenFields1" class='col'>
+              <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
+              {% if detail.is_pragnent == 1 %}
+                <input type="checkbox" checked name="is_pragnant" id="is_pragnant" value="{{detail.is_pragnent}}">
+              {% else %}
+                <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{detail.is_pragnent}}">
+                {% endif %}
+                <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
+            </div>
+            
+        
+      
+          <div class="row" id="hiddenFields">
+            <div class="col"  >
+              <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+              <input type="date" class="form-control"  name="pragnancy_end_date" value="{{detail.pragnancy_end_date|date:'Y-m-d'}}" >
+            </div>
+            <div  class="col">
+              <label class=" control-label" >Pregnancy Start Date:<span style="color:red; font-weight:bold;">*</span></label>
+              <input type="date" class="form-control"  name="pragnancy_start_date" id="pragnancy_start_date"  value="{{detail.pragnancy_start_date|date:'Y-m-d'}}">
+            </div>
       </div>
-      <div class="col" >
+    </div>
+      
       </div>  
       <div class="row">
+        <div  class='col-3' >
+          <label class=" control-label" >pragnancy_count:</label>
+          <input type="readonly" class="form-control"  name="pragnancy_count" id="pragnancy_count"  value="{{detail.pragnancy_count}}" readonly>
+        </div>
           <div  class='col' >
             <label for="description" >Description :</label>
             <textarea id="description" class="form-control" name="description" rows="3" cols="50" >{{detail.description}}</textarea>
@@ -136,6 +175,33 @@
 <button type="submit" class="btn btn-success my-3" >Submit</button>  
   </form>
 </div>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    // 
+    $("#is_pragnant").on('click',function(){
+      var is_pragnant = $("#is_pragnant").val();
+      if($('#is_pragnant').is(":checked")){
+        $("#pragnant_val").val(1);
+          $("#hiddenFields").show();
+        } else{
+        $("#pragnant_val").val(0);
+        $("#hiddenFields").hide();
+      }    
+    });
+
+   
+});
+
+</script> 
 {% endblock content %}
 </body>
 </html>

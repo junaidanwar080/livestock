@@ -245,6 +245,19 @@ def insert_pregnency_detail(request):
             miscarriage_date = None
         else:
             miscarriage_date = datetime.strptime(miscarriage_date,  '%Y-%m-%d')
+        infartility = request.POST['infartility']  
+        pragnant_val = request.POST['pragnant_val']
+        is_pragnant = int(pragnant_val)  
+        pragnancy_start_date = request.POST['pragnancy_start_date']
+        if pragnancy_start_date == '':
+            pragnancy_start_date = None
+        else:
+            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
+        pragnancy_end_date = request.POST['pragnancy_end_date']  
+        if pragnancy_end_date == '':
+            pragnancy_end_date = None
+        else:
+            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
         description = request.POST['description']        
         det=Animal_profile.objects.all()
         if animal_id == "":
@@ -258,7 +271,10 @@ def insert_pregnency_detail(request):
         actual_delivery_date=actual_delivery_date,
         is_miscarriage=is_miscarriage,
         miscarriage_date=miscarriage_date,
-       
+        infartility=infartility,
+        is_pragnant=is_pragnant,
+        pragnancy_start_date=pragnancy_start_date,
+        pragnancy_end_date=pragnancy_end_date,
         description=description)
         ins.save()   
         return redirect(reverse('list_pregnency_detail'))
@@ -286,7 +302,7 @@ def animal_det_edit(request , Pregnancy_id ):
     det=Animal_profile.objects.all()
     return render(request, 'pregnancy_details/update_pregnency_detail.html',{'detail':detail,'det': det })
 
-#-----------Update Pregnancy Detail--------------
+#-----------------Update Pregnancy Detail--------------------------#
 
 def update_pregnency_detail(request, Pregnancy_id):
     if request.method == 'POST':
@@ -319,6 +335,26 @@ def update_pregnency_detail(request, Pregnancy_id):
            miscarriage_date = None
        else:
            miscarriage_date = datetime.strptime(miscarriage_date,  '%Y-%m-%d')
+       infartility = request.POST['infartility']
+       is_pragnant = request.POST['pragnant_val']
+        
+       pragnancy_start_date = request.POST['pragnancy_start_date']
+       if pragnancy_start_date == '' :
+            pragnancy_start_date = None
+       else:
+            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
+       pragnancy_end_date = request.POST['pragnancy_end_date']
+       if pragnancy_end_date == '':
+           pragnancy_end_date = None
+       else:
+           pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+
+
+       pragnancy_count = PregnancyDetails.objects.filter(is_pragnent = 1).count()
+       
+       print(pragnancy_count)
+
+       
        description = request.POST['description']        
        det=Animal_profile.objects.all()
        if animal_id == "":
@@ -334,8 +370,13 @@ def update_pregnency_detail(request, Pregnancy_id):
            edit.actual_delivery_date=actual_delivery_date        
            edit.is_miscarriage = is_miscarriage
            edit.miscarriage_date = miscarriage_date
+           edit.infartility = infartility
+           edit.is_pragnent=is_pragnant
+           edit.pragnancy_start_date = pragnancy_start_date
+           edit.pragnancy_end_date = pragnancy_end_date
            edit.description = description 
-           edit.updated_on = date    
+           edit.updated_on = date  
+           edit.pragnancy_count = pragnancy_count  
            edit.save()
           
            return redirect(reverse('list_pregnency_detail')) 
