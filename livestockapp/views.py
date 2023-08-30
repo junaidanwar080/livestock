@@ -107,19 +107,23 @@ def insert_animal_profile(request):
             return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani,'date':date})    
         if status == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date})       
-        ins=Animal_profile(token_no=token_no,name=name,color=color,weight=weight,
-        category_id=category_id,
-        purchase_price=purchase_price,
-        purchased_on=purchased_on,
-        purchased_by=purchased_by,
-        date_of_birth=date_of_birth,
-        gender=gender,
-        is_pragnent=is_pragnant,
-        pragnancy_start_date=pragnancy_start_date,
-        pragnancy_end_date=pragnancy_end_date,
-        status=status,
-        updated_by=1,
-        description=description)
+        ins=Animal_profile(
+                token_no=token_no,
+                name=name,color=color,
+                weight=weight,
+                category_id=category_id,
+                purchase_price=purchase_price,
+                purchased_on=purchased_on,
+                purchased_by=purchased_by,
+                date_of_birth=date_of_birth,
+                gender=gender,
+                is_pregnant=is_pragnant,
+                pregnancy_start_date=pragnancy_start_date,
+                pregnancy_end_date=pragnancy_end_date,
+                status=status,
+                updated_by=1,
+                description=description
+            )
         ins.save()   
         return redirect(reverse('list_animal_profile'))
     ani=Category.objects.all()
@@ -192,7 +196,7 @@ def update_animal(request, animal_id):
         if status == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True})       
         else:  
-            edit = Animal_profile.objects.get(id = id)  
+            edit = Animal_profile.objects.get(animal_id = animal_id)  
             edit.token_no = token_no    
             edit.name = name 
             edit.color = color 
@@ -203,9 +207,9 @@ def update_animal(request, animal_id):
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.is_pragnent=is_pragnant
-            edit.pragnancy_start_date = pragnancy_start_date
-            edit.pragnancy_end_date = pragnancy_end_date
+            edit.is_pregnant=is_pragnant
+            edit.pregnancy_start_date = pragnancy_start_date
+            edit.pregnancy_end_date = pragnancy_end_date
             edit.status=status
             edit.description = description  
             edit.updated_on = date    
@@ -263,19 +267,22 @@ def insert_pregnency_detail(request):
         if animal_id == "":
             return render(request,'pregnancy_details/insert_pregnency_detail.html', {'error2': True , 'det': det,'date':date})
         
-        ins=PregnancyDetails(animal_id=animal_id,
-                             start_date=start_date,expected_end_date=expected_end_date,
-        is_pregnancy_confirmed=is_pregnancy_confirmed,
-        pregnancy_checked_on=pregnancy_checked_on,
-        is_delivery_completed=is_delivery_completed,
-        actual_delivery_date=actual_delivery_date,
-        is_miscarriage=is_miscarriage,
-        miscarriage_date=miscarriage_date,
-        infartility=infartility,
-        is_pragnant=is_pragnant,
-        pragnancy_start_date=pragnancy_start_date,
-        pragnancy_end_date=pragnancy_end_date,
-        description=description)
+        ins=PregnancyDetails(
+                animal_id = animal_id,
+                start_date = start_date,
+                expected_end_date = expected_end_date,
+                is_pregnancy_confirmed = is_pregnancy_confirmed,
+                pregnancy_checked_on = pregnancy_checked_on,
+                is_delivery_completed = is_delivery_completed,
+                actual_delivery_date = actual_delivery_date,
+                is_miscarriage = is_miscarriage,
+                miscarriage_date = miscarriage_date,
+                infartility = infartility,
+                is_pragnent = is_pragnant,
+                pregnancy_start_date = pragnancy_start_date,
+                pregnancy_end_date = pragnancy_end_date,
+                description = description
+            )
         ins.save()   
         return redirect(reverse('list_pregnency_detail'))
     det=Animal_profile.objects.all()
