@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Pragnancy Detail</title>
+    <title>Pregnancy Detail</title>
   </head>
 <body>
 {% extends 'navbar.html' %}
@@ -39,7 +39,7 @@
 {% comment %} <div class="container my-3"> 
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
   <div style=" margin-top:-42%; ">
-  <form action='/update_pregnency_detail/{{detail.Pregnancy_id}}' method="POST" >
+  <form action='/update_pregnancy_detail/{{detail.pregnancy_id}}' method="POST" >
     <div class="alert alert-dark mt-5 row offset-2" role="alert" style="margin-top:50%;"><b >Update Basic Info</b></div>
     {% if error2 %}
     <div class="alert alert-danger offset-2" role="alert">
@@ -50,7 +50,7 @@
     <div class="container-fluid" style="margin-left:10%;">
     <div class="row">
       <div class="col">
-        <input type="text" class="form-control" name="Pregnancy_id" required maxlength="50" value="{{detail.Pregnancy_id}}" readonly hidden/>
+        <input type="text" class="form-control" name="pregnancy_id" required maxlength="50" value="{{detail.pregnancy_id}}" readonly hidden/>
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
         <select id="animal_id" name="animal_id"  class="form-control">         
         {% for y in det %}
@@ -85,7 +85,7 @@
     </div>   
     <div class="row"> 
       <div class="col-3" >
-        <label class=" control-label">Pragnancy Checked Date:</label>
+        <label class=" control-label">Pregnancy Checked Date:</label>
         <input type="date" class="form-control" id="pregnancy_checked_on" name="pregnancy_checked_on" value="{{date}}" value="{{detail.pregnancy_checked_on|date:'Y-m-d'}}" >
       </div>
       <div class="col-3" >
@@ -124,49 +124,57 @@
         </div>
         <div class="col-3" >
           <label class=" control-label">Infartility :</span></label>
-     <select  name="infartility" class="form-control" required="required" id="infartility" class="infartility">
-        {% if detail.infartility == 1 %}
-          <option value="True" selected >Yes</option>
-          <option value="False" >No</option>           
-        {% else  %}
-        <option value="False" selected>No</option>
-        <option value="True" >Yes</option>
-        {% endif %}         
-      </select>
+          <select  name="infartility" class="form-control" required="required" id="infartility" class="infartility">
+            {% if detail.infartility == 1 %}
+              <option value="True" selected >Yes</option>
+              <option value="False" >No</option>           
+            {% else  %}
+            <option value="False" selected>No</option>
+            <option value="True" >Yes</option>
+            {% endif %}         
+          </select>
           </div>
           <div class="row">
             <div id ="hiddenFields1" class='col'>
-              <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
-              {% if detail.is_pragnent == 1 %}
-                <input type="checkbox" checked name="is_pragnant" id="is_pragnant" value="{{detail.is_pragnent}}">
-              {% else %}
-                <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{detail.is_pragnent}}">
-                {% endif %}
-                <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
-            </div>
-            
+              <label class=" control-label">is Pregnant :<span style="color:red; font-weight:bold;">*</span></label>
+        {% if detail.is_pregnant == 1 %}
+          <input type="checkbox" checked name="is_pregnant" id="is_pregnant" value="{{detail.is_pregnant}}">
+        {% else %}
+          <input type="checkbox"  name="is_pregnant" id="is_pregnant" value="{{detail.is_pregnant}}">
+          {% endif %}
+          <input type="text"  name="pregnant_val" id="pregnant_val" value="0" hidden>
+      </div>   
         
       
           <div class="row" id="hiddenFields">
             <div class="col"  >
-              <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
-              <input type="date" class="form-control"  name="pragnancy_end_date" value="{{detail.pragnancy_end_date|date:'Y-m-d'}}" >
+              <label for="pregnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+              <input type="date" class="form-control"  name="pregnancy_end_date" value="{{detail.pregnancy_end_date|date:'Y-m-d'}}" >
             </div>
             <div  class="col">
               <label class=" control-label" >Pregnancy Start Date:<span style="color:red; font-weight:bold;">*</span></label>
-              <input type="date" class="form-control"  name="pragnancy_start_date" id="pragnancy_start_date"  value="{{detail.pragnancy_start_date|date:'Y-m-d'}}">
+              <input type="date" class="form-control"  name="pregnancy_start_date" id="pregnancy_start_date"  value="{{detail.pregnancy_start_date|date:'Y-m-d'}}">
             </div>
       </div>
-    </div>
-      
+    </div>      
       </div>  
       <div class="row">
         <div  class='col-3' >
-          <label class=" control-label" >pragnancy_count:</label>
-          <input type="readonly" class="form-control"  name="pragnancy_count" id="pragnancy_count"  value="{{detail.pragnancy_count}}" readonly>
+          <label class=" control-label" >pregnancy_count:</label>
+          <input type="text" class="form-control"  name="pregnancy_count" id="pregnancy_count"  value="{{pregnancy_count}}" readonly>
         </div>
-          <div  class='col' >
-            <label for="description" >Description :</label>
+        <div  class='col-3' >
+          <label class=" control-label" >Miscarriage:</label>
+          <input type="text" class="form-control"  name="miscarriage" id="miscarriage"  value="{{miscarriage}}" readonly>
+        </div>
+        <div  class='col-3' >
+          <label class=" control-label" >Infartility:</label>
+          <input type="text" class="form-control"  name="is_infartility" id="is_infartility"  value="{{is_infartility}}" readonly>
+        </div>
+      </div>
+        <div class="row">
+          <div  class='col-12' >
+            <label for="description" >Description:</label>
             <textarea id="description" class="form-control" name="description" rows="3" cols="50" >{{detail.description}}</textarea>
           </div> 
     <div>
@@ -184,24 +192,42 @@
 
 
 
+
+
 <script type="text/javascript">
   $(document).ready(function() {
+    gender = $("#gender").val();
+    if(gender == 'male'){
+      $("#pregnant_val").val(0);
+      $("#hiddenFields1").hide();
+      $("#hiddenFields").hide();
+    }else{
+    if($('#is_pregnant').is(":checked")){
+      $("#pregnant_val").val(1);
+        $("#hiddenFields").show();
+      } else{
+      $("#pregnant_val").val(0);
+      $("#hiddenFields").hide();
+    }
+
+  }
+
+
     // 
-    $("#is_pragnant").on('click',function(){
-      var is_pragnant = $("#is_pragnant").val();
-      if($('#is_pragnant').is(":checked")){
-        $("#pragnant_val").val(1);
+    $("#is_pregnant").on('click',function(){
+      var is_pregnant = $("#is_pregnant").val();
+      if($('#is_pregnant').is(":checked")){
+        $("#pregnant_val").val(1);
           $("#hiddenFields").show();
         } else{
-        $("#pragnant_val").val(0);
+        $("#pregnant_val").val(0);
         $("#hiddenFields").hide();
       }    
     });
-
-   
 });
 
-</script> 
+
+</script>
 {% endblock content %}
 </body>
 </html>

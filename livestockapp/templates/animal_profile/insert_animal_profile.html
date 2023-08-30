@@ -153,36 +153,22 @@
 
     <div class="row" id ="hiddenFields1">
       <div  class='col'>
-        <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="checkbox"  name="is_pragnant" id="is_pragnant" >
-        <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
+        <label class=" control-label">is Pregnent :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="checkbox"  name="is_pregnant" id="is_pregnant" >
+        <input type="text"  name="pregnant_val" id="pregnant_val" value="0" hidden>
       </div>
     </div>
     <div class="row" id="hiddenFields">
-      <div  class='col' >
-        <label class=" control-label">Pragnancy Confirmed :</label>
-        <input type="checkbox"  name="Pragnancy_Confirmed" id="Pragnancy_Confirmed" >
-        <input type="text"  name="Confirmed_val" id="Confirmed_val" value="0" hidden>
-      </div>
-      <div  class='col'>
-        <label class=" control-label">Pragnancy Finished :</label>
-        <input type="checkbox"  name="Pragnancy_finished " id="Pragnancy_finished " >
-        <input type="text"  name="finished_val" id="finished_val" value="0" hidden>
-      </div>
-      <div  class='col'>
-        <label class=" control-label">Miscarriage:</label>
-        <input type="checkbox"  name="Miscarriage" id="Miscarriage" >
-        <input type="text"  name="Miscarriage_val" id="Miscarriage_val" value="0" hidden>
-      </div>
+      
 
     
       <div class="col"  >
-        <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
-        <input type="date" class="form-control"  name="pragnancy_end_date" value="" >
+        <label for="pregnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+        <input type="date" class="form-control"  name="pregnancy_end_date" value="" >
       </div>
       <div  class="col">
         <label class=" control-label" >Pregnancy Start Date :</label>
-        <input type="date" class="form-control"  name="pragnancy_start_date"  >
+        <input type="date" class="form-control"  name="pregnancy_start_date"  >
       </div>
       <div class="col" >
       </div>
@@ -217,15 +203,15 @@
   $(document).ready(function() {
     gender = $("#gender").val();
     if(gender == 'male'){
-      $("#pragnant_val").val(0);
+      $("#pregnant_val").val(0);
       $("#hiddenFields1").hide();
       $("#hiddenFields").hide();
     }else{
-    if($('#is_pragnant').is(":checked")){
-      $("#pragnant_val").val(1);
+    if($('#is_pregnant').is(":checked")){
+      $("#pregnant_val").val(1);
         $("#hiddenFields").show();
       } else{
-      $("#pragnant_val").val(0);
+      $("#pregnant_val").val(0);
       $("#hiddenFields").hide();
     }
 
@@ -245,14 +231,14 @@
 
 
     // 
-    $("#is_pragnant").on('click',function(){
+    $("#is_pregnant").on('click',function(){
      
-      var is_pragnant = $("#is_pragnant").val();
-      if($('#is_pragnant').is(":checked")){
-        $("#pragnant_val").val(1);
+      var is_pregnant = $("#is_pregnant").val();
+      if($('#is_pregnant').is(":checked")){
+        $("#pregnant_val").val(1);
           $("#hiddenFields").show();
         } else{
-        $("#pragnant_val").val(0);
+        $("#pregnant_val").val(0);
         $("#hiddenFields").hide();
       }    
     });
@@ -264,7 +250,7 @@
        
         $("#hiddenFields1").hide();
         $("#hiddenFields").hide();
-        $("#pragnant_val").val(0);
+        $("#pregnant_val").val(0);
       }
       else{
         $("#hiddenFields1").show();

@@ -95,10 +95,7 @@
 
         <input type="text" class="form-control" name="animal_id" required maxlength="50" value="{{animal.animal_id}}" readonly hidden/>
         <input type="text" class="form-control" id="token_no" name="token_no" value= "{{animal.token_no}}" >
-=======
-        <input type="text" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly hidden/>
-        <input type="text" class="form-control" id="token_no" name="token_no" value= "{{animal.token_no}}" readonly>
->>>>>>> 246b0b806a026e0eb5392089eb6d5efe6e08e609
+
       </div>
       <div class="col">
           <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
@@ -169,25 +166,23 @@
 
     <div class="row">
       <div id ="hiddenFields1" class='col'>
-        <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
-        {% if animal.is_pragnent == 1 %}
-          <input type="checkbox" checked name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
+        <label class=" control-label">is Pregnant :<span style="color:red; font-weight:bold;">*</span></label>
+        {% if animal.is_pregnant == 1 %}
+          <input type="checkbox" checked name="is_pregnant" id="is_pregnant" value="{{animal.is_pregnant}}">
         {% else %}
-          <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
+          <input type="checkbox"  name="is_pregnant" id="is_pregnant" value="{{animal.is_pregnant}}">
           {% endif %}
-          <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
-      </div>
-      
+          <input type="text"  name="pregnant_val" id="pregnant_val" value="0" hidden>
+      </div>     
     </div>
-
     <div class="row" id="hiddenFields">
       <div class="col"  >
-        <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
-        <input type="date" class="form-control"  name="pragnancy_end_date" value="{{animal.pragnancy_end_date|date:'Y-m-d'}}" >
+        <label for="pregnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+        <input type="date" class="form-control"  name="pregnancy_end_date" value="{{animal.pregnancy_end_date|date:'Y-m-d'}}" >
       </div>
       <div  class="col">
         <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="date" class="form-control"  name="pragnancy_start_date" id="pragnancy_start_date"  value="{{animal.pragnancy_start_date|date:'Y-m-d'}}">
+        <input type="date" class="form-control"  name="pregnancy_start_date" id="pregnancy_start_date"  value="{{animal.pregnancy_start_date|date:'Y-m-d'}}">
       </div>
       <div class="col" >
       </div>
@@ -221,89 +216,77 @@
           
 
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    gender = $("#gender").val();
+    if(gender == 'male'){
+      $("#pregnant_val").val(0);
+      $("#hiddenFields1").hide();
+      $("#hiddenFields").hide();
+    }else{
+    if($('#is_pregnant').is(":checked")){
+      $("#pregnant_val").val(1);
+        $("#hiddenFields").show();
+      } else{
+      $("#pregnant_val").val(0);
+      $("#hiddenFields").hide();
+    }
 
-      <script type="text/javascript">
-        $(document).ready(function() {
-          gender = $("#gender").val();
-          if(gender == 'male'){
-            $("#pragnant_val").val(0);
-            $("#hiddenFields1").hide();
-            $("#hiddenFields").hide();
-          }else{
-          if($('#is_pragnant').is(":checked")){
-            $("#pragnant_val").val(1);
-              $("#hiddenFields").show();
-            } else{
-            $("#pragnant_val").val(0);
-            $("#hiddenFields").hide();
-          }
+  }
 
-        }
-
-         
-          
-  
-          
-          
-          $("#status").on('click',function(){
-            var status = $("#status").val();
-            if ($("#status").is(':checked')) {
-              $("#status_val").val(1);
-            } else {
-              $("#status_val").val(0);
-            }
-          })
-  
-
-
-          // 
-          $("#is_pragnant").on('click',function(){
-            var is_pragnant = $("#is_pragnant").val();
-            if($('#is_pragnant').is(":checked")){
-              $("#pragnant_val").val(1);
-                $("#hiddenFields").show();
-              } else{
-              $("#pragnant_val").val(0);
-              $("#hiddenFields").hide();
-            }    
-          });
-
-          $("#gender").on('change',function(){
-            var gender = $("#gender").val();
-        
-            if(gender == "male"){
-              $("#hiddenFields1").hide();
-              $("#hiddenFields").hide();
-              $("#pragnant_val").val(0);
-            }
-            else{
-              $("#hiddenFields1").show();
-
-             
-
-              $("#hiddenFields").show();
-                        }
-               
-          });
-        
-        
-      });
+   
+  if($('#status').is(":checked")){
+    $("#status_val").val(1);
       
-      {% comment %} function changeDropdown(){ 
-        
-        var state=document.getElementById("gender").value;
-        if(state == "male")
-        {
-            document.getElementById("hiddenFields1").style.visibility="hidden";
-            document.getElementById(input.attr('hiddenFields1')).value = '';
-          }
-          else
-          {
-            document.getElementById("hiddenFields1").style.visibility="visible";
-          }
-        } {% endcomment %}
-      </script>  
+    } else{
+    $("#status_val").val(0);
+    
+  }
+    $("#status").on('click',function(){
+      var status = $("#status").val();
+      if ($("#status").is(':checked')) {
+        $("#status_val").val(1);
+      } else {
+        $("#status_val").val(0);
+      }
+    })
+
+
+
+    // 
+    $("#is_pregnant").on('click',function(){
      
-      {% endblock content %}
+      var is_pregnant = $("#is_pregnant").val();
+      if($('#is_pregnant').is(":checked")){
+        $("#pregnant_val").val(1);
+          $("#hiddenFields").show();
+        } else{
+        $("#pregnant_val").val(0);
+        $("#hiddenFields").hide();
+      }    
+    });
+
+    $("#gender").on('change',function(){
+      var gender = $("#gender").val();
+  
+      if(gender == "male"){
+       
+        $("#hiddenFields1").hide();
+        $("#hiddenFields").hide();
+        $("#pregnant_val").val(0);
+      }
+      else{
+        $("#hiddenFields1").show();
+       
+      }
+         
+    });
+  
+  
+});
+
+</script>  
+
+{% endblock content %}
 </body>
 </html>

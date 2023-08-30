@@ -62,8 +62,8 @@ def insert_animal_profile(request):
     if request.method == "POST":     
         token_no = request.POST['token_no']
         name = request.POST['ani_name']
-        pragnant_val = request.POST['pragnant_val']
-        is_pragnant = int(pragnant_val)
+        pregnant_val = request.POST['pregnant_val']
+        is_pregnant = int(pregnant_val)
         color = request.POST['color']
         category_id = request.POST['category_id']
         weight = request.POST['weight']
@@ -78,16 +78,16 @@ def insert_animal_profile(request):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        pragnancy_start_date = request.POST['pragnancy_start_date']
-        if pragnancy_start_date == '':
-            pragnancy_start_date = None
+        pregnancy_start_date = request.POST['pregnancy_start_date']
+        if pregnancy_start_date == '':
+            pregnancy_start_date = None
         else:
-            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
-        pragnancy_end_date = request.POST['pragnancy_end_date']  
-        if pragnancy_end_date == '':
-            pragnancy_end_date = None
+            pregnancy_start_date = datetime.strptime(pregnancy_start_date,  '%Y-%m-%d')
+        pregnancy_end_date = request.POST['pregnancy_end_date']  
+        if pregnancy_end_date == '':
+            pregnancy_end_date = None
         else:
-            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
         status = request.POST['status_val']
         description = request.POST['description']        
         ani=Category.objects.all()
@@ -103,7 +103,7 @@ def insert_animal_profile(request):
             purchase_price = 0
         if gender == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date})  
-        if is_pragnant == 1 and pragnancy_start_date == "":
+        if is_pregnant == 1 and pregnancy_start_date == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani,'date':date})    
         if status == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date})       
@@ -117,9 +117,9 @@ def insert_animal_profile(request):
                 purchased_by=purchased_by,
                 date_of_birth=date_of_birth,
                 gender=gender,
-                is_pregnant=is_pragnant,
-                pregnancy_start_date=pragnancy_start_date,
-                pregnancy_end_date=pragnancy_end_date,
+                is_pregnant=is_pregnant,
+                pregnancy_start_date=pregnancy_start_date,
+                pregnancy_end_date=pregnancy_end_date,
                 status=status,
                 updated_by=1,
                 description=description
@@ -132,17 +132,17 @@ def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
     context = {'animal_pro': allTasks}
     return render(request,'animal_profile/list_animal_profile.html', context)
-#----------Delete Animal profile---------------
+#----------------------Delete Animal profile-----------------------
 def animal_pro_delete(request,animal_id):
     delete = Animal_profile.objects.get(animal_id=animal_id)
     delete.delete()
     return redirect('/list_animal_profile')
-#----------Edit Animal profile-----------------
+#----------------------Edit Animal profile-------------------------
 def animal_pro_edit(request , animal_id ):
     animal = Animal_profile.objects.get(animal_id=animal_id)
     ani=Category.objects.all()
     return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani})
-#-----------Update Animal Profile--------------
+#---------------------Update Animal Profile------------------------
 def update_animal(request, animal_id):
     if request.method == 'POST':
         animal_id = request.POST['animal_id']
@@ -164,18 +164,18 @@ def update_animal(request, animal_id):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        is_pragnant = request.POST['pragnant_val']
+        is_pregnant = request.POST['pregnant_val']
         
-        pragnancy_start_date = request.POST['pragnancy_start_date']
-        if gender == 'male' or is_pragnant == '0':
-            pragnancy_start_date = None
+        pregnancy_start_date = request.POST['pregnancy_start_date']
+        if gender == 'male' or is_pregnant == '0':
+            pregnancy_start_date = None
         else:
-            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
-        pragnancy_end_date = request.POST['pragnancy_end_date']
-        if gender == 'male'or is_pragnant == '0':
-            pragnancy_end_date = None
+            pregnancy_start_date = datetime.strptime(pregnancy_start_date,  '%Y-%m-%d')
+        pregnancy_end_date = request.POST['pregnancy_end_date']
+        if gender == 'male'or is_pregnant == '0':
+            pregnancy_end_date = None
         else:
-            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
         status = request.POST['status_val']
         description = request.POST['description']
         anim=Category.objects.all()
@@ -191,7 +191,7 @@ def update_animal(request, animal_id):
             purchase_price = 0
         if gender == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error6': True, 'anim': anim})  
-        if is_pragnant == 1 and pragnancy_start_date == "":
+        if is_pregnant == 1 and pregnancy_start_date == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error8': True, 'anim': anim})    
         if status == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True})       
@@ -207,9 +207,9 @@ def update_animal(request, animal_id):
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.is_pregnant=is_pragnant
-            edit.pregnancy_start_date = pragnancy_start_date
-            edit.pregnancy_end_date = pragnancy_end_date
+            edit.is_pregnant=is_pregnant
+            edit.pregnancy_start_date = pregnancy_start_date
+            edit.pregnancy_end_date = pregnancy_end_date
             edit.status=status
             edit.description = description  
             edit.updated_on = date    
@@ -221,7 +221,7 @@ def update_animal(request, animal_id):
 
 #------------------ Insert Pregnancy Details-----------------------------
 
-def insert_pregnency_detail(request):   
+def insert_pregnancy_detail(request):   
     if request.method == "POST":     
         animal_id = request.POST['animal_id']
         start_date = request.POST['start_date']
@@ -250,22 +250,22 @@ def insert_pregnency_detail(request):
         else:
             miscarriage_date = datetime.strptime(miscarriage_date,  '%Y-%m-%d')
         infartility = request.POST['infartility']  
-        pragnant_val = request.POST['pragnant_val']
-        is_pragnant = int(pragnant_val)  
-        pragnancy_start_date = request.POST['pragnancy_start_date']
-        if pragnancy_start_date == '':
-            pragnancy_start_date = None
+        pregnant_val = request.POST['pregnant_val']
+        is_pregnant = int(pregnant_val)  
+        pregnancy_start_date = request.POST['pregnancy_start_date']
+        if pregnancy_start_date == '':
+            pregnancy_start_date = None
         else:
-            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
-        pragnancy_end_date = request.POST['pragnancy_end_date']  
-        if pragnancy_end_date == '':
-            pragnancy_end_date = None
+            pregnancy_start_date = datetime.strptime(pregnancy_start_date,  '%Y-%m-%d')
+        pregnancy_end_date = request.POST['pregnancy_end_date']  
+        if pregnancy_end_date == '':
+            pregnancy_end_date = None
         else:
-            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
         description = request.POST['description']        
         det=Animal_profile.objects.all()
         if animal_id == "":
-            return render(request,'pregnancy_details/insert_pregnency_detail.html', {'error2': True , 'det': det,'date':date})
+            return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'error2': True , 'det': det,'date':date})
         
         ins=PregnancyDetails(animal_id=animal_id,
                              start_date=start_date,expected_end_date=expected_end_date,
@@ -276,39 +276,46 @@ def insert_pregnency_detail(request):
         is_miscarriage=is_miscarriage,
         miscarriage_date=miscarriage_date,
         infartility=infartility,
-        is_pragnant=is_pragnant,
-        pragnancy_start_date=pragnancy_start_date,
-        pragnancy_end_date=pragnancy_end_date,
+        is_pregnant=is_pregnant,
+        pregnancy_start_date=pregnancy_start_date,
+        pregnancy_end_date=pregnancy_end_date,
         description=description)
         ins.save()   
-        return redirect(reverse('list_pregnency_detail'))
+        return redirect(reverse('list_pregnancy_detail'))
     det=Animal_profile.objects.all()
-    return render(request,'pregnancy_details/insert_pregnency_detail.html', {'det': det ,'date':date } )
+    return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'det': det ,'date':date } )
 
 #-----------List Pregnancy Detail-----------------
 
-def list_pregnency_detail(request):
+def list_pregnancy_detail(request):
     allTasks = PregnancyDetails.objects.all()
     context = {'animal_det': allTasks}
-    return render(request,'pregnancy_details/list_pregnency_detail.html', context)
+    return render(request,'pregnancy_details/list_pregnancy_detail.html', context)
 
-#----------Delete Pregnancy Detail---------------
+#-------------------Delete Pregnancy Detail---------------
 
-def animal_det_delete(request,Pregnancy_id):
-    delete = PregnancyDetails.objects.get(Pregnancy_id=Pregnancy_id)
+def pregnancy_det_delete(request,pregnancy_id):
+    delete = PregnancyDetails.objects.get(pregnancy_id=pregnancy_id)
     delete.delete()
-    return redirect('/list_pregnency_detail')
+    return redirect('/list_pregnancy_detail')
 
-#----------Edit Pregnancy Detail-----------------
+#-------------------Edit Pregnancy Detail-----------------
 
-def animal_det_edit(request , Pregnancy_id ):
-    detail = PregnancyDetails.objects.get(Pregnancy_id=Pregnancy_id)
+def pregnancy_det_edit(request , pregnancy_id ):
+    detail = PregnancyDetails.objects.get(pregnancy_id=pregnancy_id)
+    pregnancy_count = PregnancyDetails.objects.filter(is_pregnant = 1).count()
+    print(pregnancy_count)
+    miscarriage = PregnancyDetails.objects.filter(is_miscarriage = 1).count()
+    print(miscarriage)
+    is_infartility = PregnancyDetails.objects.filter(infartility = 1).count()
+    print(is_infartility)
     det=Animal_profile.objects.all()
-    return render(request, 'pregnancy_details/update_pregnency_detail.html',{'detail':detail,'det': det })
+    return render(request, 'pregnancy_details/update_pregnancy_detail.html',
+                  {'detail':detail,'det': det ,"pregnancy_count":pregnancy_count, 'miscarriage':miscarriage, 'is_infartility':is_infartility})
 
 #-----------------Update Pregnancy Detail--------------------------#
 
-def update_pregnency_detail(request, Pregnancy_id):
+def update_pregnancy_detail(request, pregnancy_id):
     if request.method == 'POST':
        animal_id = request.POST['animal_id']
        start_date = request.POST['start_date']
@@ -340,30 +347,30 @@ def update_pregnency_detail(request, Pregnancy_id):
        else:
            miscarriage_date = datetime.strptime(miscarriage_date,  '%Y-%m-%d')
        infartility = request.POST['infartility']
-       is_pragnant = request.POST['pragnant_val']
-       pragnancy_start_date = request.POST['pragnancy_start_date']
-       if pragnancy_start_date == '' :
-            pragnancy_start_date = None
+       is_pregnant = request.POST['pregnant_val']
+       pregnancy_start_date = request.POST['pregnancy_start_date']
+       if pregnancy_start_date == '' or is_pregnant == '0':
+            pregnancy_start_date = None
        else:
-            pragnancy_start_date = datetime.strptime(pragnancy_start_date,  '%Y-%m-%d')
-       pragnancy_end_date = request.POST['pragnancy_end_date']
-       if pragnancy_end_date == '':
-           pragnancy_end_date = None
+            pregnancy_start_date = datetime.strptime(pregnancy_start_date,  '%Y-%m-%d')
+       pregnancy_end_date = request.POST['pregnancy_end_date']
+       if pregnancy_end_date == '' or is_pregnant == '0':
+           pregnancy_end_date = None
        else:
-           pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
+           pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
 
-
-      # pragnancy_count = PregnancyDetails.objects.filter(is_pragnent = 1).count()
+    
        
-      # print(pragnancy_count)
+       
+       
 
        
        description = request.POST['description']        
        det=Animal_profile.objects.all()
        if animal_id == "":
-           return render(request,'pregnancy_details/update_pregnency_detail.html', {'error2': True , 'det': det,'date':date})
+           return render(request,'pregnancy_details/update_pregnancy_detail.html', {'error2': True , 'det': det,'date':date})
        else:
-           edit = PregnancyDetails.objects.get(Pregnancy_id = Pregnancy_id)  
+           edit = PregnancyDetails.objects.get(pregnancy_id = pregnancy_id)  
            edit.animal_id = animal_id
            edit.start_date = start_date
            edit.expected_end_date = expected_end_date
@@ -374,15 +381,15 @@ def update_pregnency_detail(request, Pregnancy_id):
            edit.is_miscarriage = is_miscarriage
            edit.miscarriage_date = miscarriage_date
            edit.infartility = infartility
-           edit.is_pragnent=is_pragnant
-           edit.pragnancy_start_date = pragnancy_start_date
-           edit.pragnancy_end_date = pragnancy_end_date
+           edit.is_pregnant=is_pregnant
+           edit.pregnancy_start_date = pregnancy_start_date
+           edit.pregnancy_end_date = pregnancy_end_date
            edit.description = description 
            edit.updated_on = date  
-           #edit.pragnancy_count = pragnancy_count  
+           #edit.pregnancy_count = pregnancy_count  
            edit.save()
           
-           return redirect(reverse('list_pregnency_detail')) 
+           return redirect(reverse('list_pregnancy_detail')) 
     det=Animal_profile.objects.all()
-    return render(request,'pregnancy_details/update_pregnency_detail.html', {'det': det ,'date':date } )
+    return render(request,'pregnancy_details/update_pregnancy_detail.html', {'det': det ,'date':date } )
 
