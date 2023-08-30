@@ -192,7 +192,7 @@ def update_animal(request, animal_id):
         if status == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True})       
         else:  
-            edit = Animal_profile.objects.get(id = id)  
+            edit = Animal_profile.objects.get(animal_id = animal_id)  
             edit.token_no = token_no    
             edit.name = name 
             edit.color = color 
@@ -272,7 +272,7 @@ def insert_pregnency_detail(request):
         is_miscarriage=is_miscarriage,
         miscarriage_date=miscarriage_date,
         infartility=infartility,
-        is_pragnant=is_pragnant,
+        is_pragnent=is_pragnant,
         pragnancy_start_date=pragnancy_start_date,
         pragnancy_end_date=pragnancy_end_date,
         description=description)
@@ -337,7 +337,6 @@ def update_pregnency_detail(request, Pregnancy_id):
            miscarriage_date = datetime.strptime(miscarriage_date,  '%Y-%m-%d')
        infartility = request.POST['infartility']
        is_pragnant = request.POST['pragnant_val']
-        
        pragnancy_start_date = request.POST['pragnancy_start_date']
        if pragnancy_start_date == '' :
             pragnancy_start_date = None
@@ -350,9 +349,9 @@ def update_pregnency_detail(request, Pregnancy_id):
            pragnancy_end_date = datetime.strptime(pragnancy_end_date,  '%Y-%m-%d')
 
 
-       pragnancy_count = PregnancyDetails.objects.filter(is_pragnent = 1).count()
+      # pragnancy_count = PregnancyDetails.objects.filter(is_pragnent = 1).count()
        
-       print(pragnancy_count)
+      # print(pragnancy_count)
 
        
        description = request.POST['description']        
@@ -376,7 +375,7 @@ def update_pregnency_detail(request, Pregnancy_id):
            edit.pragnancy_end_date = pragnancy_end_date
            edit.description = description 
            edit.updated_on = date  
-           edit.pragnancy_count = pragnancy_count  
+           #edit.pragnancy_count = pragnancy_count  
            edit.save()
           
            return redirect(reverse('list_pregnency_detail')) 
