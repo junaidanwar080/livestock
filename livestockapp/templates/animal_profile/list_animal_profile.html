@@ -24,7 +24,6 @@
         <th scope="col">pregnancy Start Date</th>
         <th scope="col">pregnancy End Date</th>
         <th scope="col">Status</th>
-        <th scope="col">Action</th>
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
 
@@ -59,11 +58,9 @@
        <td>{{ani.pregnancy_end_date|date:"d-m-Y"}}</td>
        {% endif %}
        {% if  ani.status == 1 %}
-       <td>{{ani.status}}</td>
        <td>Active</td>
        {% else %}
-       <td></td>
-       <td></td>
+       <td>InActive</td>
        {% endif %}
 
        <td><a href="/animal_pro_edit/{{ani.animal_id}}" class="btn btn-sm btn-warning"/>Edit</td>
