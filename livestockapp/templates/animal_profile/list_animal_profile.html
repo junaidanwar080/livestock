@@ -20,11 +20,10 @@
         <th scope="col">Date Of Birth</th>
         <th scope="col">Description</th>
         <th scope="col">Gender</th>
-        <th scope="col">is_Pragnent</th>
+        <th scope="col">is_Pregnant</th>
         <th scope="col">pregnancy Start Date</th>
         <th scope="col">pregnancy End Date</th>
         <th scope="col">Status</th>
-        <th scope="col">Action</th>
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
 
@@ -46,8 +45,7 @@
        <td>{{ani.date_of_birth|date:"d-m-Y"}}</td>
        <td>{{ani.description}}</td>
        <td>{{ani.gender}}</td> 
-       {% if  ani.is_pragnent == 1 %}
-      
+       {% if  ani.is_pregnant == 1 %}    
        <td>Yes</td>
        {% else %}
        <td></td>
@@ -56,15 +54,13 @@
        <td></td>
        <td></td>
        {% else %}
-       <td>{{ani.pragnancy_start_date|date:"d-m-Y"}}</td>
-       <td>{{ani.pragnancy_end_date|date:"d-m-Y"}}</td>
+       <td>{{ani.pregnancy_start_date|date:"d-m-Y"}}</td>
+       <td>{{ani.pregnancy_end_date|date:"d-m-Y"}}</td>
        {% endif %}
        {% if  ani.status == 1 %}
-       <td>{{ani.status}}</td>
        <td>Active</td>
        {% else %}
-       <td></td>
-       <td></td>
+       <td>InActive</td>
        {% endif %}
 
        <td><a href="/animal_pro_edit/{{ani.animal_id}}" class="btn btn-sm btn-warning"/>Edit</td>
@@ -77,9 +73,6 @@
   <h4 class="text-center alert alert-warning">No Record</h4>
 {% endif %}
 </div>    
-
-
-
 
 
 <script>
@@ -96,9 +89,8 @@
         // Example: {"targets": [0], "searchable": false, "orderable": false}
       ]
     });
-  });
-
-   
+  });  
 </script>
+
 
 {% endblock content %}

@@ -92,8 +92,13 @@
     <div class="row">
       <div class="col">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
+<<<<<<<<< Temporary merge branch 1
         <input type="text" class="form-control" name="id" required maxlength="50" value="{{animal.id}}" readonly hidden/>
+        <input type="text" class="form-control" id="token_no" name="token_no" value= "{{animal.token_no}}" readonly>
+=========
+        <input type="text" class="form-control" name="animal_id" required maxlength="50" value="{{animal.animal_id}}" readonly hidden/>
         <input type="text" class="form-control" id="token_no" name="token_no" value= "{{animal.token_no}}" >
+>>>>>>>>> Temporary merge branch 2
       </div>
       <div class="col">
           <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
@@ -164,25 +169,23 @@
 
     <div class="row">
       <div id ="hiddenFields1" class='col'>
-        <label class=" control-label">is Pragnent :<span style="color:red; font-weight:bold;">*</span></label>
-        {% if animal.is_pragnent == 1 %}
-          <input type="checkbox" checked name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
+        <label class=" control-label">is Pregnant :<span style="color:red; font-weight:bold;">*</span></label>
+        {% if animal.is_pregnant == 1 %}
+          <input type="checkbox" checked name="is_pregnant" id="is_pregnant" value="{{animal.is_pregnant}}">
         {% else %}
-          <input type="checkbox"  name="is_pragnant" id="is_pragnant" value="{{animal.is_pragnent}}">
+          <input type="checkbox"  name="is_pregnant" id="is_pregnant" value="{{animal.is_pregnant}}">
           {% endif %}
-          <input type="text"  name="pragnant_val" id="pragnant_val" value="0" hidden>
-      </div>
-      
+          <input type="text"  name="pregnant_val" id="pregnant_val" value="0" hidden>
+      </div>     
     </div>
-
     <div class="row" id="hiddenFields">
       <div class="col"  >
-        <label for="pragnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
-        <input type="date" class="form-control"  name="pragnancy_end_date" value="{{animal.pragnancy_end_date|date:'Y-m-d'}}" >
+        <label for="pregnancy_end_date" class=" control-label" >Pregnancy End Date :</label>
+        <input type="date" class="form-control"  name="pregnancy_end_date" value="{{animal.pregnancy_end_date|date:'Y-m-d'}}" >
       </div>
       <div  class="col">
         <label class=" control-label" >Pregnancy Start Date :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="date" class="form-control"  name="pragnancy_start_date" id="pragnancy_start_date"  value="{{animal.pragnancy_start_date|date:'Y-m-d'}}">
+        <input type="date" class="form-control"  name="pregnancy_start_date" id="pregnancy_start_date"  value="{{animal.pregnancy_start_date|date:'Y-m-d'}}">
       </div>
       <div class="col" >
       </div>
@@ -216,39 +219,41 @@
           
 
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    gender = $("#gender").val();
+    if(gender == 'male'){
+      $("#pregnant_val").val(0);
+      $("#hiddenFields1").hide();
+      $("#hiddenFields").hide();
+    }else{
+    if($('#is_pregnant').is(":checked")){
+      $("#pregnant_val").val(1);
+        $("#hiddenFields").show();
+      } else{
+      $("#pregnant_val").val(0);
+      $("#hiddenFields").hide();
+    }
 
-      <script type="text/javascript">
-        $(document).ready(function() {
-          gender = $("#gender").val();
-          if(gender == 'male'){
-            $("#pragnant_val").val(0);
-            $("#hiddenFields1").hide();
-            $("#hiddenFields").hide();
-          }else{
-          if($('#is_pragnant').is(":checked")){
-            $("#pragnant_val").val(1);
-              $("#hiddenFields").show();
-            } else{
-            $("#pragnant_val").val(0);
-            $("#hiddenFields").hide();
-          }
+  }
 
-        }
+   
+  if($('#status').is(":checked")){
+    $("#status_val").val(1);
+      
+    } else{
+    $("#status_val").val(0);
+    
+  }
+    $("#status").on('click',function(){
+      var status = $("#status").val();
+      if ($("#status").is(':checked')) {
+        $("#status_val").val(1);
+      } else {
+        $("#status_val").val(0);
+      }
+    })
 
-         
-          
-  
-          
-          
-          $("#status").on('click',function(){
-            var status = $("#status").val();
-            if ($("#status").is(':checked')) {
-              $("#status_val").val(1);
-            } else {
-              $("#status_val").val(0);
-            }
-          })
-  
 
 
           // 
@@ -260,7 +265,24 @@
               } else{
               $("#pragnant_val").val(0);
               $("#hiddenFields").hide();
-         
+            }    
+          });
+
+          $("#gender").on('change',function(){
+            var gender = $("#gender").val();
+        
+            if(gender == "male"){
+              $("#hiddenFields1").hide();
+              $("#hiddenFields").hide();
+              $("#pragnant_val").val(0);
+            }
+            else{
+              $("#hiddenFields1").show();
+<<<<<<<<< Temporary merge branch 1
+              $("#hiddenFields").show();
+=========
+             
+>>>>>>>>> Temporary merge branch 2
             }
                
           });

@@ -15,9 +15,9 @@ urlpatterns = [
     path('animal_pro_edit/<int:animal_id>/', views.animal_pro_edit, name="animal_pro_edit"),
     path('update_animal/<int:animal_id>', views.update_animal, name='update_animal'),
 #Pregnancy Details
-    path('insert_pregnency_detail', views.insert_pregnency_detail , name='insert_pregnency_detail'),
-    path('list_pregnency_detail/', views.list_pregnency_detail, name='list_pregnency_detail' ),
-    path('animal_det_delete/<int:Pregnancy_id>/', views.animal_det_delete, name="animal_det_delete"),
-    path('animal_det_edit/<int:Pregnancy_id>/', views.animal_det_edit, name="animal_det_edit"),
-    path('update_pregnency_detail/<int:Pregnancy_id>', views.update_pregnency_detail, name='update_pregnency_detail')
+    path('insert_pregnancy_detail', views.insert_pregnancy_detail , name='insert_pregnancy_detail'),
+    path('list_pregnancy_detail/', views.list_pregnancy_detail, name='list_pregnancy_detail' ),
+    path('pregnancy_det_delete/<int:pregnancy_id>/', views.pregnancy_det_delete, name="pregnancy_det_delete"),
+    path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
+    path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail')
 ]

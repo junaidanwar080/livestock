@@ -25,9 +25,9 @@ class Animal_profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)
     gender = models.CharField(max_length=50,null=True)
-    is_pragnent  = models.IntegerField( null=True)
-    pragnancy_start_date  = models.DateField(blank=True, null=True)
-    pragnancy_end_date  = models.DateField(blank=True, null=True) 
+    is_pregnant  = models.IntegerField( null=True)
+    pregnancy_start_date  = models.DateField(blank=True, null=True)
+    pregnancy_end_date  = models.DateField(blank=True, null=True) 
     status =  models.BooleanField(default=True,null=True)
     created_by = models.CharField(max_length=50 ,null=True) 
     created_on  = models.DateField(blank=True, null=True)
@@ -38,7 +38,7 @@ class Animal_profile(models.Model):
     
 #PregnancyDetails
 class PregnancyDetails(models.Model):
-    Pregnancy_id = models.AutoField(primary_key=True)  
+    pregnancy_id = models.AutoField(primary_key=True)  
     start_date = models.DateField(blank=True, null=True) 
     expected_end_date = models.DateField(blank=True, null=True) 
     is_pregnancy_confirmed = models.BooleanField( null=True)
@@ -48,6 +48,10 @@ class PregnancyDetails(models.Model):
     actual_delivery_date = models.DateField(blank=True, null=True) 
     is_miscarriage = models.BooleanField(blank=True, null=True)
     miscarriage_date = models.DateField(blank=True, null=True) 
+    infartility = models.BooleanField(null=True)
+    is_pregnant  = models.IntegerField( null=True)
+    pregnancy_start_date  = models.DateField(blank=True, null=True)
+    pregnancy_end_date  = models.DateField(blank=True, null=True) 
     animal = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="animals_id")
     created_by = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="create_by")
     created_on = models.DateField(blank=True, null=True) 
