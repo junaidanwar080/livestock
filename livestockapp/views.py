@@ -164,23 +164,7 @@ def update_animal(request, animal_id):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        is_pragnant = request.POST['pragnant_val']
-        print(is_pragnant)
         category_id=int(category_id)
-<<<<<<<<< Temporary merge branch 1
-        
-=========
->>>>>>>>> Temporary merge branch 2
-        pragnancy_start_date = request.POST['pragnancy_start_date']
-        if gender == 'male' or is_pragnant == '0':
-            pragnancy_start_date = None
-        else:
-            pregnancy_start_date = datetime.strptime(pregnancy_start_date,  '%Y-%m-%d')
-        pregnancy_end_date = request.POST['pregnancy_end_date']
-        if gender == 'male'or is_pregnant == '0':
-            pregnancy_end_date = None
-        else:
-            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
         status = request.POST['status_val']
         description = request.POST['description']
         anim=Category.objects.all()
@@ -195,18 +179,14 @@ def update_animal(request, animal_id):
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
-            return render(request,'animal_profile/update_animal_profile.html', {'error6': True, 'anim': anim})  
-        if is_pregnant == 1 and pregnancy_start_date == "":
-            return render(request,'animal_profile/update_animal_profile.html', {'error8': True, 'anim': anim})    
+            return render(request,'animal_profile/update_animal_profile.html', {'error6': True, 'anim': anim})   
         if status == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True})       
         else:  
             print(category_id)
-<<<<<<<<< Temporary merge branch 1
-            edit = Animal_profile.objects.get(id = id)  
-=========
+
             edit = Animal_profile.objects.get(animal_id = animal_id)  
->>>>>>>>> Temporary merge branch 2
+
             edit.token_no = token_no
             edit.name = name
             edit.color = color
@@ -217,9 +197,6 @@ def update_animal(request, animal_id):
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.is_pregnant=is_pregnant
-            edit.pregnancy_start_date = pregnancy_start_date
-            edit.pregnancy_end_date = pregnancy_end_date
             edit.status=status
             edit.description = description  
             edit.updated_on = date    
