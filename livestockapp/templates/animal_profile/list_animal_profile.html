@@ -20,9 +20,6 @@
         <th scope="col">Date Of Birth</th>
         <th scope="col">Description</th>
         <th scope="col">Gender</th>
-        <th scope="col">is_Pregnant</th>
-        <th scope="col">pregnancy Start Date</th>
-        <th scope="col">pregnancy End Date</th>
         <th scope="col">Status</th>
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
@@ -45,7 +42,7 @@
        <td>{{ani.date_of_birth|date:"d-m-Y"}}</td>
        <td>{{ani.description}}</td>
        <td>{{ani.gender}}</td> 
-       {% if  ani.is_pregnant == 1 %}    
+     <!--  {% if  ani.is_pregnant == 1 %}    
        <td>Yes</td>
        {% else %}
        <td></td>
@@ -56,7 +53,7 @@
        {% else %}
        <td>{{ani.pregnancy_start_date|date:"d-m-Y"}}</td>
        <td>{{ani.pregnancy_end_date|date:"d-m-Y"}}</td>
-       {% endif %}
+       {% endif %}-->
        {% if  ani.status == 1 %}
        <td>Active</td>
        {% else %}

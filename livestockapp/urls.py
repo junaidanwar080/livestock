@@ -19,5 +19,6 @@ urlpatterns = [
     path('list_pregnancy_detail/', views.list_pregnancy_detail, name='list_pregnancy_detail' ),
     path('pregnancy_det_delete/<int:pregnancy_id>/', views.pregnancy_det_delete, name="pregnancy_det_delete"),
     path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
-    path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail')
+    path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail'),
+   # path('list_of_animals', views.table_join)
 ]

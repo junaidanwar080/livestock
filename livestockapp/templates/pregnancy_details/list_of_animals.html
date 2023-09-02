@@ -1,0 +1,29 @@
+{% extends 'navbar.html' %}
+{% block content %}
+   
+<div class="container my-3">
+  <h4 class="text-center alert alert-info py-3">List of Animals</h4>
+  <table class="table table-bordered" id="animalDetail">
+    <thead>
+      <tr>
+        <th scope="col">#</th>      
+        <th scope="col">Token No</th>
+        <th scope="col">Name</th>
+        <th scope="col">Date of Birth</th>
+       <!-- <th scope="col">Total Pregnancy Count</th>
+        <th scope="col">Miscarriage Count</th>
+        <th scope="col">Infartility Count</th>
+        <th scope="col">Complete Pregnancy Count</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>-->
+
+      </tr>
+    </thead>
+    <tbody>
+{% for y in joinTables %}
+<tr>
+    <td>{{y.1}}</td>
+</tr>
+{% endfor %}
+    </tbody>
+  {% endblock content %}

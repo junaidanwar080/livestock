@@ -211,16 +211,16 @@ def update_animal(request, animal_id):
 def insert_pregnancy_detail(request):   
     if request.method == "POST":     
         animal_id = request.POST['animal_id']
-        start_date = request.POST['start_date']
-        if start_date == '':
-            start_date = None
-        else:
-            start_date = datetime.strptime(start_date,  '%Y-%m-%d')
-        expected_end_date = request.POST['expected_end_date']
-        if expected_end_date == '':
-            expected_end_date = None
-        else:
-            expected_end_date = datetime.strptime(expected_end_date, '%Y-%m-%d')
+       # start_date = request.POST['start_date']
+        #if start_date == '':
+         #   start_date = None
+        #else:
+       #     start_date = datetime.strptime(start_date,  '%Y-%m-%d')
+        #expected_end_date = request.POST['expected_end_date']
+        #if expected_end_date == '':
+         #   expected_end_date = None
+        #else:
+         #   expected_end_date = datetime.strptime(expected_end_date, '%Y-%m-%d')
         is_pregnancy_confirmed = request.POST['is_pregnancy_confirmed']
         pregnancy_checked_on = request.POST['pregnancy_checked_on']
         pregnancy_checked_on = datetime.strptime(pregnancy_checked_on,  '%Y-%m-%d')
@@ -255,7 +255,7 @@ def insert_pregnancy_detail(request):
             return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'error2': True , 'det': det,'date':date})
         
         ins=PregnancyDetails(animal_id=animal_id,
-                             start_date=start_date,expected_end_date=expected_end_date,
+                            # start_date=start_date,expected_end_date=expected_end_date,
         is_pregnancy_confirmed=is_pregnancy_confirmed,
         pregnancy_checked_on=pregnancy_checked_on,
         is_delivery_completed=is_delivery_completed,
@@ -305,16 +305,7 @@ def pregnancy_det_edit(request , pregnancy_id ):
 def update_pregnancy_detail(request, pregnancy_id):
     if request.method == 'POST':
        animal_id = request.POST['animal_id']
-       start_date = request.POST['start_date']
-       if start_date == '':
-            start_date = None
-       else:
-            start_date = datetime.strptime(start_date,  '%Y-%m-%d')
-       expected_end_date = request.POST['expected_end_date']
-       if expected_end_date == '':
-            expected_end_date = None
-       else:
-           expected_end_date = datetime.strptime(expected_end_date,  '%Y-%m-%d')
+      
        is_pregnancy_confirmed = request.POST['is_pregnancy_confirmed']
        pregnancy_checked_on = request.POST['pregnancy_checked_on']
        if pregnancy_checked_on == '':
@@ -359,8 +350,7 @@ def update_pregnancy_detail(request, pregnancy_id):
        else:
            edit = PregnancyDetails.objects.get(pregnancy_id = pregnancy_id)  
            edit.animal_id = animal_id
-           edit.start_date = start_date
-           edit.expected_end_date = expected_end_date
+          
            edit.is_pregnancy_confirmed = is_pregnancy_confirmed
            edit.pregnancy_checked_on = pregnancy_checked_on
            edit.is_delivery_completed =is_delivery_completed  
