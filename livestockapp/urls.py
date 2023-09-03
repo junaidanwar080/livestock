@@ -21,4 +21,10 @@ urlpatterns = [
     path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
     path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail'),
    # path('list_of_animals', views.table_join)
+# User Profile
+    path('register_user_profile/', views.register_user_profile , name='register_user_profile'),
+    path('list_user_profile/', views.list_user_profile, name='list_user_profile' ),
+    # path('animal_pro_delete/<int:animal_id>/', views.animal_pro_delete, name="animal_pro_delete"),
+    # path('animal_pro_edit/<int:animal_id>/', views.animal_pro_edit, name="animal_pro_edit"),
+    # path('update_animal/<int:animal_id>', views.update_animal, name='update_animal'),
 ]

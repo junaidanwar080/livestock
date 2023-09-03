@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from livestockapp.models import Category,Animal_profile,PregnancyDetails
+from livestockapp.models import Category, Animal_profile, PregnancyDetails, UserProfile
 from django.utils import timezone
 from datetime import datetime
-
+from django.contrib.auth.models import User , Group
 
 x = datetime.now() 
 date = x.strftime('%Y-%m-%d')
@@ -370,3 +370,53 @@ def update_pregnancy_detail(request, pregnancy_id):
     det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/update_pregnancy_detail.html', {'det': det ,'date':date } )
 
+# -----------------------------------------------------------------------------------------------------
+# Open User Profile
+# -----------------------------------------------------------------------------------------------------
+def register_user_profile(request):
+    if request.method == 'POST':
+        print('came here')
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        phone_number = request.POST['phone_number']
+        # user_group = request.POST['user_group']
+        gender = request.POST['gender']
+        city = request.POST['city']
+        country = request.POST['country']
+        date_of_birth = request.POST['date_of_birth']
+        if date_of_birth == '':
+           date_of_birth = None
+        else:
+            date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
+        is_active = request.POST['is_active']
+        user_insert = User(
+            first_name = first_name,
+            last_name = last_name,
+            username = username,
+            email = email,
+            is_active = int(is_active),
+            is_superuser = 0,
+            is_staff = 0,
+            date_joined = date,
+            password = 123
+        )
+        user_insert.save()
+        user_profile = UserProfile(
+            user_id = user_insert.id,
+            phone_number = phone_number,
+            gender = gender,
+            city = city,
+            country = country,
+            date_of_birth = date_of_birth
+        )
+        user_profile.save()
+
+        return render(request,'user_profile/register_user_profile.html')  
+    user_group = Group.objects.all()
+    return render(request,'user_profile/register_user_profile.html',{'user_group':user_group})
+
+def list_user_profile(request):
+    user_list = User.objects.all()
+    return render(request,'user_profile/list_user_profile.html',{'user_list':user_list})

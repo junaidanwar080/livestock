@@ -1,0 +1,79 @@
+{% extends 'navbar.html' %}
+{% block content %}
+   
+<div class="container my-3">
+  <h4 class="text-center alert alert-info py-3">User Profile List</h4>
+{% if user_list %}
+  <table class="table table-bordered"  id="animalTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">User name</th>
+        <th scope="col">email</th>
+        <th scope="col">Status</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+
+      </tr>
+    </thead>
+    <tbody>
+     {% for users in user_list %}
+     <tr>
+       <th scope="row">{{forloop.counter}}</th>
+       <td>{{users.first_name}}</td>
+       <td>{{users.last_name}}</td>
+       <td>{{users.username}}</td>
+       <td>{{users.email}}</td>
+
+       
+     <!--  {% if  ani.is_pregnant == 1 %}    
+       <td>Yes</td>
+       {% else %}
+       <td></td>
+       {% endif %}
+       {% if  ani.gender == male %}
+       <td></td>
+       <td></td>
+       {% else %}
+       <td>{{ani.pregnancy_start_date|date:"d-m-Y"}}</td>
+       <td>{{ani.pregnancy_end_date|date:"d-m-Y"}}</td>
+       {% endif %}-->
+       {% if  users.is_active == 1 %}
+       <td>Active</td>
+       {% else %}
+       <td>InActive</td>
+       {% endif %}
+
+       <td><a href="/animal_pro_edit/{{ani.animal_id}}" class="btn btn-sm btn-warning"/>Edit</td>
+       <td><a href="/animal_pro_delete/{{ani.animal_id}}" class="btn btn-sm btn-danger"/>Delete</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <h4 class="text-center alert alert-warning">No Record</h4>
+{% endif %}
+</div>    
+
+
+<script>
+  $(document).ready(function() {
+    // Initialize DataTable
+    $('#animalTable').DataTable({
+      "paging": true,      // Enable pagination
+      "ordering": true,    // Enable sorting
+      "searching": true,   // Enable search
+      "info": true,        // Show info about entries and pagination
+      "responsive": true,  // Enable responsive behavior
+      "columnDefs": [
+        // Specify column-specific options if needed
+        // Example: {"targets": [0], "searchable": false, "orderable": false}
+      ]
+    });
+  });  
+</script>
+
+
+{% endblock content %}
