@@ -1,6 +1,9 @@
 # Create your views here.
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
+from django.contrib import messages
 from django.urls import reverse
 from livestockapp.models import Category, Animal_profile, PregnancyDetails, UserProfile
 from django.utils import timezone
@@ -10,7 +13,10 @@ from django.contrib.auth.models import User , Group
 x = datetime.now() 
 date = x.strftime('%Y-%m-%d')
 
-#------------Create your views For Category---------------
+# -----------------------------------------------------------------------------------------------------
+# Catergory Insert
+# -----------------------------------------------------------------------------------------------------
+
 def cat_insert(request):
     if request.method == "POST":
         name = request.POST['cat_name']
@@ -24,23 +30,29 @@ def cat_insert(request):
         ins.save()
         return redirect(reverse('show'))
     return render(request,'animal_category/insert.html')
-
+# -----------------------------------------------------------------------------------------------------
+# List Category 
+# -----------------------------------------------------------------------------------------------------
 def cat_show(request):
     allTasks = Category.objects.all()
     context = {'tasks': allTasks}
     return render(request,'animal_category/list.html', context)
-
-#---------------Delete Category--------------------
+# -----------------------------------------------------------------------------------------------------
+# Delete Category
+# -----------------------------------------------------------------------------------------------------
 def cat_delete(request,category_id):
     delete = Category.objects.get(category_id=category_id)
     delete.delete()
     return redirect('/show')
-
- #----------------Edit Category-------------------
+# -----------------------------------------------------------------------------------------------------
+# Edit Category
+# -----------------------------------------------------------------------------------------------------
 def cat_edit(request , category_id):
     cat = Category.objects.get(category_id=category_id)
     return render(request, 'animal_category/update.html',{'cat':cat})
-#-----------------Update Category-----------------
+# -----------------------------------------------------------------------------------------------------
+# Update Category
+# -----------------------------------------------------------------------------------------------------
 def cat_updated(request, category_id):
     if request.method == 'POST':
         category_id = request.POST['category_id']
@@ -56,8 +68,10 @@ def cat_updated(request, category_id):
             edit.description = description    
             edit.updated_on = date       
             edit.save()
-            return redirect(reverse('show'))               
-# ---------------Animal Profile--------------
+            return redirect(reverse('show')) 
+# -----------------------------------------------------------------------------------------------------              
+# Insert Animal Profile
+# -----------------------------------------------------------------------------------------------------
 def insert_animal_profile(request):   
     if request.method == "POST":     
         token_no = request.POST['token_no']
@@ -132,17 +146,20 @@ def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
     context = {'animal_pro': allTasks}
     return render(request,'animal_profile/list_animal_profile.html', context)
-#----------------------Delete Animal profile-----------------------
+# -----------------------------------------------------------------------------------------------------              
+# Delete Animal profile
+# -----------------------------------------------------------------------------------------------------
 def animal_pro_delete(request,animal_id):
     delete = Animal_profile.objects.get(animal_id=animal_id)
     delete.delete()
     return redirect('/list_animal_profile')
-#----------------------Edit Animal profile-------------------------
+# -----------------------------------------------------------------------------------------------------              
+# Edit/Update Animal Profile
+# -----------------------------------------------------------------------------------------------------
 def animal_pro_edit(request , animal_id ):
     animal = Animal_profile.objects.get(animal_id=animal_id)
     ani=Category.objects.all()
     return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani})
-#---------------------Update Animal Profile------------------------
 def update_animal(request, animal_id):
     if request.method == 'POST':
         animal_id = request.POST['animal_id']
@@ -204,23 +221,12 @@ def update_animal(request, animal_id):
             return redirect(reverse('list_animal_profile')) 
     animals=Category.objects.all()
     return render(request,'animal_profile/update_animal_profile.html', {'animals': animals ,'date':date } )
-
-
-#------------------ Insert Pregnancy Details-----------------------------
-
+# -----------------------------------------------------------------------------------------------------              
+# Insert Pregnancy Details
+# -----------------------------------------------------------------------------------------------------
 def insert_pregnancy_detail(request):   
     if request.method == "POST":     
         animal_id = request.POST['animal_id']
-       # start_date = request.POST['start_date']
-        #if start_date == '':
-         #   start_date = None
-        #else:
-       #     start_date = datetime.strptime(start_date,  '%Y-%m-%d')
-        #expected_end_date = request.POST['expected_end_date']
-        #if expected_end_date == '':
-         #   expected_end_date = None
-        #else:
-         #   expected_end_date = datetime.strptime(expected_end_date, '%Y-%m-%d')
         is_pregnancy_confirmed = request.POST['is_pregnancy_confirmed']
         pregnancy_checked_on = request.POST['pregnancy_checked_on']
         pregnancy_checked_on = datetime.strptime(pregnancy_checked_on,  '%Y-%m-%d')
@@ -255,7 +261,6 @@ def insert_pregnancy_detail(request):
             return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'error2': True , 'det': det,'date':date})
         
         ins=PregnancyDetails(animal_id=animal_id,
-                            # start_date=start_date,expected_end_date=expected_end_date,
         is_pregnancy_confirmed=is_pregnancy_confirmed,
         pregnancy_checked_on=pregnancy_checked_on,
         is_delivery_completed=is_delivery_completed,
@@ -271,23 +276,23 @@ def insert_pregnancy_detail(request):
         return redirect(reverse('list_pregnancy_detail'))
     det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'det': det ,'date':date } )
-
-#-----------List Pregnancy Detail-----------------
-
+# -----------------------------------------------------------------------------------------------------              
+# List Pregnancy Details
+# -----------------------------------------------------------------------------------------------------
 def list_pregnancy_detail(request):
     allTasks = PregnancyDetails.objects.all()
     context = {'animal_det': allTasks}
     return render(request,'pregnancy_details/list_pregnancy_detail.html', context)
-
-#-------------------Delete Pregnancy Detail---------------
-
+# -----------------------------------------------------------------------------------------------------              
+# Delete Pregnancy Details
+# -----------------------------------------------------------------------------------------------------
 def pregnancy_det_delete(request,pregnancy_id):
     delete = PregnancyDetails.objects.get(pregnancy_id=pregnancy_id)
     delete.delete()
     return redirect('/list_pregnancy_detail')
-
-#-------------------Edit Pregnancy Detail-----------------
-
+# -----------------------------------------------------------------------------------------------------              
+# Edit/Update Pregnancy Details
+# -----------------------------------------------------------------------------------------------------
 def pregnancy_det_edit(request , pregnancy_id ):
     detail = PregnancyDetails.objects.get(pregnancy_id=pregnancy_id)
     pregnancy_count = PregnancyDetails.objects.filter(is_pregnant = 1).count()
@@ -299,9 +304,6 @@ def pregnancy_det_edit(request , pregnancy_id ):
     det=Animal_profile.objects.all()
     return render(request, 'pregnancy_details/update_pregnancy_detail.html',
                   {'detail':detail,'det': det ,"pregnancy_count":pregnancy_count, 'miscarriage':miscarriage, 'is_infartility':is_infartility})
-
-#-----------------Update Pregnancy Detail--------------------------#
-
 def update_pregnancy_detail(request, pregnancy_id):
     if request.method == 'POST':
        animal_id = request.POST['animal_id']
@@ -336,21 +338,13 @@ def update_pregnancy_detail(request, pregnancy_id):
            pregnancy_end_date = None
        else:
            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
-
-    
-       
-       
-       
-
-       
        description = request.POST['description']        
        det=Animal_profile.objects.all()
        if animal_id == "":
            return render(request,'pregnancy_details/update_pregnancy_detail.html', {'error2': True , 'det': det,'date':date})
        else:
            edit = PregnancyDetails.objects.get(pregnancy_id = pregnancy_id)  
-           edit.animal_id = animal_id
-          
+           edit.animal_id_id = animal_id      
            edit.is_pregnancy_confirmed = is_pregnancy_confirmed
            edit.pregnancy_checked_on = pregnancy_checked_on
            edit.is_delivery_completed =is_delivery_completed  
@@ -363,9 +357,7 @@ def update_pregnancy_detail(request, pregnancy_id):
            edit.pregnancy_end_date = pregnancy_end_date
            edit.description = description 
            edit.updated_on = date  
-           #edit.pregnancy_count = pregnancy_count  
-           edit.save()
-          
+           edit.save()         
            return redirect(reverse('list_pregnancy_detail')) 
     det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/update_pregnancy_detail.html', {'det': det ,'date':date } )
@@ -377,12 +369,22 @@ def register_user_profile(request):
     if request.method == 'POST':
         print('came here')
         first_name = request.POST['first_name']
+        if first_name == "":
+           return render(request,'user_profile/register_user_profile.html', {'error2': True ,'date':date})
         last_name = request.POST['last_name']
+        if last_name == "":
+           return render(request,'user_profile/register_user_profile.html', {'error3': True ,'date':date})
         username = request.POST['username']
+        if username == "":
+           return render(request,'user_profile/register_user_profile.html', {'error4': True ,'date':date})
         email = request.POST['email']
+        if email == "":
+           return render(request,'user_profile/register_user_profile.html', {'error5': True ,'date':date})
         phone_number = request.POST['phone_number']
         # user_group = request.POST['user_group']
         gender = request.POST['gender']
+        if gender == "":
+           return render(request,'user_profile/register_user_profile.html', {'error8': True ,'date':date})
         city = request.POST['city']
         country = request.POST['country']
         date_of_birth = request.POST['date_of_birth']
@@ -391,6 +393,8 @@ def register_user_profile(request):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         is_active = request.POST['is_active']
+        if is_active == "":
+           return render(request,'user_profile/register_user_profile.html', {'error9': True ,'date':date})
         user_insert = User(
             first_name = first_name,
             last_name = last_name,
@@ -413,10 +417,52 @@ def register_user_profile(request):
         )
         user_profile.save()
 
-        return render(request,'user_profile/register_user_profile.html')  
+        return  redirect(reverse ('list_user_profile'))  
     user_group = Group.objects.all()
     return render(request,'user_profile/register_user_profile.html',{'user_group':user_group})
 
 def list_user_profile(request):
     user_list = User.objects.all()
     return render(request,'user_profile/list_user_profile.html',{'user_list':user_list})
+def delete_user_profile(request,id):
+    delete = User.objects.get(id=id)
+    delete.delete()
+    return redirect('/list_user_profile')
+def edit_user_profile(request , id):
+    user_profile = User.objects.get(id=id)
+    return render(request, 'user_profile/update_user_profile.html',{'user_profile':user_profile})
+def update_user_profile(request, id):
+    if request.method == 'POST':
+       first_name = request.POST['first_name'] 
+       if first_name == '':
+           first_name = None     
+       last_name = request.POST['last_name']
+       username = request.POST['username']
+       email = request.POST['email']
+       phone_number = request.POST['phone_number']
+       city = request.POST['city']       
+       country = request.POST['country']
+       date_of_birth = request.POST['date_of_birth']
+       gender = request.POST['gender']
+       status = request.POST['status_val']
+       description = request.POST['description']
+       det=PregnancyDetails.objects.all()
+       if first_name == "":
+           return render(request,'user_profile/update_user_profile.html', {'error2': True , 'det': det,'date':date})
+       else:
+           edit = User.objects.get(id = id)  
+           edit.first_name = first_name         
+           edit.last_name = last_name
+           edit.username = username
+           edit.email = email  
+           edit.phone_number = phone_number        
+           edit.city = city
+           edit.country = country
+           edit.date_of_birth = date_of_birth
+           edit.gender=gender
+           edit.status = status
+           edit.description = description 
+           edit.save()         
+           return redirect(reverse('list_user_profile')) 
+    det=PregnancyDetails.objects.all()
+    return render(request,'user_profile/update_user_profile.html', {'det': det ,'date':date } )

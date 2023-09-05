@@ -59,10 +59,10 @@ class PregnancyDetails(models.Model):
     updated_on = models.DateField(blank=True, null=True) 
     def __str__(self):
        return self.description
+
+
    
-   
-   
-   
+    
 class UserProfile(models.Model):
     user = models.OneToOneField(
                                 User, 

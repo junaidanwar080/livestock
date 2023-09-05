@@ -2,7 +2,11 @@ from django.contrib import admin
 from django.urls import path
 from livestockapp import views
 urlpatterns = [
-#category
+#login
+   # path('', views.register, name='register'),
+   # path('login/', views.login_user, name='login'),
+   # path('logout/', views.logout_user, name='logout'),
+#Category
     path('', views.cat_insert, name='insert'),
     path('show/', views.cat_show, name='show' ),
     path('delete/<int:category_id>/', views.cat_delete, name="delete"),
@@ -24,7 +28,7 @@ urlpatterns = [
 # User Profile
     path('register_user_profile/', views.register_user_profile , name='register_user_profile'),
     path('list_user_profile/', views.list_user_profile, name='list_user_profile' ),
-    # path('animal_pro_delete/<int:animal_id>/', views.animal_pro_delete, name="animal_pro_delete"),
-    # path('animal_pro_edit/<int:animal_id>/', views.animal_pro_edit, name="animal_pro_edit"),
-    # path('update_animal/<int:animal_id>', views.update_animal, name='update_animal'),
+     path('delete_user_profile/<int:id>/', views.delete_user_profile, name="delete_user_profile"),
+     path('edit_user_profile/<int:id>/', views.edit_user_profile, name="edit_user_profile"),
+     path('update_user_profile/<int:id>', views.update_user_profile, name='update_user_profile'),
 ]
