@@ -28,7 +28,13 @@ urlpatterns = [
 # User Profile
     path('register_user_profile/', views.register_user_profile , name='register_user_profile'),
     path('list_user_profile/', views.list_user_profile, name='list_user_profile' ),
-     path('delete_user_profile/<int:id>/', views.delete_user_profile, name="delete_user_profile"),
-     path('edit_user_profile/<int:id>/', views.edit_user_profile, name="edit_user_profile"),
-     path('update_user_profile/<int:id>', views.update_user_profile, name='update_user_profile'),
+    path('delete_user_profile/<int:id>/', views.delete_user_profile, name="delete_user_profile"),
+    path('edit_user_profile/<int:id>/', views.edit_user_profile, name="edit_user_profile"),
+    path('update_user_profile/<int:id>', views.update_user_profile, name='update_user_profile'),
+# Groups
+    path('insert_group/', views.insert_group , name='insert_group'),
+    path('list_group/', views.list_group, name='list_group' ),
+    path('delete_group/<int:id>/', views.delete_group, name="delete_group"),
+    path('edit_group/<int:id>/', views.edit_group, name="edit_group"),
+    path('update_group/<int:id>', views.update_group, name='update_group'),
 ]

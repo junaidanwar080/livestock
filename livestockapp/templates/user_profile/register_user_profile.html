@@ -15,40 +15,40 @@
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
 
   <form action='/register_user_profile/' method="POST" >
-    <div class="alert alert-dark mt-5  " role="alert" style="margin-top:20%;"><b >User Profile</b></div>
+    <div class="alert alert-dark mt-5 row " role="alert" style="margin-top:50%;"><b >User Info</b></div>
     {% if error2 %}
-    <div class="alert alert-danger " role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter First Name !!    
     </div>
     {% endif %}  
     {% if error3 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2"  role="alert">
       Please Enter Last Name !!    
     </div>
     {% endif %} 
     {% if error4 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter username !!    
     </div>
     {% endif %} 
     {% if error5 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Email !!    
     </div>
     {% endif %} 
     {% if error6 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter User Role !!    
     </div>
     {% endif %} 
 
     {% if error8 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter Gender !!    
     </div>
     {% endif %} 
     {% if error9 %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger offset-2" role="alert">
       Please Enter is_Active Field !!    
     </div>
     {% endif %} 
@@ -58,8 +58,11 @@
     <div class="container-fluid" >
     <div class="row">
       <div class="col">
+        <input type="text" class="form-control" name="id" required maxlength="50" value="{{user_profile.id}}" readonly hidden/>
+    <div class="row">
+      <div class="col">
         <label class=" control-label">First Name :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="text" class="form-control" id="first_name" name="first_name"  >
+        <input type="text" class="form-control" id="first_name" name="first_name" >
       </div>
       <div class="col">
           <label class=" control-label">Last Name :<span style="color:red; font-weight:bold;">*</span></label>
@@ -67,15 +70,15 @@
       </div>
       <div class="col">
         <label class=" control-label">username :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="text" class="form-control" id="username" name="username"  >
+        <input type="text" class="form-control" id="username" name="username" >
       </div>
       <div class="col">
         <label class=" control-label">Email :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="text" class="form-control" id="email" name="email"  >
+        <input type="text" class="form-control" id="email" name="email" >
       </div>
       <div class="col">
         <label class=" control-label">Phone Number :</label>
-        <input type="text" class="form-control" id="phone_number" name="phone_number"  >
+        <input type="text" class="form-control" id="phone_number" name="phone_number" >
       </div>
     </div>
     
@@ -92,11 +95,11 @@
       </div>
       <div class="col" >
         <label for="purchase_price ">City :</label>
-        <input type="text" class="form-control" id="city" name="city"  >
+        <input type="text" class="form-control" id="city" name="city" >
       </div>
       <div class="col" >
         <label for="purchased_date">Country :</label>
-        <input type="text" class="form-control" id="country" name="country" >
+        <input type="text" class="form-control" id="country" name="country">
       </div>
     
       <div class="col" >
@@ -107,8 +110,8 @@
     <div class="row" style="margin-top:10px;">
       
       <div class="col" >
-		    <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
-        <select onchange="changeDropdown(this.value);" name="gender" class="form-control"  id="gender" class="gender">
+        <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
+        <select onchange="changeDropdown(this.value);" name="gender" class="form-control" required="required" id="gender" class="gender">
           <option value="">Select Gender</option>
           <option value="male" >Male</option>
           <option value="female">Female</option>
@@ -117,8 +120,8 @@
       <div class="col" >
         <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="checkbox"  id="status" name="status">
-        <input type="text"  id="status_val" name="status_val"  value="0" >
-      </div>
+        <input type="text"  id="status_val" name="is_active"  value="0" >
+      </div>    
       <div class="col" >
       </div>
       <div class="col" >
@@ -127,7 +130,7 @@
     <div class="row" style="margin-top:10px;">
       <div class="col">
         <label for="description" >Description :</label>
-        <textarea id="description" class="form-control" name="description" rows="3" cols="50"></textarea>
+        <textarea id="description" class="form-control" name="description" rows="3" cols="50" ></textarea>
       </div>
     </div>
     <div>

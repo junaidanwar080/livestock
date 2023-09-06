@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 
 # Create your models here.
@@ -20,7 +20,7 @@ class Animal_profile(models.Model):
     name = models.CharField(max_length=50,null=True) 
     color = models.CharField(max_length=50,null=True) 
     weight = models.CharField(max_length=50,null=True) 
-    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name='token_no')
     image = models.ImageField(upload_to='images/',null=True)
     purchase_price = models.IntegerField(null=True) 
     purchased_by = models.CharField(blank=True,null=True, max_length=50) 
@@ -28,19 +28,19 @@ class Animal_profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)
     gender = models.CharField(max_length=50,null=True)
+    person = models.ForeignKey(User, null=True, on_delete=models.CASCADE )
+    start_date = models.DateField(blank=True, null=True) 
+    end_date = models.DateField(blank=True, null=True) 
     status =  models.BooleanField(default=True,null=True)
     created_by = models.CharField(max_length=50 ,null=True) 
     created_on  = models.DateField(blank=True, null=True)
     updated_by = models.IntegerField(null=True , blank= True) 
     updated_on = models.DateField(blank=True,null=True)
-    def __str__(self):
-       return self.animal_id
+    def str(self): return self.name
     
 #PregnancyDetails
 class PregnancyDetails(models.Model):
     pregnancy_id = models.AutoField(primary_key=True)  
-   # start_date = models.DateField(blank=True, null=True) 
-    #expected_end_date = models.DateField(blank=True, null=True) 
     is_pregnancy_confirmed = models.BooleanField( null=True)
     pregnancy_checked_on = models.DateField(blank=True, null=True) 
     description = models.TextField(blank=True, null=True) 

@@ -85,14 +85,17 @@
     <div class="row" style="margin-top:10px;">
       <div class="col" >
         <label class="from-group" >User Role :<span style="color:red; font-weight:bold;">*</span></label>
-        <select id="user_group" name="user_group"  class="form-control">
-          <option value="">Select Group</option>
-          {% for group in user_group%}
-          <option value="{{group.id}}">{{group.name}}</option>
+        <select name="user_group" id="user_group" class="form-control" >
+          {% for y in user_group %}
+            {% if user_profile.user_group == y.user_group %}
+              <option  value="{{y.user_group}}" selected>{{y.name}}</option>  
+            {% else %}
+              <option  value="{{y.user_group}}">{{y.name}}</option> 
+            {% endif %}
           {% endfor %}
-          
         </select>
       </div>
+
       <div class="col" >
         <label for="purchase_price ">City :</label>
         <input type="text" class="form-control" id="city" name="city" value="{{user_profile.city}}" >

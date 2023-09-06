@@ -159,9 +159,26 @@
         </select>
       </div>
       <div class="col" >
+        <label class="from-group" >Person :<span style="color:red; font-weight:bold;">*</span></label>
+        <select name="person_id" id="person_id" class="form-control" >
+          {% for y in per %}
+            {% if per.person_id == y.id %}
+              <option  value="{{y.id}}" selected>{{y.username}}</option>  
+            {% else %}
+              <option  value="{{y.id}}">{{y.username}}</option> 
+            {% endif %}
+          {% endfor %}
+        </select>
       </div>
-      <div class="col" >
+      <div  class="col">
+        <label class=" control-label" > Start Date :</label>
+        <input type="date" class="form-control"  name="start_date" value="{{animal.start_date|date:'Y-m-d'}}">
       </div>
+      <div class="col"  >
+        <label for="end_date" class=" control-label" > End Date :</label>
+        <input type="date" class="form-control"  name="end_date" value="{{animal.end_date|date:'Y-m-d'}}">
+      </div>
+      
     </div>
 
    

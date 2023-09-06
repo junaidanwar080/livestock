@@ -76,8 +76,6 @@ def insert_animal_profile(request):
     if request.method == "POST":     
         token_no = request.POST['token_no']
         name = request.POST['ani_name']
-        pregnant_val = request.POST['pregnant_val']
-        is_pregnant = int(pregnant_val)
         color = request.POST['color']
         category_id = request.POST['category_id']
         weight = request.POST['weight']
@@ -85,6 +83,8 @@ def insert_animal_profile(request):
         purchased_on = request.POST['purchased_on']
         purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
         print(purchased_on)
+        person_id = request.POST['person_id']
+        print(person_id)
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
         if date_of_birth == '':
@@ -92,16 +92,17 @@ def insert_animal_profile(request):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        pregnancy_start_date = request.POST['pregnancy_start_date']
-        if pregnancy_start_date == '':
-            pregnancy_start_date = None
+        
+        start_date = request.POST['start_date']
+        if start_date == '':
+            start_date = None
         else:
-            pregnancy_start_date = datetime.strptime(pregnancy_start_date,  '%Y-%m-%d')
-        pregnancy_end_date = request.POST['pregnancy_end_date']  
-        if pregnancy_end_date == '':
-            pregnancy_end_date = None
+            start_date = datetime.strptime(start_date,  '%Y-%m-%d')
+        end_date = request.POST['end_date']  
+        if end_date == '':
+            end_date = None
         else:
-            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
+            end_date = datetime.strptime(end_date,  '%Y-%m-%d')
         status = request.POST['status_val']
         description = request.POST['description']        
         ani=Category.objects.all()
@@ -112,15 +113,18 @@ def insert_animal_profile(request):
         if color == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date})    
         if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date})    
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date}) 
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date})  
-        if is_pregnant == 1 and pregnancy_start_date == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error8': True, 'ani': ani,'date':date})    
+       
         if status == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date})       
+        per=User.objects.all() 
+        if person_id == "":
+             return render(request,'animal_profile/insert_animal_profile.html', {'error7': True, 'per': per,'date':date})    
+       
         ins=Animal_profile(
                 token_no=token_no,
                 name=name,color=color,
@@ -131,9 +135,9 @@ def insert_animal_profile(request):
                 purchased_by=purchased_by,
                 date_of_birth=date_of_birth,
                 gender=gender,
-                is_pregnant=is_pregnant,
-                pregnancy_start_date=pregnancy_start_date,
-                pregnancy_end_date=pregnancy_end_date,
+                person_id = person_id,
+                start_date=start_date,
+                end_date=end_date,
                 status=status,
                 updated_by=1,
                 description=description
@@ -141,11 +145,11 @@ def insert_animal_profile(request):
         ins.save()   
         return redirect(reverse('list_animal_profile'))
     ani=Category.objects.all()
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani ,'date':date } )
+    per=User.objects.all()
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani ,'date':date , 'per':per} )
 def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
-    context = {'animal_pro': allTasks}
-    return render(request,'animal_profile/list_animal_profile.html', context)
+    return render(request,'animal_profile/list_animal_profile.html', {'animal_pro': allTasks})
 # -----------------------------------------------------------------------------------------------------              
 # Delete Animal profile
 # -----------------------------------------------------------------------------------------------------
@@ -159,7 +163,8 @@ def animal_pro_delete(request,animal_id):
 def animal_pro_edit(request , animal_id ):
     animal = Animal_profile.objects.get(animal_id=animal_id)
     ani=Category.objects.all()
-    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani})
+    per=User.objects.all()
+    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani, 'per':per})
 def update_animal(request, animal_id):
     if request.method == 'POST':
         animal_id = request.POST['animal_id']
@@ -184,6 +189,19 @@ def update_animal(request, animal_id):
         category_id=int(category_id)
         status = request.POST['status_val']
         description = request.POST['description']
+        person_id = request.POST['person_id']
+        person_id=int(person_id)
+        print(person_id)
+        start_date = request.POST['start_date']
+        if start_date == '':
+            start_date = None
+        else:
+            start_date = datetime.strptime(start_date,  '%Y-%m-%d')
+        end_date = request.POST['end_date']  
+        if end_date == '':
+            end_date = None
+        else:
+            end_date = datetime.strptime(end_date,  '%Y-%m-%d')
         anim=Category.objects.all()
         if token_no == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error2': True , 'anim': anim})
@@ -215,12 +233,18 @@ def update_animal(request, animal_id):
             edit.date_of_birth = date_of_birth
             edit.gender = gender
             edit.status=status
-            edit.description = description  
+            edit.description = description 
+            edit.person_id = person_id
+            edit.person_id = int(person_id)
+            edit.start_date=start_date
+            edit.end_date=end_date
             edit.updated_on = date    
             edit.save()
+            
             return redirect(reverse('list_animal_profile')) 
     animals=Category.objects.all()
-    return render(request,'animal_profile/update_animal_profile.html', {'animals': animals ,'date':date } )
+    per=User.objects.all()
+    return render(request,'animal_profile/update_animal_profile.html', {'animals': animals ,'date':date , 'per':per} )
 # -----------------------------------------------------------------------------------------------------              
 # Insert Pregnancy Details
 # -----------------------------------------------------------------------------------------------------
@@ -466,3 +490,40 @@ def update_user_profile(request, id):
            return redirect(reverse('list_user_profile')) 
     det=PregnancyDetails.objects.all()
     return render(request,'user_profile/update_user_profile.html', {'det': det ,'date':date } )
+
+# -----------------------------------------------------------------------------------------------------
+# Open Groups
+# -----------------------------------------------------------------------------------------------------
+def insert_group(request):
+    if request.method == 'POST':
+        print('came here')
+        name = request.POST['name']
+        if name == "":
+           return render(request,'groups/insert_group.html', {'error2': True ,'date':date})       
+        user_insert = Group(name = name,)      
+        user_insert.save()
+        return  redirect(reverse ('list_group'))  
+    user_group = Group.objects.all()
+    return render(request,'groups/insert_group.html',{'user_group':user_group})
+
+def list_group(request):
+    group_list = Group.objects.all()
+    return render(request,'groups/list_group.html',{'group_list':group_list})
+def delete_group(request,id):
+    delete = Group.objects.get(id=id)
+    delete.delete()
+    return redirect('/list_group')
+def edit_group(request , id):
+    groups = Group.objects.get(id=id)
+    return render(request, 'groups/update_group.html',{'groups':groups})
+def update_group(request, id):
+    if request.method == 'POST':
+       name = request.POST['name'] 
+       if name == "":
+           return render(request,'groups/update_group.html', {'error2': True ,'date':date})
+       else:
+           edit = Group.objects.get(id = id)  
+           edit.name = name         
+           edit.save()         
+           return redirect(reverse('list_group')) 
+    return render(request,'groups/update_group.html')
