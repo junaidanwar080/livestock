@@ -136,7 +136,7 @@ def insert_animal_profile(request):
                 purchased_by=purchased_by,
                 date_of_birth=date_of_birth,
                 gender=gender,
-                person_id = person_id,
+                user_id = person_id,
                 start_date=start_date,
                 end_date=end_date,
                 status=status,
@@ -285,7 +285,7 @@ def insert_pregnancy_detail(request):
         if animal_id == "":
             return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'error2': True , 'det': det,'date':date})
         
-        ins=PregnancyDetails(animal_id=animal_id,
+        ins=PregnancyDetails(animal_profile_id=animal_id,
         is_pregnancy_confirmed=is_pregnancy_confirmed,
         pregnancy_checked_on=pregnancy_checked_on,
         is_delivery_completed=is_delivery_completed,
@@ -298,14 +298,14 @@ def insert_pregnancy_detail(request):
         pregnancy_end_date=pregnancy_end_date,
         description=description)
         ins.save()   
-        return redirect(reverse('list_pregnancy_detail'))
+        return redirect(reverse('/list_of_animals'))
     det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'det': det ,'date':date } )
 # -----------------------------------------------------------------------------------------------------              
 # List Pregnancy Details
 # -----------------------------------------------------------------------------------------------------
-def list_pregnancy_detail(request):
-    allTasks = PregnancyDetails.objects.all()
+def list_pregnancy_detail(request,ani_id):
+    allTasks = PregnancyDetails.objects.filter(animal_profile = ani_id)
     context = {'animal_det': allTasks}
     return render(request,'pregnancy_details/list_pregnancy_detail.html', context)
 # -----------------------------------------------------------------------------------------------------              
@@ -383,7 +383,7 @@ def update_pregnancy_detail(request, pregnancy_id):
            edit.description = description 
            edit.updated_on = date  
            edit.save()         
-           return redirect(reverse('list_pregnancy_detail')) 
+           return redirect('/list_of_animals')
     det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/update_pregnancy_detail.html', {'det': det ,'date':date } )
 # -----------------------------------------------------------------------------------------------------              
@@ -391,32 +391,30 @@ def update_pregnancy_detail(request, pregnancy_id):
 # -----------------------------------------------------------------------------------------------------
 def list_of_animals(request):
    # allTasks = Animal_profile.objects.all()
-    list_ani = PregnancyDetails.objects.values('infartility','is_miscarriage',
-                'is_pregnant','is_pregnancy_confirmed').annotate(count=Count('pregnancy_id'))
-    category_counts = Animal_profile.objects.annotate(count=Count('animal_id'))
-    result = {}
-    for cat in category_counts:
-        result[cat.name] = next((item['count'] for item in list_ani if item['is_pregnant'] == cat.name), 0)
+    # list_ani = PregnancyDetails.objects.values('infartility','is_miscarriage',
+    #             'is_pregnant','is_pregnancy_confirmed').annotate(count=Count('pregnancy_id'))
+    # category_counts = Animal_profile.objects.annotate(count=Count('animal_id'))
+    # result = {}
+    # for cat in category_counts:
+    #     result[cat.name] = next((item['count'] for item in list_ani if item['is_pregnant'] == cat.name), 0)
 
-    for cat in list_ani:
-        infartility = cat['infartility']
-        is_miscarriage = cat['is_miscarriage']
-        is_pregnant = cat['is_pregnant']
-        is_pregnancy_confirmed = cat['is_pregnancy_confirmed']
-        animal_count = cat['count']
+    # for cat in list_ani:
+    #     infartility = cat['infartility']
+    #     is_miscarriage = cat['is_miscarriage']
+    #     is_pregnant = cat['is_pregnant']
+    #     is_pregnancy_confirmed = cat['is_pregnancy_confirmed']
+    #     animal_count = cat['count']
 
       
-        print(f"infartility: {infartility}, is_miscarriage: {is_miscarriage}, is_pregnant:{is_pregnant},is_pregnancy_confirmed:{is_pregnancy_confirmed}, Count: {animal_count}")
+        # print(f"infartility: {infartility}, is_miscarriage: {is_miscarriage}, is_pregnant:{is_pregnant},is_pregnancy_confirmed:{is_pregnancy_confirmed}, Count: {animal_count}")
    # combined_queryset = list_ani.union(category_counts)
 
     # Convert the combined queryset to a list
    # combined_list = list(combined_queryset)
+    category_counts = Animal_profile.objects.raw('SELECT ani.animal_id,preg.`pregnancy_id`,preg.`animal_profile_id`, ani.token_no, ani.name, count(is_pregnant) as pregnancy_count, COUNT(CASE WHEN preg.`is_miscarriage` = 1 THEN 1 ELSE NULL END) as Miscarage_count, COUNT(CASE WHEN preg.`infartility` = 1 THEN 1 ELSE NULL END) as Infirtality_count, count(case when (preg.`is_pregnancy_confirmed` =1 AND preg.`is_delivery_completed`=1) THEN 1 ELSE NULL END) as Complete_Deliveries FROM `livestockapp_pregnancydetails` preg join livestockapp_animal_profile ani on ani.animal_id = preg.animal_profile_id WHERE ani.status = 1 group by ani.animal_id')
 
-    context = {
-        'category_counts': category_counts,
-        
-    } 
-    return render(request,'pregnancy_details/list_of_animals.html', context)
+  
+    return render(request,'pregnancy_details/list_of_animals.html', {'category_counts': category_counts,})
 # -----------------------------------------------------------------------------------------------------
 # Open User Profile
 # -----------------------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User,Group
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -20,7 +20,12 @@ class Animal_profile(models.Model):
     name = models.CharField(max_length=50,null=True) 
     color = models.CharField(max_length=50,null=True) 
     weight = models.CharField(max_length=50,null=True) 
-    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name='token_no')
+    category = models.ForeignKey(
+                                'Category',
+                                null=True,
+                                on_delete=models.CASCADE,
+                                related_name='animal'
+                                    )
     image = models.ImageField(upload_to='images/',null=True)
     purchase_price = models.IntegerField(null=True) 
     purchased_by = models.CharField(blank=True,null=True, max_length=50) 
@@ -28,7 +33,12 @@ class Animal_profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)
     gender = models.CharField(max_length=50,null=True)
-    person = models.ForeignKey(User, null=True, on_delete=models.CASCADE )
+    user = models.ForeignKey(
+                                User, 
+                                null=True, 
+                                on_delete=models.CASCADE,
+                                related_name='animal_profile'
+                            )
     start_date = models.DateField(blank=True, null=True) 
     end_date = models.DateField(blank=True, null=True) 
     status =  models.BooleanField(default=True,null=True)
@@ -52,10 +62,25 @@ class PregnancyDetails(models.Model):
     is_pregnant  = models.IntegerField( null=True)
     pregnancy_start_date  = models.DateField(blank=True, null=True)
     pregnancy_end_date  = models.DateField(blank=True, null=True) 
-    animal = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="animals_id")
-    created_by = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="create_by")
+    animal_profile = models.ForeignKey(
+                                'Animal_profile', 
+                                null=True, 
+                                on_delete=models.CASCADE ,
+                                related_name="pregnancy_details"
+                                )
+    created_by = models.ForeignKey(
+                                User, 
+                                null=True, 
+                                on_delete=models.CASCADE ,
+                                related_name="created_pregnancy_details"
+                                )
     created_on = models.DateField(blank=True, null=True) 
-    updated_by = models.ForeignKey(Animal_profile, null=True, on_delete=models.CASCADE ,related_name="update_by")
+    updated_by = models.ForeignKey(
+                                    User, 
+                                    null=True, 
+                                    on_delete=models.CASCADE ,
+                                    related_name="Updated_pregnancy_details"
+                                    )
     updated_on = models.DateField(blank=True, null=True) 
     def __str__(self):
        return self.description

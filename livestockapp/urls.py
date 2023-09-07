@@ -20,7 +20,7 @@ urlpatterns = [
     path('update_animal/<int:animal_id>', views.update_animal, name='update_animal'),
 #Pregnancy Details
     path('insert_pregnancy_detail', views.insert_pregnancy_detail , name='insert_pregnancy_detail'),
-    path('list_pregnancy_detail/', views.list_pregnancy_detail, name='list_pregnancy_detail' ),
+    path('list_pregnancy_detail/<int:ani_id>', views.list_pregnancy_detail, name='list_pregnancy_detail' ),
     path('pregnancy_det_delete/<int:pregnancy_id>/', views.pregnancy_det_delete, name="pregnancy_det_delete"),
     path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
     path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail'),

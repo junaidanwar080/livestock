@@ -7,7 +7,8 @@
   <table class="table table-bordered" id="animalDetail">
     <thead>
       <tr>
-        <th scope="col">#</th>      
+        <th scope="col">#</th> 
+        <th scope="col">Animal Token</th>     
         <th scope="col">is Pregnancy Confirmed</th>
         <th scope="col">Pregnancy Checked on</th>
         <th scope="col">Description</th>
@@ -19,11 +20,11 @@
         <th scope="col">is_Pragnent</th>
         <th scope="col">pregnancy Start Date</th>
         <th scope="col">pregnancy End Date</th>
-        <th scope="col">Animal id</th>
-        <th scope="col">Created by</th>
+        
+        {% comment %} <th scope="col">Created by</th>
         <th scope="col">Created on</th>
         <th scope="col">Updated by</th>
-        <th scope="col">Updated on</th>
+        <th scope="col">Updated on</th> {% endcomment %}
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
 
@@ -34,6 +35,7 @@
      {% for det in animal_det %}
      <tr>
        <th scope="row">{{forloop.counter}}</th>
+       <td>{{det.animal_profile.token_no}}</td> 
        {% if  det.is_pregnancy_confirmed == 1 %}     
        <td>Yes</td>
        {% else %}
@@ -65,11 +67,11 @@
        {% endif %}
        <td>{{det.pregnancy_start_date|date:"d-m-Y"}}</td>
        <td>{{det.pregnancy_end_date|date:"d-m-Y"}}</td>
-       <td>{{det.animal_id}}</td>  
-       <td>{{det.created_by}}</td>  
+        
+       {% comment %} <td>{{det.created_by}}</td>  
        <td>{{det.created_on|date:"d-m-Y" }}</td>  
        <td>{{det.updated_by}}</td>  
-       <td>{{det.updated_on|date:"d-m-Y"}}</td> 
+       <td>{{det.updated_on|date:"d-m-Y"}}</td>  {% endcomment %}
        <td><a href="/pregnancy_det_edit/{{det.pregnancy_id}}" class="btn btn-sm btn-warning"/>Edit</td>
        <td><a href="/pregnancy_det_delete/{{det.pregnancy_id}}" class="btn btn-sm btn-danger"/>Delete</td>
       </tr>

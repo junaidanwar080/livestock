@@ -3,20 +3,17 @@
    
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Animals</h4>
-  {% if category_counts %}
+
   <table class="table table-bordered" id="animalCategory">
     <thead>
       <tr>
         <th scope="col">#</th>      
         <th scope="col">Token No</th>
         <th scope="col">Name</th>
-        <th scope="col">Date of Birth</th>
         <th scope="col">Total Pregnancy Count</th>
         <th scope="col">Miscarriage Count</th>
         <th scope="col">Infartility Count</th>
         <th scope="col">Complete Pregnancy Count</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
 
       </tr>
     </thead>
@@ -24,44 +21,21 @@
     
         {% comment %} Run a loop here and iterate all the category_counts {% endcomment %}
     
-     {% for cat in category_counts  %}
-     <tr>
-       <th scope="row">{{forloop.counter}}</th>
-       <td>{{cat.token_no}}</td>
-       <td>{{cat.name}}</td>
-       <td>{{cat.date_of_birth|date:"d-m-Y" }}</td>  
-       {% if  cat.is_pregnant == 1 %}     
-       <td>{{ cat.count }}</td>
-       {% else %}
-       <td>0</td>
-       {% endif %}
-       
-       {% if  cat.is_miscarriage == 1 %}     
-       <td>{{ cat.count }}</td>
-       {% else %}
-       <td>0</td>
-       {% endif %} 
-      
-       {% if  cat.infartility == 1 %}     
-       <td>{{ cat.count }}</td>
-       {% else %}
-       <td>0</td>
-       {% endif %} 
-       {% if  cat.is_pregnancy_confirmed == 1 %}     
-       <td>{{ cat.count }}</td>
-       {% else %}
-       <td>0</td>
-       {% endif %}
-       <td><a href="/edit/{{cat.category_id}}" class="btn btn-sm btn-warning"/>Edit</td>
-       <td><a href="/delete/{{cat.category_id}}" class="btn btn-sm btn-danger"/>Delete</td>
-      </tr>
-      {% endfor %}
+        {% for animal in category_counts %}
+        <tr>
+            <td>{{ animal.animal_id }} </td>
+            <td><a href="list_pregnancy_detail/{{ animal.animal_id }}">{{ animal.token_no }}</a> </td>
+            <td>{{ animal.name }}</td>
+            <td>{{ animal.pregnancy_count }}</td>
+            <td>{{ animal.Miscarage_count }}</td>
+            <td>{{ animal.Infirtality_count }}</td>
+            <td>{{ animal.Complete_Deliveries }}</td>
+        </tr>
+    {% endfor %}
       
     </tbody>
   </table>
-{% else %}
-  <h4 class="text-center alert alert-warning">No Record</h4>
-{% endif %}
+
 </div>    
 <script>
   $(document).ready(function() {
