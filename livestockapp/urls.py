@@ -24,7 +24,7 @@ urlpatterns = [
     path('pregnancy_det_delete/<int:pregnancy_id>/', views.pregnancy_det_delete, name="pregnancy_det_delete"),
     path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
     path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail'),
-   # path('list_of_animals', views.table_join)
+    path('list_of_animals', views.list_of_animals),
 # User Profile
     path('register_user_profile/', views.register_user_profile , name='register_user_profile'),
     path('list_user_profile/', views.list_user_profile, name='list_user_profile' ),
@@ -37,4 +37,4 @@ urlpatterns = [
     path('delete_group/<int:id>/', views.delete_group, name="delete_group"),
     path('edit_group/<int:id>/', views.edit_group, name="edit_group"),
     path('update_group/<int:id>', views.update_group, name='update_group'),
-]
+] 

@@ -9,6 +9,7 @@ from livestockapp.models import Category, Animal_profile, PregnancyDetails, User
 from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.models import User , Group
+from django.db.models import Count
 
 x = datetime.now() 
 date = x.strftime('%Y-%m-%d')
@@ -360,7 +361,7 @@ def update_pregnancy_detail(request, pregnancy_id):
        pregnancy_end_date = request.POST['pregnancy_end_date']
        if pregnancy_end_date == '' or is_pregnant == '0':
            pregnancy_end_date = None
-       else:
+       else: 
            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
        description = request.POST['description']        
        det=Animal_profile.objects.all()
@@ -385,7 +386,37 @@ def update_pregnancy_detail(request, pregnancy_id):
            return redirect(reverse('list_pregnancy_detail')) 
     det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/update_pregnancy_detail.html', {'det': det ,'date':date } )
+# -----------------------------------------------------------------------------------------------------              
+# List of Animals
+# -----------------------------------------------------------------------------------------------------
+def list_of_animals(request):
+   # allTasks = Animal_profile.objects.all()
+    list_ani = PregnancyDetails.objects.values('infartility','is_miscarriage',
+                'is_pregnant','is_pregnancy_confirmed').annotate(count=Count('pregnancy_id'))
+    category_counts = Animal_profile.objects.annotate(count=Count('animal_id'))
+    result = {}
+    for cat in category_counts:
+        result[cat.name] = next((item['count'] for item in list_ani if item['is_pregnant'] == cat.name), 0)
 
+    for cat in list_ani:
+        infartility = cat['infartility']
+        is_miscarriage = cat['is_miscarriage']
+        is_pregnant = cat['is_pregnant']
+        is_pregnancy_confirmed = cat['is_pregnancy_confirmed']
+        animal_count = cat['count']
+
+      
+        print(f"infartility: {infartility}, is_miscarriage: {is_miscarriage}, is_pregnant:{is_pregnant},is_pregnancy_confirmed:{is_pregnancy_confirmed}, Count: {animal_count}")
+   # combined_queryset = list_ani.union(category_counts)
+
+    # Convert the combined queryset to a list
+   # combined_list = list(combined_queryset)
+
+    context = {
+        'category_counts': category_counts,
+        
+    } 
+    return render(request,'pregnancy_details/list_of_animals.html', context)
 # -----------------------------------------------------------------------------------------------------
 # Open User Profile
 # -----------------------------------------------------------------------------------------------------
