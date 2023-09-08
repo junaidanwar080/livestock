@@ -189,6 +189,7 @@ def update_animal(request, animal_id):
         gender = request.POST['gender']
         category_id=int(category_id)
         status = request.POST['status_val']
+        print(status)
         description = request.POST['description']
         person_id = request.POST['person_id']
         person_id=int(person_id)
@@ -233,10 +234,11 @@ def update_animal(request, animal_id):
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.status=status
+            edit.status=status 
+            print(status)
             edit.description = description 
-            edit.person_id = person_id
-            edit.person_id = int(person_id)
+            edit.user_id = person_id
+           # edit.user_id = int(user_id)
             edit.start_date=start_date
             edit.end_date=end_date
             edit.updated_on = date    

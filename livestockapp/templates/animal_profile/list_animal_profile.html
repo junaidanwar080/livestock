@@ -3,7 +3,7 @@
    
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Animal Profile</h4>
-{% if animal_pro %}
+
   <table class="table table-bordered"  id="animalTable">
     <thead>
       <tr>
@@ -60,28 +60,28 @@
       {% endfor %}
     </tbody>
   </table>
-{% else %}
-  <h4 class="text-center alert alert-warning">No Record</h4>
-{% endif %}
+
 </div>    
 
 
 <script>
-  $(document).ready(function() {
-    // Initialize DataTable
-    $('#animalTable').DataTable({
-      "paging": true,      // Enable pagination
-      "ordering": true,    // Enable sorting
-      "searching": true,   // Enable search
-      "info": true,        // Show info about entries and pagination
-      "responsive": true,  // Enable responsive behavior
-      "columnDefs": [
-        // Specify column-specific options if needed
-        // Example: {"targets": [0], "searchable": false, "orderable": false}
+ 
+
+$(document).ready(function() {
+  // Initialize DataTable
+  $('#animalTable').DataTable({
+    "paging": true,      // Enable pagination
+    "ordering": true,    // Enable sorting
+    "searching": true,   // Enable search
+    "info": true,        // Show info about entries and pagination
+    "responsive": true,  // Enable responsive behavior
+    "columnDefs": [
+      // Specify column-specific options if needed
+      // Example: {"targets": [0], "searchable": false, "orderable": false}
       ]
     });
   });  
 </script>
 
-
 {% endblock content %}
+
