@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Transection Details</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div id="msg"></div>
+    <!-- Ledger Equity Insert Modal Start -->
+    <div>
+        <div class="">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 240%; margin-left: -70%;">
+                    <!-- Modal Header -->
+                    <div class="modal-header text-center"  style="height: 55px; margin-top: -15px;">
+                        <h4 class="modal-title" >Voucher Details</h4>
+                        <a href="{% url 'all_journal_vouchers' %}" class="btn btn-primary btn-sm ">View All Vouchers</a>
+    
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body" style=" margin-bottom: -40px; ">
+                        <form>
+                            <div style=" margin-left: 15px; ">
+                                
+                                <table>
+                                    <tr>
+                                        <td><b>Voucher no: </b></td><td>{{voucher_main.voucher_no }}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td><b> Voucher Date: </b></td><td>{{voucher_main.voucher_date|date:'d-m-Y'}}</td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td><b> Voucher Date: </b></td><td>{{voucher_main.created_on}}</td>
+                                    </tr> -->
+                                    <tr>
+                                        <td><b> Voucher Type: </b></td><td>{{voucher_main.ref_voucher_type.description}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <br>
+                            
+                            <div class="form-group">
+                                <table class="table table-sm" id="table_id">
+                                    <thead>
+                                        <tr>
+                                            <th>Account code</th>
+                                            
+                                            <th> Description</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        {% for i in voucher_details %}
+                                        <tr>
+                                            <td>
+                                                {{i.chart_of_account_id}}-{{i.chart_of_account.description}}
+                                            </td>
+                                            
+                                            <td>
+                                                {{i.description}}
+                                            </td>
+                                            <td><div class="form-group">
+                                                {{i.debit}}
+                                            </div></td>
+                                            <td><div class="form-group">
+                                                {{i.credit}}
+                                            </div></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ledger Equity Insert Modal End -->
+
+ 
+
+</body> 
+</html>

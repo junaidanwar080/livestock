@@ -4,8 +4,7 @@
   </head>
 <body>
   
-
-{% extends 'navbar.html' %}
+  {% include  'navbar.html' %}
 
 {% block content %}
 
@@ -87,7 +86,7 @@
         <label class="from-group" >User Role :<span style="color:red; font-weight:bold;">*</span></label>
         <select id="user_group" name="user_group"  class="form-control">
           <option value="">Select Group</option>
-          {% for group in user_group%}
+          {% for group in user_group_list%}
           <option value="{{group.id}}">{{group.name}}</option>
           {% endfor %}
           
@@ -120,7 +119,7 @@
       <div class="col" >
         <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="checkbox"  id="status" name="status">
-        <input type="text"  id="status_val" name="is_active"  value="0" >
+        <input type="hidden"  id="status_val" name="is_active"  value="0" >
       </div>    
       <div class="col" >
       </div>

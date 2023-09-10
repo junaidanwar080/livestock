@@ -1,5 +1,6 @@
-{% extends 'navbar.html' %}
-{% block content %}
+{% include  'navbar.html' %}
+
+<a href="/insert_animal_profile" class="btn btn-primary" style="margin-left: 80%">Add Animal</a>
    
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Animal Profile</h4>
@@ -7,55 +8,55 @@
   <table class="table table-bordered"  id="animalTable">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Token No</th>
+        {% comment %} <th scope="col">#</th> {% endcomment %}
+        <th scope="col">Token</th>
         <th scope="col">Name</th>
         <th scope="col">Color</th>
         <th scope="col">Weight</th>
-        <th scope="col">Category Id</th>
-        <th scope="col">Image</th>
-        <th scope="col">Purchase Price</th>
+        <th scope="col">Category</th>
+        {% comment %} <th scope="col">Image</th> {% endcomment %}
+        {% comment %} <th scope="col">Purchase Price</th> {% endcomment %}
         <th scope="col">Purchased Date</th>
-        <th scope="col">Purchased By</th>
-        <th scope="col">Date Of Birth</th>
+        {% comment %} <th scope="col">Purchased By</th> {% endcomment %}
+        {% comment %} <th scope="col">Date Of Birth</th> {% endcomment %}
         <th scope="col">Description</th>
         <th scope="col">Gender</th>
         <th scope="col">Person</th>
         <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
+        {% comment %} <th scope="col">End Date</th> {% endcomment %}
         <th scope="col">Status</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
+        <th scope="col">Action</th>
 
       </tr>
     </thead>
     <tbody>
      {% for animal in animal_pro %}
      <tr>
-       <th scope="row">{{forloop.counter}}</th>
+       {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
        <td>{{animal.token_no}}</td>
        <td>{{animal.name}}</td>
        <td>{{animal.color}}</td>
        <td>{{animal.weight}}</td>
        <td>{{animal.category.name}}</td>
-       <td>{{animal.image}}</td>
-       <td>{{animal.purchase_price}}</td>
+       {% comment %} <td>{{animal.image}}</td> {% endcomment %}
+       {% comment %} <td>{{animal.purchase_price}}</td> {% endcomment %}
        <td>{{animal.purchased_on|date:"d-m-Y"}}</td>
-       <td>{{animal.purchased_by}}</td>
-       <td>{{animal.date_of_birth|date:"d-m-Y"}}</td>
+       {% comment %} <td>{{animal.purchased_by}}</td> {% endcomment %}
+       {% comment %} <td>{{animal.date_of_birth|date:"d-m-Y"}}</td> {% endcomment %}
        <td>{{animal.description}}</td>
        <td>{{animal.gender}}</td> 
        <td>{{animal.user.username}}</td>
        <td>{{animal.start_date|date:"d-m-Y"}}</td>
-       <td>{{animal.end_date|date:"d-m-Y"}}</td>      
+       {% comment %} <td>{{animal.end_date|date:"d-m-Y"}}</td>       {% endcomment %}
        {% if  animal.status == 1 %} 
        <td>Active</td>
        {% else %}
        <td>InActive</td>
        {% endif %}
 
-       <td><a href="/animal_pro_edit/{{animal.animal_id}}" class="btn btn-sm btn-warning"/>Edit</td>
-       <td><a href="/animal_pro_delete/{{animal.animal_id}}" class="btn btn-sm btn-danger"/>Delete</td>
+       <td><a href="/animal_pro_edit/{{animal.animal_id}}" class="btn btn-sm btn-warning">Edit</a>
+        {% comment %} <a href="/animal_pro_delete/{{animal.animal_id}}" class="btn btn-sm btn-danger">Delete</a></td> {% endcomment %}
+     
       </tr>
       {% endfor %}
     </tbody>
@@ -84,4 +85,3 @@
 </script>
 
 
-{% endblock content %}

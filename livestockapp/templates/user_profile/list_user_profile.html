@@ -1,10 +1,15 @@
-{% extends 'navbar.html' %}
-{% block content %}
-   
-<div class="container my-3">
-  <h4 class="text-center alert alert-info py-3">User Profile List</h4>
-{% if user_list %}
-  <table class="table table-bordered"  id="animalTable">
+<html>
+  <head>
+    <title>Animal Category List</title>
+  </head>
+  <body>
+{% include  'navbar.html' %}
+
+<a class="btn btn-primary" href='/register_user_profile' style="margin-left:80%">Create User</a>
+
+  <h4 class="text-center alert alert-info">User Profile List</h4>
+<div style="margin:3%;" class=""> 
+  <table class="table table-bordered"  id="animalTable" >
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -13,8 +18,7 @@
         <th scope="col">User name</th>
         <th scope="col">email</th>
         <th scope="col">Status</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
+        <th scope="col">Action</th>
 
       </tr>
     </thead>
@@ -43,16 +47,16 @@
        {% else %}
        <td>InActive</td>
        {% endif %}
-       <td><a href="/edit_user_profile/{{users.id}}" class="btn btn-sm btn-warning"/>Edit</td>
-       <td><a href="/delete_user_profile/{{users.id}}" class="btn btn-sm btn-danger"/>Delete</td>
+       <td><a href="/edit_user_profile/{{users.id}}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="/delete_user_profile/{{users.id}}" class="btn btn-sm btn-danger">Delete</a></td>
+    
       </tr>
       {% endfor %}
     </tbody>
   </table>
-{% else %}
-  <h4 class="text-center alert alert-warning">No Record</h4>
-{% endif %}
-</div>    
+</div>
+
+  
 
 
 <script>
@@ -64,13 +68,13 @@
       "searching": true,   // Enable search
       "info": true,        // Show info about entries and pagination
       "responsive": true,  // Enable responsive behavior
-      "columnDefs": [
+      // "columnDefs": [
         // Specify column-specific options if needed
         // Example: {"targets": [0], "searchable": false, "orderable": false}
-      ]
+      // ]
     });
   });  
 </script>
+</body>
+</html>
 
-
-{% endblock content %}

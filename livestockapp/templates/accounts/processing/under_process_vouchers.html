@@ -1,0 +1,50 @@
+<html>
+
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+     
+        <!-- table start -->
+        <div class="card mt-4">
+            <div class="card-header text-center"><b>Under Processing Vouchers</b></div>
+            <div class="card-body" >
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sr.</th>
+                            <th>Processing Number</th>
+                            <th>Posted Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            
+                        {% for i in select_details %}
+            
+                        <tr>
+                            
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.voucher_no}}</td>
+                            <td>{{i.created_on|date:'d-m-Y'}}</td>
+                            <td><a class="btn btn-primary btn-sm update_account_data"
+                                href="complete_under_process/{{ i.processing_id }}" >Edit</a></td>
+                            
+            
+                        </tr>
+            
+                        {% endfor %}
+            
+            
+            
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- table end  -->
+    </div>
+
+
+</body>
+
+</html>

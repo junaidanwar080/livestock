@@ -101,4 +101,350 @@ class UserProfile(models.Model):
     created_on = models.DateField(blank=True, null=True) 
     updated_on = models.DateField(blank=True, null=True) 
     
+#------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------
+# Finance
+#--------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------
+    
+# Chart Of Account Model
+class ChartOfAccount(models.Model):
+    account_no = models.CharField(primary_key=True,max_length = 10)
+    main_code = models.CharField(max_length = 10, null=True)
+    sub_code = models.CharField(max_length = 10, null=True)
+    dept_code = models.CharField(max_length = 10, null=True)
+    description = models.CharField(max_length=100, null=True)
+    account_type = models.CharField(max_length=100, null=True)
+    is_account = models.BooleanField(default=False)
+    created_on = models.DateTimeField( auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        related_name='created_accounts',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    updated_on = models.DateTimeField( auto_now=True)
+    updated_by = models.ForeignKey(
+        User, 
+        related_name='updated_accounts' ,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    
+# Party Type Model
+class RefPartyType(models.Model):
+    party_type_code = models.CharField(primary_key=True,max_length = 5)
+    description = models.CharField(max_length = 200, null=True)
+    is_enabled = models.CharField(max_length = 1, null=True)
+    created_on = models.DateTimeField( auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        related_name='created_ref_party_type',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    updated_on = models.DateTimeField( auto_now=True)
+    updated_by = models.ForeignKey(
+        User, 
+        related_name='updated_ref_party_type' ,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    
+
+    
+# Party Profile Model
+class RefPartyProfile(models.Model):
+    party_code = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length = 200, null=True)
+    address = models.CharField(max_length = 500, null=True)
+    ntn_no = models.CharField(max_length = 50, null=True)
+    phone_no = models.CharField(max_length = 50, null=True)
+    description = models.CharField(max_length = 500, null=True)
+    payment_terms = models.CharField(max_length = 500, null=True)
+    ref_party_type = models.ForeignKey(
+        'RefPartyType', 
+        related_name='party_profile',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    chart_of_account = models.ForeignKey(
+        'ChartOfAccount', 
+        related_name='ref_party_profile',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    created_on = models.DateTimeField( auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        related_name='created_ref_party_profile',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    updated_on = models.DateTimeField( auto_now=True)
+    updated_by = models.ForeignKey(
+        User, 
+        related_name='updated_ref_party_profile' ,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    
+#--------------------------------------------------------------------    
+#Vouchers    
+#--------------------------------------------------------------------
+# Voucher Type
+class RefVoucherType(models.Model):
+    voucher_type_code = models.BigAutoField(primary_key=True)
+    description = models.CharField(max_length=200, null=True)
+    is_enabled = models.CharField(max_length=1,null=True)
+    created_on = models.DateTimeField( auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        related_name='created_ref_voucher_type',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    updated_on = models.DateTimeField( auto_now=True)
+    updated_by = models.ForeignKey(
+        User, 
+        related_name='updated_ref_voucher_type' ,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    
+# Voucher Main
+class VoucherMain(models.Model):
+    trans_id = models.BigAutoField(primary_key=True)
+    voucher_no = models.CharField(max_length=100, null=True)
+    voucher_date = models.DateTimeField( null=True)
+    ref_voucher_type = models.ForeignKey(
+        'RefVoucherType', related_name='voucher_main' ,null=True,
+        on_delete=models.CASCADE,
+    )
+    created_on = models.DateTimeField( auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        related_name='created_voucher_main',
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    updated_on = models.DateTimeField( auto_now=True)
+    updated_by = models.ForeignKey(
+        User, 
+        related_name='updated_voucher_main' ,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    
+# Voucher Detail
+class VoucherDetail(models.Model):
+    voucher_main = models.ForeignKey(
+        'VoucherMain', 
+        related_name='voucher_detail' ,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    chart_of_account = models.ForeignKey(
+        'ChartOfAccount', 
+        related_name='voucher_detail' ,
+        null=True,max_length=10,
+        on_delete=models.CASCADE,
+    )
+    debit = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    credit = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    description = models.CharField( max_length = 300 ,null=True)
+    
+# -------------------------------------------------------------------------------
+# Stock Management System
+# -------------------------------------------------------------------------------
+# Stock Type
+# class StockType(models.Model):
+#     stock_type_code = models.CharField(primary_key=True , max_length = 20)
+#     name = models.CharField(max_length = 200, null=True)
+#     description = models.CharField(max_length = 200, null=True)
+#     is_enabled = models.CharField(max_length = 1, null=True)
+#     created_on = models.DateTimeField( auto_now_add=True)
+#     created_by = models.ForeignKey(
+#         User,
+#         related_name='created_stock_type',
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     updated_on = models.DateTimeField( auto_now=True)
+#     updated_by = models.ForeignKey(
+#         User, 
+#         related_name='updated_stock_type' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+    
+# #stock in hand
+# class StockInHand(models.Model):
+#     stock_id = models.BigAutoField(primary_key=True)
+#     name = models.CharField(max_length = 200, null=True)
+#     description = models.CharField(max_length = 200, null=True)
+#     sale_price = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+#     purchase_price = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+#     stock_in_hand = models.CharField(max_length = 18, null=True)
+#     order_threshold = models.CharField(max_length = 18, null=True)
+#     stock_type = models.ForeignKey(
+#         'StockType', 
+#         related_name='stock_in_hand' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     created_on = models.DateTimeField( auto_now_add=True)
+#     created_by = models.ForeignKey(
+#         User,
+#         related_name='created_stock_in_hand',
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     updated_on = models.DateTimeField( auto_now=True)
+#     updated_by = models.ForeignKey(
+#         User, 
+#         related_name='updated_stock_in_hand' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+
+# --------------------------------------------------------------------------
+# Sale
+# -------------------------------------------------------------------------
+#Stock Sale Main
+# class StockSaleMain(models.Model):
+#     invoice_no = models.BigAutoField(primary_key=True)
+#     invoice_date = models.DateTimeField( null=True)
+#     ref_party_profile = models.ForeignKey(
+#         'RefPartyProfile', 
+#         related_name='stock_sale_main' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     created_on = models.DateTimeField( auto_now_add=True)
+#     created_by = models.ForeignKey(
+#         User,
+#         related_name='created_stock_sale_main',
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     updated_on = models.DateTimeField( auto_now=True)
+#     updated_by = models.ForeignKey(
+#         User, 
+#         related_name='updated_stock_sale_main' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+    
+    
+# #Stock Sale Details
+# class StockSaleDetail(models.Model):
+#     stock_sale_main = models.ForeignKey(
+#         'StockSaleMain', 
+#         related_name='sale_detail' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     stock_in_hand = models.ForeignKey(
+#         'StockInHand', 
+#         related_name='stock_sale_detail' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     quantity = models.IntegerField(null=True)
+#     price = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+
+# -------------------------------------------------------------------
+# Purchase 
+# ------------------------------------------------------------------
+# Stock Purchase Main
+# class StockPurchaseMain(models.Model):
+#     bill_no = models.CharField(primary_key=True , max_length = 20)
+#     Bill_date = models.DateTimeField( null=True)
+#     ref_party_profile = models.ForeignKey(
+#         'RefPartyProfile', 
+#         related_name='stock_purchase_main' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     created_on = models.DateTimeField( auto_now_add=True)
+#     created_by = models.ForeignKey(
+#         User,
+#         related_name='created_stock_purchase_main',
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     updated_on = models.DateTimeField( auto_now=True)
+#     updated_by = models.ForeignKey(
+#         User, 
+#         related_name='updated_stock_purchase_main' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     ) 
+    
+# # Stock Purchase Details
+# class StockPurchaseDetail(models.Model):
+#     stock_purchase_main = models.ForeignKey(
+#         'StockPurchaseMain', 
+#         related_name='purchase_detail' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     stock_in_hand = models.ForeignKey(
+#         'StockInHand', 
+#         related_name='stock_purchase_detail' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     quantity = models.IntegerField(null=True)
+#     price = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    
+# --------------------------------------------------------------------------
+# Processing
+# -------------------------------------------------------------------------
+# # Stock Processing Main
+# class StockProcessingMain(models.Model):
+#     processing_id = models.BigAutoField(primary_key=True)
+#     voucher_no = models.CharField(null=True, max_length=15)
+#     voucher_date = models.DateTimeField( null=True)
+#     processing_status = models.CharField(
+#                                             null=False , 
+#                                             max_length=15,
+#                                             default='inprogress'
+#                                         )
+#     created_on = models.DateTimeField( auto_now_add=True)
+#     created_by = models.ForeignKey(
+#                                     User,
+#                                     related_name='created_stock_processing_main',
+#                                     null=True,
+#                                     on_delete=models.CASCADE,
+#                                 )
+#     updated_on = models.DateTimeField( auto_now=True)
+#     updated_by = models.ForeignKey(
+#                                     User, 
+#                                     related_name='updated_stock_processing_main' ,
+#                                     null=True,
+#                                     on_delete=models.CASCADE,
+#                                 )
+    
+# Stock Processing Detail
+# class StockProcessingDetail(models.Model):
+#     id = models.BigAutoField(primary_key=True)
+#     stock_processing_main = models.ForeignKey(
+#                                             'StockProcessingMain', 
+#                                             related_name='processing_detail' ,
+#                                             null=True,
+#                                             on_delete=models.CASCADE,
+#                                         )
+#     stock_in_hand = models.ForeignKey(
+#         'StockInHand', 
+#         related_name='stock_processing_detail' ,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
+#     quantity = models.IntegerField(null=True)
+#     price = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    
+
+    
     

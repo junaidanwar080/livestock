@@ -1,0 +1,177 @@
+
+<html>
+
+<head>
+    <title>Chart Of Accounts</title>
+</head>
+
+<body>
+    {% include  'navbar.html' %}
+    {% include 'accounts/chart_of_accounts/main_head/main_head_models.html' %}
+    <div class="container">
+        <div id="msg" class="text-center" style="border-radius: 5px; "></div>
+        <!-- table start -->
+        <div class="card mt-4">
+            <div class="card-header" style="height: 40px;">
+                <b style="margin-left: 50%; ">Main Heads</b>
+                <button  class="btn btn-sm btn-primary" id="btn_save" style="margin-left: 28%; margin-top:-1%" data-toggle="modal" data-target="#add_account_model">Add Main Head</button>
+            </div>
+            <div class="card-body" id="all_accounts">
+               
+            </div>
+        </div>
+        <!-- table end  -->
+    </div>
+    
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // update load button
+            $(document).on("click", ".update_account_data", function () {
+                var account_code = $(this).attr('id');
+                // alert(account_code);
+                $.ajax({
+                    url: 'main_head_load_for_update/' + account_code,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data)
+                        //$('#update_ac_id').val(data.Account_No)
+                        $('#update_ac_name').val(data.description)
+                        $('#update_main_code').val(data.main_code)
+                        $('#update_ac_no').val(data.account_no)
+                    }
+                });
+            });
+
+            // insert message id become empty
+            $(document).on("click", "#btn_save", function () {
+                $("#all-reply").empty();
+            });
+            // update message id become empty
+            $(document).on("click", ".update_btn", function () {
+                $("#edit_reply").empty();
+            });
+            // just insert Account data
+            $("#just_insert").on("click", function () {
+                // alert("came here");
+                var account_form = $("#accounts_data").serialize();
+                $.ajax({
+                    url: "main_head_insert",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Created") {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            main_heads();
+                            $("#accounts_data")[0].reset();
+                        } else {
+
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // insert and close Account data
+            $("#insert_and_close").on("click", function () {
+                var account_form = $("#accounts_data").serialize();
+                $.ajax({
+                    url: "main_head_insert",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Created") {
+                            $('#add_account_model').modal('hide');
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            main_heads();
+                            $("#accounts_data")[0].reset();
+                        } else {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // just Update Account data
+            $("#just_update").on("click", function () {
+                var account_form = $("#edit_accounts_data").serialize();
+                $.ajax({
+                    url: "main_head_update",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Updated") {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            main_heads();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // Update and close Account Modal
+            $("#update_and_close").on("click", function () {
+                var account_form = $("#edit_accounts_data").serialize();
+                $.ajax({
+                    url: "main_head_update",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Updated") {
+                            $('#update_account_model').modal('hide');
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            main_heads();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+
+            main_heads();
+
+        });
+
+        //accounts laad for input account data form
+
+
+        // Chart of accounts call
+        function main_heads() {
+            $.ajax({
+                url: "main_head_select",
+                type: 'POST',
+                success: function (all_accounts) {
+                    $("#all_accounts").html(all_accounts);
+                }
+            });
+        }
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+    </script>
+</body>
+</html>

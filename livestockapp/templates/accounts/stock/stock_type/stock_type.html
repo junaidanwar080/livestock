@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chart Of Accounts</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    
+    <div class="container">
+        <div style="margin-left: 88%; margin-top: 2%;"><button class="btn btn-sm btn-primary" id="btn_save" data-toggle="modal"
+            data-target="#add_stock_tyoe_model">Add Stock Type</button></div>
+        <div id="msg" class="text-center" style="border-radius: 5px; "></div>
+        <!-- table start -->
+        <div class="card mt-4">
+            <div class="card-header text-center"><b>Stock Types</b></div>
+            <div class="card-body" id="all_stock_types">
+               
+            </div>
+        </div>
+        <!-- table end  -->
+    </div>
+    <!-- Add New Account Modal -->
+    <div class="modal fade" id="add_stock_tyoe_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Stock Type</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="all-reply"></div>
+                    <form id="stock_type_data">
+                        <!-- {% csrf_token %} -->
+                        <div class="form-group">
+                            <label for="">Stock Type Code#<span style="color:red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" name="stock_type_code" id="stock_type_code">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="">Description</label>
+                            <textarea type="text" class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="just_insert">Save & New</button>
+                    <button type="button" class="btn btn-primary" id="insert_and_close">Save & Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Account Modal -->
+    <div class="modal fade" id="update_stock_type_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="edit_reply"></div>
+                    <div>
+                        <form id="edit_stock_type_data">
+                            <!-- {% csrf_token %} -->
+                            <div class="form-group">
+                                <label for="">Stock Type Code#<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" readonly name="edit_stock_type_code" id="edit_stock_type_code">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" id="edit_name" name="edit_name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="">Description</label>
+                                <textarea type="text" class="form-control" id="edit_description" name="edit_description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="just_update">Update</button>
+                    <button type="button" class="btn btn-primary" id="update_and_close">Edit & Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // update load button
+            $(document).on("click", ".update_stock_type_data", function () {
+                var stock_type_code = $(this).attr('id');
+                $.ajax({
+                    url: 'stock_type_load_for_update/' + stock_type_code,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data)
+                        $('#edit_stock_type_code').val(data.stock_type_code)
+                        $('#edit_description').val(data.description)
+                        $('#edit_name').val(data.name);
+                        
+                    }
+                });
+            });
+            
+            // insert message id become empty
+            $(document).on("click", "#btn_save", function () {
+                $("#all-reply").empty();
+            });
+            // update message id become empty
+            $(document).on("click", ".update_btn", function () {
+                $("#edit_reply").empty();
+            });
+            // just insert Account data
+            $("#just_insert").on("click", function () {
+                // alert("came here");
+                var stock_type_form = $("#stock_type_data").serialize();
+                $.ajax({
+                    url: "stock_type_insert",
+                    type: "POST",
+                    data: stock_type_form,
+                    success: function (data) {
+                        if (data == "Stock Type Created") {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_type();
+                            $("#stock_type_data")[0].reset();
+                        } else {
+
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // insert and close Account data
+            $("#insert_and_close").on("click", function () {
+                var stock_type_form = $("#stock_type_data").serialize();
+                $.ajax({
+                    url: "stock_type_insert",
+                    type: "POST",
+                    data: stock_type_form,
+                    success: function (data) {
+                        if (data == "Stock Type Created") {
+                            $('#add_stock_tyoe_model').modal('hide');
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_type();
+                            $("#stock_type_data")[0].reset();
+                        } else {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // just Update Account data
+            $("#just_update").on("click", function () {
+                var code = $("#edit_stock_type_data").serialize();
+                $.ajax({
+                    url: "stock_type_update",
+                    type: "POST",
+                    data: code,
+                    success: function (data) {
+                        if (data == "Stock Type Updated") {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_type();
+                            $("#edit_accounts_data")[0].reset();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // Update and close Account Modal
+            $("#update_and_close").on("click", function () {
+                var code = $("#edit_stock_type_data").serialize();
+                $.ajax({
+                    url: "stock_type_update",
+                    type: "POST",
+                    data: code,
+                    success: function (data) {
+                        if (data == "Stock Type Updated") {
+                            $('#update_stock_type_model').modal('hide');
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_type();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+           
+            Stock_type();
+            
+        });
+
+        // Chart of accounts call
+        function Stock_type() {
+            $.ajax({
+                url: "stock_type_select",
+                type: 'POST',
+                success: function (stock) {
+                    $("#all_stock_types").html(stock);
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

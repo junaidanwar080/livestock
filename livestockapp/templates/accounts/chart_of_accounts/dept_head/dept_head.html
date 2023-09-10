@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chart Of Accounts</title>
+</head>
+
+<body>
+    {% include  'navbar.html' %}
+
+
+    <div class="container">
+        <div style="margin-left: 88%; margin-top: 2%;"><button class="btn btn-sm btn-primary" id="btn_save" data-toggle="modal"
+            data-target="#add_account_model">Add Sub Head</button></div>
+        <div id="msg" class="text-center" style="border-radius: 5px; "></div>
+        <!-- table start -->
+        <div class="card mt-4">
+            <div class="card-header text-center"><b>Department heads</b></div>
+            <div class="card-body" id="all_accounts">
+            </div>
+        </div>
+        <!-- table end  -->
+    </div>
+
+    <!-- Add New Account Modal -->
+    <div class="modal fade" id="add_account_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Sub Head Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="all-reply"></div>
+                    <form id="accounts_data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="">Main Code<span style="color:red; font-weight:bold">*</span></label>
+                            <select type="text" class="form-control" name="main_code" id="main_code">
+                                {% for i in main_head %}
+                                    <option value="{{i.main_code}}">{{i.description}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Sub Code<span style="color:red; font-weight:bold">*</span></label>
+                            <select type="text" class="form-control" name="sub_code" id="sub_code">
+                                {% for i in sub_head %}
+                                    <option value="{{i.sub_code}}">{{i.description}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Dept Code<span style="color:red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" name="dept_code" id="dept_code">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" id="ac_name" name="ac_name">
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="just_insert">Save & New</button>
+                    <button type="button" class="btn btn-primary" id="insert_and_close">Save & Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Account Modal -->
+    <div class="modal fade" id="update_account_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="edit_reply"></div>
+                    <div>
+                        <form id="edit_accounts_data">
+                            {% csrf_token %}
+                            <div class="form-group" hidden>
+                                <label for="">Account Number<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" name="edit_ac_no" id="edit_ac_no">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Main Code<span style="color:red; font-weight:bold">*</span></label>
+                                <select type="text" class="form-control" name="edit_main_code" id="edit_main_code">
+                                    {% for i in main_head %}
+                                        <option value="{{i.main_code}}">{{i.description}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Sub Code<span style="color:red; font-weight:bold">*</span></label>
+                                <select type="text" class="form-control" name="edit_sub_code" id="edit_sub_code">
+                                    {% for i in sub_head %}
+                                        <option value="{{i.sub_code}}">{{i.description}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Dept Code<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" name="edit_dept_code" readonly id="edit_dept_code">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" id="edit_ac_name" name="edit_ac_name">
+                            </div>
+                            
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="just_update">Update</button>
+                    <button type="button" class="btn btn-primary" id="update_and_close">Edit & Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // update load button
+            $(document).on("click", ".update_account_data", function () {
+                var account_code = $(this).attr('id');
+                // alert(account_code);
+                $.ajax({
+                    url: 'dept_head_load_for_update/' + account_code,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data)
+                        $('#edit_ac_no').val(data.account_no)
+                        //$('#edit_main_code').val(data.Main_code)
+                        $('#edit_sub_code').val(data.sub_code)
+                        $('#edit_ac_name').val(data.description)
+                        $('#edit_dept_code').val(data.dept_code)
+                        
+                    }
+                });
+            });
+            
+            // insert message id become empty
+            $(document).on("click", "#btn_save", function () {
+                $("#all-reply").empty();
+            });
+            // update message id become empty
+            $(document).on("click", ".update_btn", function () {
+                $("#edit_reply").empty();
+            });
+            // just insert Account data
+            $("#just_insert").on("click", function () {
+                // alert("came here");
+                var account_form = $("#accounts_data").serialize();
+                $.ajax({
+                    url: "dept_head_insert",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Created") {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            dept_heads();
+                            $("#accounts_data")[0].reset();
+                        } else {
+
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // insert and close Account data
+            $("#insert_and_close").on("click", function () {
+                var account_form = $("#accounts_data").serialize();
+                $.ajax({
+                    url: "dept_head_insert",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Created") {
+                            $('#add_account_model').modal('hide');
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            dept_heads();
+                            $("#accounts_data")[0].reset();
+                        } else {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // just Update Account data
+            $("#just_update").on("click", function () {
+                var account_form = $("#edit_accounts_data").serialize();
+                $.ajax({
+                    url: "dept_head_update",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Updated") {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            dept_heads();
+                            //$("#edit_accounts_data")[0].reset();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // Update and close Account Modal
+            $("#update_and_close").on("click", function () {
+                var account_form = $("#edit_accounts_data").serialize();
+                $.ajax({
+                    url: "dept_head_update",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Updated") {
+                            $('#update_account_model').modal('hide');
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            dept_heads();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+           
+            dept_heads();
+            
+        });
+
+        // Chart of accounts call
+        function dept_heads() {
+            $.ajax({
+                url: "dept_head_select",
+                type: 'POST',
+                success: function (all_accounts) {
+                    $("#all_accounts").html(all_accounts);
+                }
+            });
+        }
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+    </script>
+</body>
+
+</html>

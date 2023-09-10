@@ -1,0 +1,81 @@
+
+
+<!-- Add voucher Type Modal  START-->
+<div class="modal fade" id="add_voucher_type_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Voucher Type</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="all-reply"></div>
+            <form id="insert_voucher_type">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="">Description<span style="color:red; font-weight:bold">*</span></label>
+                    <input type="text" class="form-control" id="voucher_type_name" name="voucher_type_name">
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="just_insert_voucher_type">Save & New</button>
+            <button type="button" class="btn btn-primary" id="insert_and_close">Save & Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Add voucher Type Modal  END-->
+
+
+
+
+
+
+    <!-- Update Account Modal START-->
+    <div class="modal fade" id="update_voucher_type_model" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="edit_reply"></div>
+                    <div>
+                        <form id="edit_voucher_type_data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="">Id</label>
+                                <input type="text" class="form-control" name="update_voucher_type_id"
+                                    id="update_voucher_type_id">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Description<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" id="update_voucher_type_name"
+                                    name="update_voucher_type_name">
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="just_update_voucher_type">Update</button>
+                    <button type="button" class="btn btn-primary" id="update_and_close">Edit & Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Update Account Modal END-->

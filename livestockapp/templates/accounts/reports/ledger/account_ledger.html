@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chart Of Accounts</title>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+<table class="table-sm" style="margin-left:15%; width: 50%;">
+    <tr>
+        <td><b>From Date</b></td><td><input type="date" id="from_date" name="from_date" class="form-control" value="{{date}}"></td>
+        <td><b>To Date</b></td><td><input type="date" id="to_date" name="to_date" class="form-control" value="{{date}}"></td>
+    </tr>
+    <tr>
+        <td><b>Select Account</b></td><td><input type="text" autocomplete="off" list="browsers" id="account_no" name="account_no" class="form-control"></td>
+        <td><button class="btn btn-primary" id="get_details">Get Details</button></td>
+    </tr>
+</table>
+    <div id="all_accounts" style="margin-left: 100px; margin-right: 100px; margin-top: 10px;" >
+       
+    </div>
+   
+
+   
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#get_details').on('click',function(){
+                var to_date = $('#to_date').val()
+                var from_date = $('#from_date').val()
+                var account_no = $('#account_no').val()
+                if(account_no ==''){
+                    alert('Please Select Account')
+                    return
+                }
+                $.ajax({
+                    url: "get_account_detail",
+                    type: 'POST',
+                    data:{account_no:account_no , to_date:to_date,from_date:from_date },
+                    success: function (all_accounts) {
+                        $("#all_accounts").html(all_accounts);
+                    }
+                });
+                
+            })
+            ledger();
+            account_names()
+        });
+
+        // Accounts Ledger
+        function ledger() {
+            $.ajax({
+                url: "account_ledger_select",
+                type: 'POST',
+                success: function (all_accounts) {
+                    $("#all_accounts").html(all_accounts);
+                }
+            });
+        }
+        function account_names() {
+
+            $.ajax({
+                url: 'load_all_accounts',
+                type: 'POST',
+                success: function (load) {
+                    $("#account_no").html(load);
+                }
+            });
+        }
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+    </script>
+</body>
+
+</html>

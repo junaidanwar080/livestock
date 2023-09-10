@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <title>Purchase bill</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div id="msg"></div>
+
+    <div style="margin-left:1000px;" class="mt-3">
+        <a href="/bill_details" class="btn btn-primary">View All Bills</a>
+    </div>
+    <!-- Ledger Equity Insert Modal Start -->
+    <div>
+        <div class="">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 1100px; margin-left: -300px;">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Voucher Details</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form>
+                            {% csrf_token %}
+                            <div style="margin-left: 10px; margin-bottom: 30px;">
+                                <table>
+                                    <tr>
+                                        <td><label><b>Bill no#</b></label></td>
+                                        <td><input autocomplete="off" type="text" list="bills" name="bill_id"
+                                                id="bill_id" value="{{select_main.bill_no}}" placeholder="Invoice no#"
+                                                class="form-control" readonly></td>
+                                        <td><label style="margin-left: 370px;"><b>Vendor Details</b><span
+                                                    style="color:red; font-weight:bold">*</span></label></td>
+                                        <td><input list="vendor_list" autocomplete="off" name="" id="vendor_id"
+                                                placeholder="Vendor details" class="form-control"
+                                                value="{{select_main.ref_party_profile.name}}" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label><b>Select Date</b></label></td>
+                                        <td><input type="date" name="Posted_date" id="Posted_date"
+                                                value="{{select_main.created_on|date:'Y-m-d'}}" class="form-control"
+                                                readonly></td>
+                                        <td></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" hidden name="" id="row_counter" value="1">
+                                <table class="table" id="table_id">
+                                    <thead>
+                                        <tr>
+                                            <th>Item Code<span style="color:red; font-weight:bold">*</span></th>
+                                            <th>Description</th>
+                                            <th>Quantity<span style="color:red; font-weight:bold">*</span></th>
+                                            <th>Unit Price</th>
+                                            <th>Total Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body">
+                                        {% for i in select_details %}
+
+                                        <tr>
+
+                                            <td>{{i.stock_in_hand.stock_id}}</td>
+                                            <td>{{i.stock_in_hand.name}}</td>
+                                            <td>{{i.quantity}}</td>
+                                            <td>{{i.price}}</td>
+                                            <td>{{i.total_price}}</td>
+                                        </tr>
+
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style=" margin-bottom: 10px; margin-left: 22px;">
+                        
+                        <b style="margin-left: 737px; margin-right: 20px;">Grand Total</b>
+                        <input readonly="" style=" border-radius: 5px; height: 35px; width: 145px;" type="text"
+                            name="total" id="grand_total" value="{{total_price_sum}}">
+                    </div>
+                    <div style="margin-bottom: 10px;" hidden="">
+                        <b style="margin-left: 807px; margin-right: 20px;">Discount</b>
+                        <input style=" border-radius: 5px; height: 35px; width: 100px;" type="text" name="total"
+                            id="discount" value="0.00">
+                        <span style="margin-left: 10px;"><b>%</b></span>
+                    </div>
+
+                    <div style="margin-bottom: 10px;" hidden="">
+                        <b style="margin-left: 770px; margin-right: 20px;">Net payment</b>
+                        <input style=" border-radius: 5px; height: 35px; width: 145px;" type="text" name="total"
+                            id="after_additional_discount">
+                    </div>
+                    <!-- Modal footer -->
+                    <!-- <div class="modal-footer"> -->
+
+
+
+                        <!-- <button type="button" style="margin-right: 40px;" class="btn btn-primary save_payment"
+                            id="on_credit">Cash Payment</button> -->
+
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ledger Equity Insert Modal End -->
+
+
+
+</body>
+
+</html>

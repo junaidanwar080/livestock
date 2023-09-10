@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Finish Goods</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    {% include './stock_profile_models.html' %}
+    
+    <div class="container">
+        <div style="margin-left: 88%; margin-top: 2%;"><button  class="btn btn-sm btn-primary" id="btn_save" data-toggle="modal"
+            data-target="#add_account_model">Add product</button></div>
+        <div id="msg" class="text-center" style="border-radius: 5px; "></div>
+        <!-- table start -->
+        <div class="card mt-4">
+            <div class="card-header text-center"><b>Finish Goods</b></div>
+            <div class="card-body" id="all_accounts">
+               
+            </div>
+        </div>
+        <!-- table end  -->
+    </div>
+    
+   
+    <!-- Update Account Modal -->
+    <div class="modal fade" id="update_account_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Product Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="edit_reply"></div>
+                    <div>
+                        <form id="stock_profile_data">
+                            <div class="form-group">
+                                <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Sale Price<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="number" class="form-control" id="sale_price" name="sale_price">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Purcahse Price<span style="color:red; font-weight:bold">*</span></label>
+                                <input type="number" class="form-control" id="purchase_price" name="purchase_price">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Stock Type<span style="color:red; font-weight:bold">*</span></label>
+                                <select class="form-control" id="stock_type_id" name="stock_type_id">
+                                    {% for i in select_stock_type %}
+                                        <option value="{{i.stock_type_code}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Description</label>
+                                <textarea type="text" class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="just_update">Update</button>
+                    <button type="button" class="btn btn-primary" id="update_and_close">Edit & Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // update load button
+            $(document).on("click", ".update_account_data", function () {
+                var account_code = $(this).attr('id');
+                 //alert(account_code);
+                $.ajax({
+                    url: 'account_load_for_update/' + account_code,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data)
+                        //$('#update_ac_id').val(data.Account_No)
+                        $('#update_ac_name').val(data.description)
+                        $('#update_ac_no').val(data.account_No)
+                        //$('#update_ac_opening_balance').val(data.opening_balance)
+                    }
+                });
+            });
+            
+            // insert message id become empty
+            $(document).on("click", "#btn_save", function () {
+                $("#all-reply").empty();
+            });
+            // update message id become empty
+            $(document).on("click", ".update_btn", function () {
+                $("#edit_reply").empty();
+            });
+            // just insert Account data
+            $("#just_insert").on("click", function () {
+                 //alert("came here");
+                var profile_data = $("#stock_profile_data").serialize();
+                $.ajax({
+                    url: "stock_profile_insert",
+                    type: "POST",
+                    data: profile_data,
+                    success: function (data) {
+                        if (data == "New Item Added") {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_Profile();
+                            $("#accounts_data")[0].reset();
+                        } else {
+
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // insert and close Account data
+            $("#insert_and_close").on("click", function () {
+                var profile_data = $("#stock_profile_data").serialize();
+                $.ajax({
+                    url: "stock_profile_insert",
+                    type: "POST",
+                    data: profile_data,
+                    success: function (data) {
+                        if (data == "New Item Added") {
+                            $('#add_account_model').modal('hide');
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_Profile();
+                            $("#accounts_data")[0].reset();
+                        } else {
+                            $("#all-reply").empty();
+                            $("#all-reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // just Update Account data
+            $("#just_update").on("click", function () {
+                var account_form = $("#edit_accounts_data").serialize();
+                $.ajax({
+                    url: "chart_of_account_update",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Updated") {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_Profile();
+                            $("#edit_accounts_data")[0].reset();
+                        } else if (data == "plese fill all required fields") {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+            // Update and close Account Modal
+            $("#update_and_close").on("click", function () {
+                var account_form = $("#edit_accounts_data").serialize();
+                $.ajax({
+                    url: "chart_of_account_update",
+                    type: "POST",
+                    data: account_form,
+                    success: function (data) {
+                        if (data == "Account Updated") {
+                            $('#update_account_model').modal('hide');
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-success text-center" role="alert">' + data + '</div>');
+                            $("#edit_reply").fadeIn();
+                            $("#edit_reply").fadeOut(3000).delay(1000).hide(100);
+                            Stock_Profile();
+                        } else {
+                            $("#edit_reply").empty();
+                            $("#edit_reply").append('<div class="alert alert-danger text-center" role="alert">' + data + '</div>');
+                            $("#all-reply").fadeIn();
+                            $("#all-reply").fadeOut(3000).delay(1000).hide(100);
+                        }
+                    }
+                });
+            });
+           
+            Stock_Profile();
+            
+        });
+
+       
+        // Chart of accounts call
+        function Stock_Profile() {
+            $.ajax({
+                url: "stock_profile_select",
+                type: 'POST',
+                success: function (all_accounts) {
+                    $("#all_accounts").html(all_accounts);
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

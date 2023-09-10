@@ -5,7 +5,7 @@
 <body>
   
 
-{% extends 'navbar.html' %}
+  {% include  'navbar.html' %}
 
 {% block content %}
 
@@ -76,17 +76,14 @@
         <label class=" control-label">Email :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="text" class="form-control" id="email" name="email" value="{{user_profile.email}}" >
       </div>
-      <div class="col">
-        <label class=" control-label">Phone Number :</label>
-        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{user_profile.phone_number}}" >
-      </div>
+      
     </div>
     
     <div class="row" style="margin-top:10px;">
-      <div class="col" >
+      {% comment %} <div class="col" >
         <label class="from-group" >User Role :<span style="color:red; font-weight:bold;">*</span></label>
         <select name="user_group" id="user_group" class="form-control" >
-          {% for y in user_group %}
+          {% for y in user_group_list %}
             {% if user_profile.user_group == y.user_group %}
               <option  value="{{y.user_group}}" selected>{{y.name}}</option>  
             {% else %}
@@ -94,8 +91,11 @@
             {% endif %}
           {% endfor %}
         </select>
+      </div> {% endcomment %}
+      <div class="col">
+        <label class=" control-label">Phone Number :</label>
+        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{user_profile.phone_number}}" >
       </div>
-
       <div class="col" >
         <label for="purchase_price ">City :</label>
         <input type="text" class="form-control" id="city" name="city" value="{{user_profile.city}}" >
@@ -133,7 +133,7 @@
         {% else %}
           <input type="checkbox"  id="status" name="status" value="{{user_profile.status}}">
         {% endif %}
-        <input type="text"  id="status_val" name="status_val"  value="0" >
+        <input type="hidden"  id="status_val" name="status_val"  value="0" >
       </div>
       <div class="col" >
       </div>

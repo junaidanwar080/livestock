@@ -1,0 +1,47 @@
+<table class="table table-hover" >
+    <thead>
+        <tr>
+            <th>Main Code</th>
+            <th>Sub Code</th>
+            <th>Dept Code</th>
+            <th>Accounts Code</th>
+            <th>Description</th>
+            <!-- <th>Created On</th>
+            <th>Created By</th>
+            <th>Updated On</th>
+            <th>Updated By</th> -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        {% for i in accounts_select %}
+
+    <tr>
+        <td>{{i.main_code}}</td>
+        {% if i.sub_code is None %}
+        <td>00</td>
+        {% else %}
+        <td>{{i.sub_code}}</td>
+        {% endif %}
+        {% if i.dept_code is None %}
+        <td>00</td>
+        {% else %}
+        <td>{{i.dept_code}}</td>
+        {% endif %}
+        <td>{{i.account_no}}</td>
+        <td>{{i.description|capfirst}}</td>
+        <!-- <td>{{i.created_on|date:'d-m-Y'}}</td>
+        <td>{{i.created_by.username|capfirst}}</td>
+        <td>{{i.updated_on|date:'d-m-Y'}}</td>
+        <td>{{i.updated_by.username|capfirst}}</td> -->
+         <td><!--<button  id="{{ i.Account_No }}" class="btn btn-danger btn-sm party_delete">Delete</button> -->
+            <button id="{{ i.account_no }}" class="btn btn-primary btn-sm update_account_data" data-toggle="modal" data-target="#update_account_model">Edit</button></td>
+    </tr>
+    
+    {% endfor %}
+    
+    
+
+    </tbody>
+</table>

@@ -1,0 +1,21 @@
+
+<html lang="en">
+  <head>
+    <title>Dashboard</title>
+  </head>
+  <body>
+ 
+{% include 'navbar.html' %}
+<b>User Id: {{user.id}}</b>
+<br>
+<b>User Name: {{user.username}}</b>
+<br>
+<b>Is Super User: {{user.is_superuser}}</b>
+<br>
+<b>User group: {{user_group}}</b>
+{% if user_group == 1 %}
+  <br>
+  <b>Admin</b>
+{% endif %} 
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<table class="table table-hover table-sm">
+    <thead>
+        <tr>
+            <th>Main Code</th>
+            <th>Sub Code</th>
+            <th>Dept Code</th>
+            <th>Accounts Code</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for i in accounts_select %}
+
+        <tr>
+            {% if i.main_code is None %}
+            <td></td>
+            {% else %}
+            <td>{{i.main_code}}</td>
+            {% endif %}
+            {% if i.sub_code is None %}
+            <td></td>
+            {% else %}
+            <td>{{i.sub_code}}</td>
+            {% endif %}
+            {% if i.dept_code is None %}
+            <td></td>
+            {% else %}
+            <td>{{i.dept_code}}</td>
+            {% endif %}
+            <td>{{i.account_no}}</td>
+            
+            <td>{{i.description|capfirst}}</td>
+            <td>{{i.created_on|date:'d-m-Y'}}</td>
+            
+
+            {% if i.is_account is False %}
+            <td></td>
+            {% else %}
+            <td><button id="{{ i.account_no }}" class="btn btn-primary btn-sm update_account_data" data-toggle="modal"
+                    data-target="#update_account_model">Edit</button></td>
+            {% endif %}
+
+        </tr>
+
+        {% endfor %}
+
+
+
+    </tbody>
+</table>

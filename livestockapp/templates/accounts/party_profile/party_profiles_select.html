@@ -1,0 +1,21 @@
+
+    <div>
+        
+        {% for i in select_all %}
+
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.address|capfirst}}</td>
+        <td>{{i.ntn_no}}</td>
+        <td>{{i.phone_no}}</td>
+        <td>{{i.description}}</td>
+        <td>{{i.ref_party_type.description}}</td>
+        <td>{{i.chart_of_account.description}}</td>
+        <td>{{i.created_on|date:'d-m-Y'}}</td>
+         <td><!--<button  id="{{ i.Account_No }}" class="btn btn-danger btn-sm party_delete">Delete</button> -->
+            <button id="{{ i.party_code }}" class="btn btn-primary btn-sm update_profile" data-toggle="modal" data-target="#update_party_profile_model">Edit</button></td>
+    </tr>
+    
+    {% endfor %}
+</div>

@@ -1,5 +1,11 @@
-{% extends 'navbar.html' %}
-{% block content %}
+<html>
+  <head>
+    <title>Animal Category List</title>
+  </head>
+  <body>
+{% include 'navbar.html' %}
+
+<a href="/cat_insert" class="btn btn-primary" style="margin-left: 80%">Add Category</a>
    
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Category</h4>
@@ -59,4 +65,5 @@
   });  
 </script>
 
-{% endblock content %}
+</body>
+</html>

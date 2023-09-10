@@ -1,0 +1,78 @@
+<!-- Add New Account Modal -->
+<div class="modal fade" id="add_account_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Main Head Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="all-reply"></div>
+            <form id="accounts_data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="">Main Code<span style="color:red; font-weight:bold">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter 2 digit Code" name="ac_no"
+                        id="ac_no">
+                </div>
+                <div class="form-group">
+                    <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                    <input type="text" class="form-control" id="ac_name" name="ac_name">
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="just_insert">Save & New</button>
+            <button type="button" class="btn btn-primary" id="insert_and_close">Save & Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Update Account Modal -->
+<div class="modal fade" id="update_account_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="edit_reply"></div>
+            <div>
+                <form id="edit_accounts_data">
+                    {% csrf_token %}
+                    <div class="form-group" hidden>
+                        <label for="">Account No<span style="color:red; font-weight:bold">*</span></label>
+                        <input type="text" class="form-control" name="update_ac_no" id="update_ac_no">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Main Code<span style="color:red; font-weight:bold">*</span></label>
+                        <input type="text" class="form-control" readonly name="update_main_code"
+                            id="update_main_code">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Name<span style="color:red; font-weight:bold">*</span></label>
+                        <input type="text" class="form-control" id="update_ac_name" name="update_ac_name">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="just_update">Update</button>
+            <button type="button" class="btn btn-primary" id="update_and_close">Edit & Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Update Main head Modal End-->

@@ -1,0 +1,63 @@
+<html>
+
+<body>
+    {% include 'header.html' %}
+    <!-- ----------------------------------------------------------------------------------------------------------------- -->
+        <table style="width:90%; margin-left: 3%; margin-right: 3%; margin-top: 5px;" >
+            <tr>
+                <td>
+                    <span ><b>Computer No</b></span>
+                    <input type="text" placeholder="Search Computer no#" value="PV-" id="voucher_id">
+                </td>
+                <td>
+                    <h5 style="margin-left: 0%; " >Bill Details</h5>
+                </td>
+                <td><b style="margin-left: 30%; ">Total number of Bills: {{count_bills}}</b></td>
+            </tr>
+        </table>
+    <!-- table start -->
+        <div style="margin-left: 3%; margin-top: 1%; margin-right: 3%; margin-bottom:-15px">
+            <table class="table table-hover table-sm">
+                <thead>
+                    <tr style="background: #A9A9A9">
+                        <th>Sr.</th>
+                        <th>Bill Number</th>
+                        <th>Party Name</th>
+                        <th>Amount</th>
+                        <th>Voucher Date</th>
+                        <th>Created By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in select_details %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>PV-{{i.stock_purchase_main__bill_no}}</td>
+                        <td>{{i.stock_purchase_main__ref_party_profile__name}}</td>
+                        <td>{{i.res_price}}</td>
+                        <td>{{i.stock_purchase_main__Bill_date|date:'d-m-Y'}}</td>
+
+                        <td>{{i.stock_purchase_main__created_by__username}}</td>
+                        <td><a class="btn btn-primary btn-sm update_account_data"
+                                href="edit_bill_details/{{ i.stock_purchase_main__bill_no }}">View</a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>{{total_res_price}}</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- table end  -->
+        </div>
+        <hr style="margin-left: 3%; margin-right: 3%;">
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+</body>
+
+</html>
