@@ -148,12 +148,12 @@
 		    <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
        <select  name="gender" class="form-control" required="required" id="gender" class="gender">
           {% if animal.gender == 'male' %}
-            <option value="male" selected >Male</option>
-            <option value="female" >Female</option>
+            <option value="Male" selected >Male</option>
+            <option value="Female" >Female</option>
             
           {% else  %}
-          <option value="female" selected>Female</option>
-          <option value="male" >male</option>
+          <option value="Female" selected>Female</option>
+          <option value="Male" >male</option>
           {% endif %}
           
         </select>
@@ -162,7 +162,7 @@
         <label class="from-group" >Person :<span style="color:red; font-weight:bold;">*</span></label>
         <select name="person_id" id="person_id" class="form-control" >
           {% for y in per %}
-            {% if per.person_id == y.id %}
+            {% if animal.user_id == y.id %}
               <option  value="{{y.id}}" selected>{{y.username}}</option>  
             {% else %}
               <option  value="{{y.id}}">{{y.username}}</option> 
@@ -186,11 +186,11 @@
       <div class="col" >
         <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
         {% if animal.status == 1 %}
-          <input type="checkbox" checked id="status" name="status" value="{{animal.status}}">
+          <input type="checkbox" checked id="status" name="status" value="{{animal.status}} ">
         {% else %}
-          <input type="checkbox"  id="status" name="status" value="{{animal.status}}">
-        {% endif %}
-        <input type="text"  id="status_val" name="status_val"  value="0" hidden>
+          <input type="checkbox"  id="status" name="status" value="{{animal.status}} ">
+          {% endif %}
+          <input type="text"  id="status_val" name="status_val"  value="0" hidden>
       </div>    
     </div>
     <div class="row">
@@ -209,22 +209,7 @@
 
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    gender = $("#gender").val();
-    if(gender == 'male'){
-      $("#pregnant_val").val(0);
-      $("#hiddenFields1").hide();
-      $("#hiddenFields").hide();
-    }else{
-    if($('#is_pregnant').is(":checked")){
-      $("#pregnant_val").val(1);
-        $("#hiddenFields").show();
-      } else{
-      $("#pregnant_val").val(0);
-      $("#hiddenFields").hide();
-    }
-
-  }
+ 
 
    
   if($('#status').is(":checked")){
@@ -245,53 +230,7 @@
 
 
 
-          // 
-          $("#is_pragnant").on('click',function(){
-            var is_pragnant = $("#is_pragnant").val();
-            if($('#is_pragnant').is(":checked")){
-              $("#pragnant_val").val(1);
-                $("#hiddenFields").show();
-              } else{
-              $("#pragnant_val").val(0);
-              $("#hiddenFields").hide();
-            }    
-          });
-
-          $("#gender").on('change',function(){
-            var gender = $("#gender").val();
-        
-            if(gender == "male"){
-              $("#hiddenFields1").hide();
-              $("#hiddenFields").hide();
-              $("#pragnant_val").val(0);
-            }
-            else{
-              $("#hiddenFields1").show();
-<<<<<<<<< Temporary merge branch 1
-              $("#hiddenFields").show();
-=========
-             
->>>>>>>>> Temporary merge branch 2
-            }
-               
-          });
-        
-        
-      });
-      
-      {% comment %} function changeDropdown(){ 
-        
-        var state=document.getElementById("gender").value;
-        if(state == "male")
-        {
-            document.getElementById("hiddenFields1").style.visibility="hidden";
-            document.getElementById(input.attr('hiddenFields1')).value = '';
-          }
-          else
-          {
-            document.getElementById("hiddenFields1").style.visibility="visible";
-          }
-        } {% endcomment %}
+     
       </script>  
      
       {% endblock content %}
