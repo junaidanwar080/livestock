@@ -13,14 +13,13 @@ from .models import (
     VoucherDetail, 
     RefPartyProfile,
     RefVoucherType,
-    # StockType,
-    # StockInHand,
-    # StockPurchaseMain,
-    # StockPurchaseDetail,
-    # StockSaleMain,
-    # StockSaleDetail,
-    # StockProcessingDetail,
-    # StockProcessingMain
+    StockType,
+    StockInHand,
+    StockPurchaseMain,
+    StockPurchaseDetail,
+    StockSaleMain,
+    StockSaleDetail,
+
 )
 from datetime import datetime
 from django.contrib.auth.models import User , Group
@@ -29,7 +28,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.forms.models import model_to_dict
 from django.core.mail import send_mail
-from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 
 x = datetime.now() 
 date = x.strftime('%Y-%m-%d')
@@ -126,6 +125,7 @@ def insert_animal_profile(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id  
+    all_parties = RefPartyProfile.objects.all()
     if request.method == "POST":     
         token_no = request.POST['token_no']
         name = request.POST['ani_name']
@@ -140,6 +140,12 @@ def insert_animal_profile(request):
         print(person_id)
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
+        voucher_date = request.POST['voucher_date']
+        if voucher_date == '':
+            voucher_date = None
+        else:
+            voucher_date = datetime.strptime(voucher_date,  '%Y-%m-%d')
+            
         if date_of_birth == '':
             date_of_birth = None
         else:
@@ -160,24 +166,32 @@ def insert_animal_profile(request):
         description = request.POST['description']        
         ani=Category.objects.all()
         if token_no == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'date':date,'user_group':user_group})
+            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})
         if name == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         if color == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date,'user_group':user_group}) 
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties}) 
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date,'user_group':user_group})  
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})  
        
         if status == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date,'user_group':user_group})       
+            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})       
         per=User.objects.all() 
         if person_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error7': True, 'per': per,'date':date,'user_group':user_group})    
-       
+            # return render(request,'animal_profile/insert_animal_profile.html', {'error7': True, 'per': per,'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
+            person_id == None
+            
+        try:
+            bill_no = StockPurchaseMain.objects.latest('bill_no')
+            bill_no = bill_no.bill_no + 1
+        except ObjectDoesNotExist:
+            bill_no = 1
+            
+            
         ins=Animal_profile(
                 token_no=token_no,
                 name=name,color=color,
@@ -185,7 +199,7 @@ def insert_animal_profile(request):
                 category_id=category_id,
                 purchase_price=purchase_price,
                 purchased_on=purchased_on,
-                purchased_by=purchased_by,
+                ref_party_profile_id=purchased_by,
                 date_of_birth=date_of_birth,
                 gender=gender,
                 user_id = person_id,
@@ -196,10 +210,26 @@ def insert_animal_profile(request):
                 description=description
             )
         ins.save()   
+        
+        insert_purchase_main=StockPurchaseMain(
+                bill_no = bill_no,
+                Bill_date = voucher_date,
+                ref_party_profile_id = purchased_by,
+                created_on = date,
+                created_by_id = user.id
+            )
+        insert_purchase_main.save()
+        insert_purchase_detail=StockPurchaseDetail(
+                stock_purchase_main_id = insert_purchase_main.bill_no,
+                animal_profile_id  = ins.animal_id,
+                quantity = 1,
+                price = purchase_price
+            )
+        insert_purchase_detail.save()
         return redirect(reverse('list_animal_profile'))
-    ani=Category.objects.all()
+    ani_cat=Category.objects.all()
     per=User.objects.all()
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani ,'date':date , 'per':per,'user_group':user_group} )
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties} )
 def list_animal_profile(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -223,7 +253,13 @@ def animal_pro_edit(request , animal_id ):
     animal = Animal_profile.objects.get(animal_id=animal_id)
     ani=Category.objects.all()
     per=User.objects.all()
-    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani, 'per':per,'user_group':user_group})
+    all_parties = RefPartyProfile.objects.all()
+    purchase_detial = ''
+    try:
+        purchase_detial = StockPurchaseDetail.objects.get(animal_profile_id=animal_id)
+    except ObjectDoesNotExist:
+        purchase_detial = None
+    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani, 'per':per,'user_group':user_group,'all_parties':all_parties,'purchase_detial':purchase_detial })
 
 def update_animal(request, animal_id):
     user = request.user
@@ -1575,94 +1611,100 @@ def vendor_profiles(request):
 # Purchase Bill
 # -------------------------------------------------------------------------------
 # @login_required(login_url='/login')
-# def purchase_bill(request):
-#     user= request.user
-#     vender_list = RefPartyProfile.objects.filter(ref_party_type_id=1234)
-#     return render(request, 'Accounts/Purchase/purchase_bill.html', {'user': user, 'date': y , 'vender_list':vender_list})
+def purchase_bill(request):
+    user = request.user
+    if user.is_authenticated and user.groups.exists():
+        user_group = user.groups.first().id
+    vender_list = RefPartyProfile.objects.filter(ref_party_type_id=1234)
+    return render(request, 'Accounts/Purchase/purchase_bill.html', {'user': user, 'date': y , 'vender_list':vender_list,'user_group':user_group})
 
 
-# def purchase_bill_insert(request):
-#     if request.method == 'POST':
-#         user = request.user
-#         bill_id = request.POST['bill_id']
-#         vendor_id = request.POST['vendor_id']
-#         posted_date = request.POST['Posted_date']
-#         all_item_code = request.POST['all_item_code']
-#         all_item_code_list = [x.strip() for x in all_item_code.split(',')]
-#         all_item_quantity = request.POST['all_item_quantity']
-#         all_item_quantity_list = [x.strip() for x in all_item_quantity.split(',')]
-#         all_unit_price = request.POST['all_unit_price']
-#         all_unit_price_list = [x.strip() for x in all_unit_price.split(',')]
-#         if vendor_id=='' or posted_date=='' or bill_id=="":
-#             return JsonResponse('Please Fill all Required Fields', safe=False)
-#         else:
-#             for x in range(len(all_item_code_list)):
-#                 if all_item_code_list[x] == '' or all_item_quantity_list[x] == '' or all_unit_price_list[x] == '':
-#                     return JsonResponse('Please Fill all Required Fields', safe=False)
-#             insert_main = StockPurchaseMain(
-#                 bill_no=bill_id,
-#                 ref_party_profile_id=vendor_id,
-#                 Bill_date=posted_date,
-#                 created_by_id=user.id
-#             )
-#             insert_main.save()
-#             # last_bill_date = Stock_purchase_main.objects.aggregate(max_bill_date=Max('created_on'))
-#             # last_bill = Stock_purchase_main.objects.get(created_on=last_bill_date['max_bill_date'])
-#             # print('Last Inserted1: ', type(last_bill.Bill_No))
-#             # print('Last Inserted1: ', type(bill_id))
-#             for x in range(len(all_item_code_list)):
-#                 curent_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
-#                 if curent_stock.stock_in_hand is None:
-#                     curent_stock.stock_in_hand = 0
-#                 update_inventory = int(curent_stock.stock_in_hand) + int(all_item_quantity_list[x])
-#                 update_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
-#                 update_stock.stock_in_hand = update_inventory
-#                 update_stock.save()
-#                 insert_detail = StockPurchaseDetail(
-#                     stock_in_hand_id=all_item_code_list[x],
-#                     quantity=all_item_quantity_list[x],
-#                     price=float(all_unit_price_list[x]),
-#                     stock_purchase_main_id=bill_id
-#                 )
-#                 insert_detail.save()
-#             return JsonResponse('Data Inserted', safe=False)
+def purchase_bill_insert(request):
+    user = request.user
+    if user.is_authenticated and user.groups.exists():
+        user_group = user.groups.first().id
+    if request.method == 'POST':
+        user = request.user
+        bill_id = request.POST['bill_id']
+        vendor_id = request.POST['vendor_id']
+        posted_date = request.POST['Posted_date']
+        all_item_code = request.POST['all_item_code']
+        all_item_code_list = [x.strip() for x in all_item_code.split(',')]
+        all_item_quantity = request.POST['all_item_quantity']
+        all_item_quantity_list = [x.strip() for x in all_item_quantity.split(',')]
+        all_unit_price = request.POST['all_unit_price']
+        all_unit_price_list = [x.strip() for x in all_unit_price.split(',')]
+        if vendor_id=='' or posted_date=='' or bill_id=="":
+            return JsonResponse('Please Fill all Required Fields', safe=False)
+        else:
+            for x in range(len(all_item_code_list)):
+                if all_item_code_list[x] == '' or all_item_quantity_list[x] == '' or all_unit_price_list[x] == '':
+                    return JsonResponse('Please Fill all Required Fields', safe=False)
+            insert_main = StockPurchaseMain(
+                bill_no=bill_id,
+                ref_party_profile_id=vendor_id,
+                Bill_date=posted_date,
+                created_by_id=user.id
+            )
+            insert_main.save()
+            # last_bill_date = Stock_purchase_main.objects.aggregate(max_bill_date=Max('created_on'))
+            # last_bill = Stock_purchase_main.objects.get(created_on=last_bill_date['max_bill_date'])
+            # print('Last Inserted1: ', type(last_bill.Bill_No))
+            # print('Last Inserted1: ', type(bill_id))
+            for x in range(len(all_item_code_list)):
+                curent_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
+                if curent_stock.stock_in_hand is None:
+                    curent_stock.stock_in_hand = 0
+                update_inventory = int(curent_stock.stock_in_hand) + int(all_item_quantity_list[x])
+                update_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
+                update_stock.stock_in_hand = update_inventory
+                update_stock.save()
+                insert_detail = StockPurchaseDetail(
+                    stock_in_hand_id=all_item_code_list[x],
+                    quantity=all_item_quantity_list[x],
+                    price=float(all_unit_price_list[x]),
+                    stock_purchase_main_id=bill_id
+                )
+                insert_detail.save()
+            return JsonResponse('Data Inserted', safe=False)
        
 
 
-# # Bill Details
-# def bill_details(request):
-#     # select_details = Stock_purchase_main.objects.all()
-#     # .select_related('Bill_no')
-#     select_details = StockPurchaseDetail.objects.values(
-#             'stock_purchase_main__bill_no', 
-#             'stock_purchase_main__created_by__username',
-#             'stock_purchase_main__created_on',
-#             'stock_purchase_main__ref_party_profile__name',
-#             'stock_purchase_main__Bill_date'
+# Bill Details
+def bill_details(request):
+    user = request.user
+    if user.is_authenticated and user.groups.exists():
+        user_group = user.groups.first().id
+    select_details = StockPurchaseDetail.objects.values(
+            'stock_purchase_main__bill_no', 
+            'stock_purchase_main__created_by__username',
+            'stock_purchase_main__created_on',
+            'stock_purchase_main__ref_party_profile__name',
+            'stock_purchase_main__Bill_date'
         
-#         ).annotate(
-#                     res_price=Sum('price')
-#                     )
-#     sum_res_price = select_details.aggregate(total_res_price = Sum('res_price'))
-#     total_res_price = sum_res_price['total_res_price']
-#     count_bills = StockPurchaseMain.objects.count()
-#     return render(request, 'accounts/purchase/bill_details.html', {'select_details': select_details , 'total_res_price':total_res_price , 'count_bills':count_bills})
+        ).annotate(
+                    res_price=Sum('price')
+                    )
+    sum_res_price = select_details.aggregate(total_res_price = Sum('res_price'))
+    total_res_price = sum_res_price['total_res_price']
+    count_bills = StockPurchaseMain.objects.count()
+    return render(request, 'accounts/purchase/bill_details.html', {'select_details': select_details , 'total_res_price':total_res_price , 'count_bills':count_bills,'user_group':user_group})
 
 
-# # Edit purchase bill_details
-# def edit_bill_details(request, bill_id):
-#     user = request.user
-#     total_prices = []
-#     select_main = StockPurchaseMain.objects.get(bill_no=bill_id)
-#     select_details = StockPurchaseDetail.objects.filter(stock_purchase_main_id=bill_id)
-#     for i in select_details:
-#         i.total_price = i.quantity * i.price
-#         total_prices.append(i.total_price)
-#     total_price_sum = sum(total_prices)
-#     print(select_main.created_on)
-#     return render(request, 'accounts/purchase/purchase_detail/purchase_detail.html',
-#                   {'select_details': select_details, 'select_main': select_main, 'total_price_sum': total_price_sum,
-#                    'user': user})
+# Edit purchase bill_details
+def edit_bill_details(request, bill_id):
+    user = request.user
+    total_prices = []
+    select_main = StockPurchaseMain.objects.get(bill_no=bill_id)
+    select_details = StockPurchaseDetail.objects.filter(stock_purchase_main_id=bill_id)
+    for i in select_details:
+        i.total_price = i.quantity * i.price
+        total_prices.append(i.total_price)
+    total_price_sum = sum(total_prices)
+    print(select_main.created_on)
+    return render(request, 'accounts/purchase/purchase_detail/purchase_detail.html',
+                  {'select_details': select_details, 'select_main': select_main, 'total_price_sum': total_price_sum,
+                   'user': user})
 
 
 # -------------------------------------------------------------------------------

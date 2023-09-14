@@ -149,10 +149,10 @@ urlpatterns = [
 # ------------------------------------------------------------------------------------------------
 # Purchase
 # ------------------------------------------------------------------------------------------------
-    # path('purchase_bill',views.purchase_bill, name='purchase_bill'),
-    # path('purchase_bill_insert', views.purchase_bill_insert),
-    # path('bill_details', views.bill_details , name='bill_details'),
-    # path('edit_bill_details/<str:bill_id>', views.edit_bill_details , name='edit_bill_details'),
+    path('purchase_bill',views.purchase_bill, name='purchase_bill'),
+    path('purchase_bill_insert', views.purchase_bill_insert),
+    path('bill_details', views.bill_details , name='bill_details'),
+    path('edit_bill_details/<str:bill_id>', views.edit_bill_details , name='edit_bill_details'),
     
 # ------------------------------------------------------------------------------------------------
 # Sale

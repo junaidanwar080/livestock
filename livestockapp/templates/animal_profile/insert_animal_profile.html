@@ -14,54 +14,37 @@
   
 {% comment %} <div class="container my-3"> 
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
-  <div style="margin:2%;">
+<div style="margin:2%;">
   <form action='/insert_animal_profile' method="POST" >
     <div class="alert alert-dark " role="alert" style="margin-top:5%;"><b >Basic Info</b></div>
     {% if error2 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter Token No !!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert">Please Enter Token No !! </div>
     {% endif %}  
     {% if error3 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter Name !!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert">Please Enter Name !! </div>
     {% endif %} 
     {% if error4 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter Color !!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert">Please Enter Color !! </div>
     {% endif %} 
     {% if error5 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter Category !!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert"> Please Enter Category !! </div>
     {% endif %} 
     {% if error6 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter Gender!!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert">Please Enter Gender!! </div>
     {% endif %} 
     {% if error7 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter Person!!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert"> Please Enter Person!! </div>
     {% endif %} 
-
     {% if error8 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter pragnancy_start_date !!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert">Please Enter pragnancy_start_date !! </div>
     {% endif %} 
     {% if error9 %}
-    <div class="alert alert-danger offset-2" role="alert">
-      Please Enter is_Active Field !!    
-    </div>
+    <div class="alert alert-danger offset-2" role="alert">Please Enter is_Active Field !! </div>
     {% endif %} 
 
 
     {% csrf_token %}
-    <div class="container-fluid" style="margin-left:0%;">
+    {% comment %} <div class="container-fluid" style="margin-left:0%;"> {% endcomment %}
     <div class="row">
       <div class="col">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
@@ -103,8 +86,13 @@
     
       <div class="col" >
         <label for="purchased_by">Purchased By :</label>
+        <select class="form-control" id="purchased_by" name="purchased_by">
+          <option value="">Select Vendor</option>
+          {% for party in all_parties %}
+          <option value="{{party.party_code}}">{{party.name}}</option>
+          {% endfor %}
+        </select>
         
-        <input type="text" class="form-control" id="purchased_by" name="purchased_by"  >
       </div>
     </div>
     <div class="row">
@@ -139,13 +127,21 @@
       </div>
       
     </div>
-    <div class="row">
+    <div class="row" style='margin-top:30px;'>
       <div class="col" >
         <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="checkbox"  id="status" name="status">
         <input type="text"  id="status_val" name="status_val"  value="0" hidden>
-      </div>    
+      </div>  
+      <div class="col"  >
+      </div>
+      <div class="col"  >
+      </div>
+      <div class="col"  >
+        <button  class="btn btn-sm btn-primary" id="btn_save" style="margin-left: 28%; " data-toggle="modal" data-target="#add_account_model">View Voucher</button>
+      </div>  
     </div>
+      
     <div class="row">
       <div class="col">
         <label for="description" >Description :</label>
@@ -153,14 +149,89 @@
       </div>
     </div>
     <div>
-      <button type="submit" class="btn btn-success my-3" >Submit</button>  
+      <button type="submit" class="btn btn-success my-3" id="animal_voucher_post">Submit</button>  
     </div>
-  </div>
+  {% comment %} </div> {% endcomment %}
   </form>
 </div>
           
 
 
+<!--------------------------------------------------------------------->
+<!-- Modal of Animal VOucher Start -->
+<div class=" modal fade" id="add_account_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 1100px; margin-left: -300px;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Voucher Detail</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          {% comment %} <form>
+            {% csrf_token %} {% endcomment %}
+            <div style="margin-left: 10px; margin-bottom: 30px;">
+                <table>
+                    <tr>
+                        <td><label><b>Bill no#</b></label></td>
+                        <td><input autocomplete="off" type="text" list="bills" name="bill_id"
+                                id="bill_id" placeholder="Invoice no#" class="form-control" readonly></td>
+                        <td><label style="margin-left: 370px;"><b>Vendor</b><span
+                                    style="color:red; font-weight:bold">*</span></label></td>
+                        <td>
+                            <input type="hidden"  name="vendor_id" id="vendor_id" class="form-control">
+                            <input type="text"  name="" id="vendor_name" class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label><b>Voucher Date</b></label></td>
+                        <td><input type="date" name="voucher_date" id="voucher_date" value="{{date}}"
+                                class="form-control"></td>
+                        <td></td>
+                    </tr>
+
+                </table>
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="text" hidden name="" id="row_counter" value="1">
+                <table class="table" id="table_id">
+                    <thead>
+                        <tr>
+                            <th>Token Number<span style="color:red; font-weight:bold">*</span></th>
+                            <th>Description</th>
+                            <th>Unit Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+                        <tr>
+                            <td>
+                                <input type="text" name="token" id="token" class="form-control ">
+                            </td>
+                            <td>
+                                <input name="name" id="name" class="form-control">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" name="price" id="price" class="form-control">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% comment %} </form> {% endcomment %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="just_insert">Not Posted</button>
+            <button type="button" class="btn btn-primary" id="insert_and_close">Posted</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal of Animal VOucher Start -->
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -180,8 +251,6 @@
 
   }
 
-   
- 
     $("#status").on('click',function(){
       var status = $("#status").val();
       if ($("#status").is(':checked')) {
@@ -190,8 +259,6 @@
         $("#status_val").val(0);
       }
     })
-
-
 
     // 
     $("#is_pregnant").on('click',function(){
@@ -222,7 +289,30 @@
          
     });
   
-  
+// Voucer Code Start
+// writing token number in Voucher
+$("#token_no").on('keyup',function(){
+  var token_no = $("#token_no").val();
+  $("#token").val(token_no)
+})
+// writing Animal Name in Voucher
+$("#ani_name").on('keyup',function(){
+  var ani_name = $("#ani_name").val();
+  $("#name").val(ani_name)
+})
+// writing Animal Purchase Price in Voucher
+$("#purchase_price").on('keyup',function(){
+  var purchase_price = $("#purchase_price").val();
+  $("#price").val(purchase_price)
+})
+// Show Vendor Name in Voucher
+$("#purchased_by").on('change',function(){
+  var purchased_by = $("#purchased_by").val();
+  var vendor_name = $("#purchased_by option:selected").text(); 
+  $("#vendor_id").val(purchased_by)
+  $("#vendor_name").val(vendor_name)
+})
+// Voucer Code END
 });
 
 </script>  
