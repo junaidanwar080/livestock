@@ -135,17 +135,15 @@ def insert_animal_profile(request):
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
         purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
-        print(purchased_on)
         person_id = request.POST['person_id']
-        print(person_id)
         purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
-        voucher_date = request.POST['voucher_date']
-        if voucher_date == '':
-            voucher_date = None
-        else:
-            voucher_date = datetime.strptime(voucher_date,  '%Y-%m-%d')
-            
+        # voucher_date = request.POST['voucher_date']
+        # if voucher_date == '':
+        #     voucher_date = None
+        # else:
+        #     voucher_date = datetime.strptime(voucher_date,  '%Y-%m-%d')
+        # print(voucher_date)
         if date_of_birth == '':
             date_of_birth = None
         else:
@@ -167,10 +165,10 @@ def insert_animal_profile(request):
         ani=Category.objects.all()
         if token_no == "":
             return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})
-        if name == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
-        if color == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
+        # if name == "":
+        #     return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
+        # if color == "":
+        #     return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         if category_id == "":
              return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties}) 
         if purchase_price == '':
@@ -213,7 +211,7 @@ def insert_animal_profile(request):
         
         insert_purchase_main=StockPurchaseMain(
                 bill_no = bill_no,
-                Bill_date = voucher_date,
+                # Bill_date = voucher_date,
                 ref_party_profile_id = purchased_by,
                 created_on = date,
                 created_by_id = user.id
@@ -353,6 +351,7 @@ def insert_pregnancy_detail(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id
+    det=Animal_profile.objects.filter(gender = 'female', status=1)
     if request.method == "POST":     
         animal_id = request.POST['animal_id']
         is_pregnancy_confirmed = request.POST['is_pregnancy_confirmed']
@@ -384,7 +383,7 @@ def insert_pregnancy_detail(request):
         else:
             pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
         description = request.POST['description']        
-        det=Animal_profile.objects.all()
+        
         if animal_id == "":
             return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'error2': True , 'det': det,'date':date,'user_group':user_group})
         
@@ -402,7 +401,7 @@ def insert_pregnancy_detail(request):
         description=description)
         ins.save()   
         return redirect(reverse('/list_of_animals'))
-    det=Animal_profile.objects.all()
+    # det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'det': det ,'date':date ,'user_group':user_group} )
 # -----------------------------------------------------------------------------------------------------              
 # List Pregnancy Details

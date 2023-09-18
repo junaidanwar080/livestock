@@ -16,7 +16,7 @@
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
 <div style="margin:2%;">
   <form action='/insert_animal_profile' method="POST" >
-    <div class="alert alert-dark " role="alert" style="margin-top:5%;"><b >Basic Info</b></div>
+    <div class="alert alert-dark " role="alert" style="margin-top:2%;"><b >Basic Info</b></div>
     {% if error2 %}
     <div class="alert alert-danger offset-2" role="alert">Please Enter Token No !! </div>
     {% endif %}  
@@ -46,26 +46,26 @@
     {% csrf_token %}
     {% comment %} <div class="container-fluid" style="margin-left:0%;"> {% endcomment %}
     <div class="row">
-      <div class="col">
+      <div class="col-sm-3">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="text" class="form-control" id="token_no" name="token_no"  >
       </div>
-      <div class="col">
-          <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
+      <div class="col-sm-3">
+          <label class=" control-label">Name :</label>
           <input type="text" class="form-control" id="ani_name" name="ani_name"  >
       </div>
-      <div class="col">
-        <label class=" control-label">Color :<span style="color:red; font-weight:bold;">*</span></label>
+      <div class="col-sm-3">
+        <label class=" control-label">Color :</label>
         <input type="text" class="form-control" id="color" name="color"  >
       </div>
-      <div class="col">
+      <div class="col-sm-3">
         <label class=" control-label">Weight(KG):</label>
         <input type="text" class="form-control" id="weight" name="weight"  >
       </div>
     </div>
     
     <div class="row">
-      <div class="col" >
+      <div class="col-sm-3" >
         <label class="from-group" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <select id="category_id" name="category_id"  class="form-control">
           <option value="">Select Category</option>
@@ -75,16 +75,16 @@
         </select>
       </div>
       
-      <div class="col" >
-        <label for="purchase_price ">Purchase Price :</label>
+      <div class="col-sm-3" >
+        <label for="purchase_price ">Purchase Price :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="text" class="form-control" id="purchase_price" name="purchase_price"  >
       </div>
-      <div class="col" >
+      <div class="col-sm-3" >
         <label for="purchased_date">Purchased Date :</label>
         <input type="date" class="form-control" id="purchased_on" name="purchased_on" value="{{date}}" >
       </div>
     
-      <div class="col" >
+      <div class="col-sm-3" >
         <label for="purchased_by">Purchased By :</label>
         <select class="form-control" id="purchased_by" name="purchased_by">
           <option value="">Select Vendor</option>
@@ -96,11 +96,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col" >
+      <div class="col-sm-3" >
         <label class=" control-label">Date of Birth :</label>
         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" >
       </div>
-      <div class="col" >
+      <div class="col-sm-3" >
 		    <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
         <select onchange="changeDropdown(this.value);" name="gender" class="form-control" required="required" id="gender" class="gender">
           <option value="">Select Gender</option>
@@ -108,42 +108,63 @@
           <option value="female">Female</option>
         </select>
       </div>
-      <div class="col" >
-        <label class="from-group" >Person:<span style="color:red; font-weight:bold;">*</span></label>
-        <select id="person_id" name="person_id"  class="form-control">
-          <option value="">Select Person</option>
-          {% for x in per %}
-          <option value="{{x.id}}">{{x.username}}</option>  
-        {% endfor %}
-        </select>     
+      <div class="col-sm-3" >
+         
       </div>
-      <div  class="col">
-        <label class=" control-label" > Start Date :</label>
-        <input type="date" class="form-control"  name="start_date"  >
+      <div  class="col-sm-3">
+        
       </div>
-      <div class="col"  >
-        <label for="end_date" class=" control-label" > End Date :</label>
-        <input type="date" class="form-control"  name="end_date" value="" >
-      </div>
+      
       
     </div>
     <div class="row" style='margin-top:30px;'>
-      <div class="col" >
+      <div class="col-sm-3"  >
+        <label class="from-group" >Is Shared:<span style="color:red; font-weight:bold;">*</span></label>
+        <select id="is_shared" name="is_shared"  class="form-control">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+      </div>
+      <div id="">
+      <div class="col-sm-3" >
+        <label class="from-group" >Animal Partner:<span style="color:red; font-weight:bold;">*</span></label>
+        <select id="person_id" name="person_id"  class="form-control">
+          <option value="">Select Partner</option>
+          {% for x in per %}
+          <option value="{{x.id}}">{{x.username}}</option>  
+        {% endfor %}
+        </select>    
+      </div>
+      <div class="col-sm-3"  >
+        <label class=" control-label" > Start Date :</label>
+        <input type="date" class="form-control"  name="start_date"  >
+      </div>
+      <div class="col-sm-3"  >
+        <label for="end_date" class=" control-label" > End Date :</label>
+        <input type="date" class="form-control"  name="end_date" value="" >
+      </div>  
+    </div>
+    </div>
+
+
+    <div class="row my-3" >
+      <div class="col-sm-3"  >
+        
+      </div>
+      <div class="col-sm-3" >
         <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
         <input type="checkbox"  id="status" name="status">
         <input type="text"  id="status_val" name="status_val"  value="0" hidden>
-      </div>  
-      <div class="col"  >
       </div>
-      <div class="col"  >
+      <div class="col-sm-3"  >
       </div>
-      <div class="col"  >
+      <div class="col-sm-3"  >
         <button  class="btn btn-sm btn-primary" id="btn_save" style="margin-left: 28%; " data-toggle="modal" data-target="#add_account_model">View Voucher</button>
       </div>  
     </div>
       
     <div class="row">
-      <div class="col">
+      <div class="col-sm-12">
         <label for="description" >Description :</label>
         <textarea id="description" class="form-control" name="description" rows="3" cols="50"></textarea>
       </div>
@@ -186,8 +207,7 @@
                     </tr>
                     <tr>
                         <td><label><b>Voucher Date</b></label></td>
-                        <td><input type="date" name="voucher_date" id="voucher_date" value="{{date}}"
-                                class="form-control"></td>
+                        <td><input type="date" name="voucher_date" id="voucher_date" value="{{date}}" class="form-control"></td>
                         <td></td>
                     </tr>
 
