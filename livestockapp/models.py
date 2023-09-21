@@ -27,7 +27,7 @@ class Animal_profile(models.Model):
                                 related_name='animal'
                                     )
     image = models.ImageField(upload_to='images/',null=True)
-    purchase_price = models.IntegerField(null=True) 
+    purchase_price = models.DecimalField(max_digits=13, decimal_places=2,null=True) 
     ref_party_profile = models.ForeignKey(
                                 'RefPartyProfile',
                                 null=True,

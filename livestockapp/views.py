@@ -126,6 +126,12 @@ def insert_animal_profile(request):
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
+    per=User.objects.all()
+    animal_token=Animal_profile.objects.filter(gender = 'female', status=1).latest('animal_id')
+    if animal_token.token_no is None:
+        latest_token = 1
+    else:
+        latest_token = int(animal_token.token_no) + 1
     if request.method == "POST":     
         token_no = request.POST['token_no']
         name = request.POST['ani_name']
@@ -164,20 +170,20 @@ def insert_animal_profile(request):
         description = request.POST['description']        
         ani=Category.objects.all()
         if token_no == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})
+            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token})
         # if name == "":
         #     return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         # if color == "":
         #     return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties}) 
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token}) 
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})  
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token})  
        
         if status == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})       
+            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token})       
         per=User.objects.all() 
         if person_id == "":
             # return render(request,'animal_profile/insert_animal_profile.html', {'error7': True, 'per': per,'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
@@ -227,7 +233,7 @@ def insert_animal_profile(request):
         return redirect(reverse('list_animal_profile'))
     ani_cat=Category.objects.all()
     per=User.objects.all()
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties} )
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token} )
 def list_animal_profile(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -325,7 +331,7 @@ def update_animal(request, animal_id):
             edit.color = color
             edit.weight = weight
             edit.category_id =category_id
-            edit.purchase_price = int(purchase_price)
+            edit.purchase_price = float(purchase_price)
             edit.purchased_on = purchased_on
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
@@ -352,6 +358,8 @@ def insert_pregnancy_detail(request):
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id
     det=Animal_profile.objects.filter(gender = 'female', status=1)
+    
+    
     if request.method == "POST":     
         animal_id = request.POST['animal_id']
         is_pregnancy_confirmed = request.POST['is_pregnancy_confirmed']

@@ -48,7 +48,7 @@
     <div class="row">
       <div class="col-sm-3">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="text" class="form-control" id="token_no" name="token_no"  >
+        <input type="text" class="form-control" id="token_no" name="token_no"  value="Animal-{{latest_token}}" readonly>
       </div>
       <div class="col-sm-3">
           <label class=" control-label">Name :</label>
@@ -201,12 +201,12 @@
                                     style="color:red; font-weight:bold">*</span></label></td>
                         <td>
                             <input type="hidden"  name="vendor_id" id="vendor_id" class="form-control">
-                            <input type="text"  name="" id="vendor_name" class="form-control">
+                            <input type="text"  name="" id="vendor_name" class="form-control" readonly>
                         </td>
                     </tr>
                     <tr>
                         <td><label><b>Voucher Date</b></label></td>
-                        <td><input type="date" name="voucher_date" id="voucher_date" value="{{date}}" class="form-control"></td>
+                        <td><input type="date" name="voucher_date" id="voucher_date" value="{{date}}" class="form-control" readonly></td>
                         <td></td>
                     </tr>
 
@@ -226,14 +226,14 @@
                     <tbody id="table_body">
                         <tr>
                             <td>
-                                <input type="text" name="token" id="token" class="form-control ">
+                                <input type="text" name="token" id="token" class="form-control " value="Animal-{{latest_token}}" readonly>
                             </td>
                             <td>
-                                <input name="name" id="name" class="form-control">
+                                <input name="name" id="name" class="form-control" readonly>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <input type="text" name="price" id="price" class="form-control">
+                                    <input type="text" name="price" id="price" class="form-control" readonly>
                                 </div>
                             </td>
                         </tr>
@@ -243,7 +243,6 @@
         {% comment %} </form> {% endcomment %}
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="just_insert">Not Posted</button>
             <button type="button" class="btn btn-primary" id="insert_and_close">Posted</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -309,11 +308,7 @@
     });
   
 // Voucer Code Start
-// writing token number in Voucher
-$("#token_no").on('keyup',function(){
-  var token_no = $("#token_no").val();
-  $("#token").val(token_no)
-})
+
 // writing Animal Name in Voucher
 $("#ani_name").on('keyup',function(){
   var ani_name = $("#ani_name").val();
