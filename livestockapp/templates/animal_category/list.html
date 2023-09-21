@@ -5,7 +5,7 @@
   <body>
 {% include 'navbar.html' %}
 
-<a href="/cat_insert" class="btn btn-primary" style="margin-left: 80%">Add Category</a>
+<a href="/cat_insert" class="btn btn-primary" style="margin-left: 80%; margin-top: 2%;">Add Category</a>
    
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Category</h4>
@@ -17,8 +17,8 @@
         <th scope="col">Name</th>
         <th scope="col">Description</th>
         <th scope="col">Status</th>
-        <th scope="col">Created On</th>
-        <th scope="col">Updated On</th>
+        <th scope="col">Created By</th>
+        <th scope="col">Updated By</th>
         <th scope="col">Edit</th>
         <th scope="col">Delete</th>
 
@@ -36,8 +36,8 @@
        {% else %}
        <td>InActive</td>
        {% endif %}
-       <td>{{cat.created_on|date:"d-m-Y" }}</td>  
-       <td>{{cat.updated_on |date:"d-m-Y"}}</td> 
+       <td>{{cat.created_by}}</td>  
+       <td>{{cat.updated_by}}</td> 
        <td><a href="/edit/{{cat.category_id}}" class="btn btn-sm btn-warning"/>Edit</td>
        <td><a href="/delete/{{cat.category_id}}" class="btn btn-sm btn-danger"/>Delete</td>
       </tr>

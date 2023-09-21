@@ -38,6 +38,7 @@ class Animal_profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)
     gender = models.CharField(max_length=50,null=True)
+    is_shared = models.CharField(max_length=50, null=True)
     user = models.ForeignKey(
                                 User, 
                                 null=True, 

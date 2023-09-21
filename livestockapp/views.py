@@ -127,11 +127,15 @@ def insert_animal_profile(request):
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
     per=User.objects.all()
-    animal_token=Animal_profile.objects.filter(gender = 'female', status=1).latest('animal_id')
-    if animal_token.token_no is None:
-        latest_token = 1
-    else:
-        latest_token = int(animal_token.token_no) + 1
+   # animal_token=Animal_profile.objects.filter(gender = 'female', status=1).latest('animal_id')
+   # animal_token = Animal_profile.objects.filter(gender='female', status=1).order_by('-animal_id').first()
+
+
+#    if animal_token is None:
+   #   latest_token = 1
+   # else:
+     # latest_token = int(animal_token.token_no) + 1
+   
     if request.method == "POST":     
         token_no = request.POST['token_no']
         name = request.POST['ani_name']
@@ -155,7 +159,7 @@ def insert_animal_profile(request):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        
+        is_shared = request.POST['is_shared']
         start_date = request.POST['start_date']
         if start_date == '':
             start_date = None
@@ -170,20 +174,20 @@ def insert_animal_profile(request):
         description = request.POST['description']        
         ani=Category.objects.all()
         if token_no == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token})
-        # if name == "":
-        #     return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#'latest_token':latest_token})
+        if purchased_by == "":
+             return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         # if color == "":
         #     return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
         if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token}) 
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token}) 
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token})  
-       
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token})  
+        
         if status == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token})       
+            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token})       
         per=User.objects.all() 
         if person_id == "":
             # return render(request,'animal_profile/insert_animal_profile.html', {'error7': True, 'per': per,'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
@@ -191,7 +195,7 @@ def insert_animal_profile(request):
             
         try:
             bill_no = StockPurchaseMain.objects.latest('bill_no')
-            bill_no = bill_no.bill_no + 1
+            bill_no = int(bill_no.bill_no) + 1
         except ObjectDoesNotExist:
             bill_no = 1
             
@@ -206,6 +210,7 @@ def insert_animal_profile(request):
                 ref_party_profile_id=purchased_by,
                 date_of_birth=date_of_birth,
                 gender=gender,
+                is_shared=is_shared,
                 user_id = person_id,
                 start_date=start_date,
                 end_date=end_date,
@@ -233,7 +238,7 @@ def insert_animal_profile(request):
         return redirect(reverse('list_animal_profile'))
     ani_cat=Category.objects.all()
     per=User.objects.all()
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties,'latest_token':latest_token} )
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token} )
 def list_animal_profile(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -241,7 +246,7 @@ def list_animal_profile(request):
     allTasks = Animal_profile.objects.all()
     return render(request,'animal_profile/list_animal_profile.html', {'animal_pro': allTasks,'user_group':user_group})
 # -----------------------------------------------------------------------------------------------------              
-# Delete Animal profile
+# Delete Animal profile 
 # -----------------------------------------------------------------------------------------------------
 def animal_pro_delete(request,animal_id):
     delete = Animal_profile.objects.get(animal_id=animal_id)
@@ -271,7 +276,7 @@ def update_animal(request, animal_id):
         user_group = user.groups.first().id 
     if request.method == 'POST':
         animal_id = request.POST['animal_id']
-        token_no = request.POST['token_no']
+      #  token_no = request.POST['token_no']
         name = request.POST['ani_name']
         color = request.POST['color']
         weight = request.POST['weight']
@@ -289,6 +294,7 @@ def update_animal(request, animal_id):
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
+        is_shared = request.POST['is_shared']
         category_id=int(category_id)
         status = request.POST['status_val']
         print(status)
@@ -307,12 +313,8 @@ def update_animal(request, animal_id):
         else:
             end_date = datetime.strptime(end_date,  '%Y-%m-%d')
         anim=Category.objects.all()
-        if token_no == "":
-            return render(request,'animal_profile/update_animal_profile.html', {'error2': True , 'anim': anim,'user_group':user_group})
-        if name == "":
-            return render(request,'animal_profile/update_animal_profile.html', {'error3': True, 'anim': anim,'user_group':user_group})    
-        if color == "":
-            return render(request,'animal_profile/update_animal_profile.html', {'error4': True, 'anim': anim,'user_group':user_group})    
+        if purchased_by == "":
+            return render(request,'animal_profile/update_animal_profile.html', {'error3': True , 'anim': anim,'user_group':user_group})
         if category_id == "":
              return render(request,'animal_profile/update_animal_profile.html', {'error5': True, 'anim': anim,'user_group':user_group})    
         if purchase_price == '':
@@ -321,12 +323,13 @@ def update_animal(request, animal_id):
             return render(request,'animal_profile/update_animal_profile.html', {'error6': True, 'anim': anim,'user_group':user_group})   
         if status == "":
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True, 'anim': anim,'user_group':user_group})       
+        
         else:  
             print(category_id)
 
             edit = Animal_profile.objects.get(animal_id = animal_id)  
 
-            edit.token_no = token_no
+           # edit.token_no = token_no
             edit.name = name
             edit.color = color
             edit.weight = weight
@@ -336,6 +339,7 @@ def update_animal(request, animal_id):
             edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
+            edit.is_shared=is_shared
             edit.status=status 
             print(status)
             edit.description = description 

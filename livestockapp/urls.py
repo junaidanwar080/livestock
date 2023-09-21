@@ -7,7 +7,7 @@ urlpatterns = [
 # Dashboard After Login
    path('dashboard/',views.dashboard, name='dashboard'),
 #Category
-    path('cat_insert/', views.cat_insert, name='insert'),
+    path('cat_insert', views.cat_insert, name='insert'),
     path('show/', views.cat_show, name='show' ),
     path('delete/<int:category_id>/', views.cat_delete, name="delete"),
     path('edit/<int:category_id>/', views.cat_edit, name="edit"),

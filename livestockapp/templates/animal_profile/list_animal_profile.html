@@ -1,6 +1,6 @@
 {% include  'navbar.html' %}
 
-<a href="/insert_animal_profile" class="btn btn-primary" style="margin-left: 80%">Add Animal</a>
+<a href="/insert_animal_profile" class="btn btn-primary" style="margin-left: 80%; margin-top: 2%;">Add Animal</a>
    
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Animal Profile</h4>
@@ -10,20 +10,20 @@
       <tr>
         {% comment %} <th scope="col">#</th> {% endcomment %}
         <th scope="col">Token</th>
-        <th scope="col">Name</th>
+        {% comment %}<th scope="col">Name</th>
         <th scope="col">Color</th>
-        <th scope="col">Weight</th>
+        <th scope="col">Weight</th>{% endcomment %}
         <th scope="col">Category</th>
         {% comment %} <th scope="col">Image</th> {% endcomment %}
         {% comment %} <th scope="col">Purchase Price</th> {% endcomment %}
+        <th scope="col">Purchased By</th>
         <th scope="col">Purchased Date</th>
-        {% comment %} <th scope="col">Purchased By</th> {% endcomment %}
-        {% comment %} <th scope="col">Date Of Birth</th> {% endcomment %}
-        <th scope="col">Description</th>
+        {% comment %} <th scope="col">Date Of Birth</th> 
+        <th scope="col">Description</th>{% endcomment %}
         <th scope="col">Gender</th>
-        <th scope="col">Person</th>
+        {% comment %}  <th scope="col">Person</th>
         <th scope="col">Start Date</th>
-        {% comment %} <th scope="col">End Date</th> {% endcomment %}
+        <th scope="col">End Date</th> {% endcomment %}
         <th scope="col">Status</th>
         <th scope="col">Action</th>
 
@@ -32,27 +32,27 @@
     <tbody>
      {% for animal in animal_pro %}
      <tr>
-       {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
-       <td>Animal-{{animal.token_no}}</td>
-       <td>{{animal.name}}</td>
-       <td>{{animal.color}}</td>
-       <td>{{animal.weight}}</td>
-       <td>{{animal.category.name}}</td>
-       {% comment %} <td>{{animal.image}}</td> {% endcomment %}
-       {% comment %} <td>{{animal.purchase_price}}</td> {% endcomment %}
-       <td>{{animal.purchased_on|date:"d-m-Y"}}</td>
-       {% comment %} <td>{{animal.purchased_by}}</td> {% endcomment %}
-       {% comment %} <td>{{animal.date_of_birth|date:"d-m-Y"}}</td> {% endcomment %}
-       <td>{{animal.description}}</td>
-       <td>{{animal.gender}}</td> 
-       <td>{{animal.user.username}}</td>
-       <td>{{animal.start_date|date:"d-m-Y"}}</td>
-       {% comment %} <td>{{animal.end_date|date:"d-m-Y"}}</td>       {% endcomment %}
-       {% if  animal.status == 1 %} 
-       <td>Active</td>
-       {% else %}
-       <td>InActive</td>
-       {% endif %}
+      {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
+      <td>{{animal.token_no}}</td>
+      {% comment %}  <td>{{animal.name}}</td>
+      <td>{{animal.color}}</td>
+      <td>{{animal.weight}}</td>{% endcomment %}
+      <td>{{animal.category.name}}</td>
+      {% comment %} <td>{{animal.image}}</td> {% endcomment %}
+      {% comment %}  <td>{{animal.ref_party_profile}}</td>{% endcomment %}
+      <td>{{animal.ref_party_profile.name}}</td> 
+      <td>{{animal.purchased_on|date:"d-m-Y"}}</td> 
+      {% comment %} <td>{{animal.date_of_birth|date:"d-m-Y"}}</td> 
+      <td>{{animal.description}}</td>{% endcomment %}
+      <td>{{animal.gender}}</td> 
+      {% comment %}  <td>{{animal.user.username}}</td>
+      <td>{{animal.start_date|date:"d-m-Y"}}</td>
+      <td>{{animal.end_date|date:"d-m-Y"}}</td>       {% endcomment %}
+      {% if  animal.status == 1 %} 
+      <td>Active</td>
+      {% else %}
+      <td>InActive</td>
+      {% endif %}
 
        <td><a href="/animal_pro_edit/{{animal.animal_id}}" class="btn btn-sm btn-warning">Edit</a>
         {% comment %} <a href="/animal_pro_delete/{{animal.animal_id}}" class="btn btn-sm btn-danger">Delete</a></td> {% endcomment %}
