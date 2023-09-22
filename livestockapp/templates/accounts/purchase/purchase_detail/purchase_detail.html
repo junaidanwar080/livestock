@@ -5,7 +5,7 @@
 </head>
 
 <body>
-    {% include 'header.html' %}
+    {% include 'navbar.html' %}
     <div id="msg"></div>
 
     <div style="margin-left:1000px;" class="mt-3">
@@ -64,8 +64,11 @@
                                         {% for i in select_details %}
 
                                         <tr>
-
+                                            {% if i.stock_in_hand is None %}
+                                            <td>{{i.animal_profile.token_no}}</td>
+                                            {% else %}
                                             <td>{{i.stock_in_hand.stock_id}}</td>
+                                            {% endif %}
                                             <td>{{i.stock_in_hand.name}}</td>
                                             <td>{{i.quantity}}</td>
                                             <td>{{i.price}}</td>

@@ -276,7 +276,7 @@ def update_animal(request, animal_id):
         user_group = user.groups.first().id 
     if request.method == 'POST':
         animal_id = request.POST['animal_id']
-      #  token_no = request.POST['token_no']
+        token_no = request.POST['token_no']
         name = request.POST['ani_name']
         color = request.POST['color']
         weight = request.POST['weight']
@@ -329,7 +329,7 @@ def update_animal(request, animal_id):
 
             edit = Animal_profile.objects.get(animal_id = animal_id)  
 
-           # edit.token_no = token_no
+            edit.token_no = token_no
             edit.name = name
             edit.color = color
             edit.weight = weight
@@ -1721,74 +1721,79 @@ def edit_bill_details(request, bill_id):
 # -------------------------------------------------------------------------------
 # Sale Invoice
 # -------------------------------------------------------------------------------
-# @login_required(login_url='/login')
-# def sale_invoice(request):
-#     username = request.user.username
-#     customer_list = RefPartyProfile.objects.filter(ref_party_type_id=123)
-#     return render(request, 'accounts/sale/sale_invoice.html', {'username': username, 'date': y , 'customer_list':customer_list})
+@login_required(login_url='/login')
+def sale_invoice(request):
+    user = request.user
+    if user.is_authenticated and user.groups.exists():
+        user_group = user.groups.first().id
+    customer_list = RefPartyProfile.objects.filter(ref_party_type_id=123)
+    return render(request, 'accounts/sale/sale_invoice.html', {'username': user, 'date': y , 'customer_list':customer_list,'user_group':user_group})
 
 
-# # Sale Invoice Insert
-# def sale_invoice_insert(request):
-#     if request.method == 'POST':
-#         user = request.user
-#         invoice_id = request.POST['bill_id']
-#         customer_id = request.POST['vendor_id']
-#         invoice_date = request.POST['Posted_date']
-#         all_item_code = request.POST['all_item_code']
-#         all_item_code_list = [x.strip() for x in all_item_code.split(',')]
-#         all_item_quantity = request.POST['all_item_quantity']
-#         all_item_quantity_list = [x.strip() for x in all_item_quantity.split(',')]
-#         all_unit_price = request.POST['all_unit_price']
-#         all_unit_price_list = [x.strip() for x in all_unit_price.split(',')]
-#         if customer_id == '' or invoice_date == '' or invoice_id == '':
-#             return JsonResponse('Please Fill all Required Fields', safe=False)
-#         else:
-#             for x in range(len(all_item_code_list)):
-#                 if all_item_code_list[x] == '' or all_item_quantity_list[x] == '' or all_unit_price_list[x] == '':
-#                     return JsonResponse('Please Fill all Required Fields', safe=False)
+# Sale Invoice Insert
+def sale_invoice_insert(request):
+    if request.method == 'POST':
+        user = request.user
+        invoice_id = request.POST['bill_id']
+        customer_id = request.POST['vendor_id']
+        invoice_date = request.POST['Posted_date']
+        all_item_code = request.POST['all_item_code']
+        all_item_code_list = [x.strip() for x in all_item_code.split(',')]
+        all_item_quantity = request.POST['all_item_quantity']
+        all_item_quantity_list = [x.strip() for x in all_item_quantity.split(',')]
+        all_unit_price = request.POST['all_unit_price']
+        all_unit_price_list = [x.strip() for x in all_unit_price.split(',')]
+        if customer_id == '' or invoice_date == '' or invoice_id == '':
+            return JsonResponse('Please Fill all Required Fields', safe=False)
+        else:
+            for x in range(len(all_item_code_list)):
+                if all_item_code_list[x] == '' or all_item_quantity_list[x] == '' or all_unit_price_list[x] == '':
+                    return JsonResponse('Please Fill all Required Fields', safe=False)
 
-#             insert_main = StockSaleMain(
-#                             invoice_no=invoice_id, 
-#                             ref_party_profile_id=customer_id,
-#                             invoice_date =invoice_date,
-#                             created_by_id = user.id
-#                             )
-#             insert_main.save()
-#             # invoice_id = StockSaleMain.objects.latest('Invoice_No')
-#             for x in range(len(all_item_code_list)):
-#                 curent_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
-#                 if curent_stock.stock_in_hand is None:
-#                     curent_stock.stock_in_hand = 0
-#                 update_inventory = int(curent_stock.stock_in_hand) - int(all_item_quantity_list[x])
-#                 update_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
-#                 update_stock.stock_in_hand = update_inventory
-#                 update_stock.save()
-#                 insert_detail = StockSaleDetail(
-#                                                 stock_in_hand_id=all_item_code_list[x], 
-#                                                 quantity=all_item_quantity_list[x],
-#                                                 price=float(all_unit_price_list[x]), 
-#                                                 stock_sale_main_id=insert_main.invoice_no
-#                                                   )
-#                 insert_detail.save()
-#             return JsonResponse('Data Inserted', safe=False)
+            insert_main = StockSaleMain(
+                            invoice_no=invoice_id, 
+                            ref_party_profile_id=customer_id,
+                            invoice_date =invoice_date,
+                            created_by_id = user.id
+                            )
+            insert_main.save()
+            # invoice_id = StockSaleMain.objects.latest('Invoice_No')
+            for x in range(len(all_item_code_list)):
+                curent_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
+                if curent_stock.stock_in_hand is None:
+                    curent_stock.stock_in_hand = 0
+                update_inventory = int(curent_stock.stock_in_hand) - int(all_item_quantity_list[x])
+                update_stock = StockInHand.objects.get(stock_id=all_item_code_list[x])
+                update_stock.stock_in_hand = update_inventory
+                update_stock.save()
+                insert_detail = StockSaleDetail(
+                                                stock_in_hand_id=all_item_code_list[x], 
+                                                quantity=all_item_quantity_list[x],
+                                                price=float(all_unit_price_list[x]), 
+                                                stock_sale_main_id=insert_main.invoice_no
+                                                  )
+                insert_detail.save()
+            return JsonResponse('Data Inserted', safe=False)
 
 
-# # Invoice Details
-# def invoice_details(request):
-#     # select_details = Stock_purchase_detail.objects.all().select_related('Bill_no')
-#     select_details = StockSaleDetail.objects.values(
-#                                                     'stock_sale_main',
-#                                                     'stock_sale_main__invoice_no',
-#                                                     'stock_sale_main__ref_party_profile__name',
-#                                                     'stock_sale_main__created_on'
-#                                                 ).annotate(
-#                                                     res_price=Sum('price')
-#                                                 )
-#     sum_res_price = select_details.aggregate(total_res_price = Sum('res_price'))
-#     total_res_price = sum_res_price['total_res_price']
-#     count_invoice = StockSaleMain.objects.count()
-#     return render(request, 'accounts/Sale/invoice_details.html', {'select_details': select_details , 'count_invoice':count_invoice , 'total_res_price':total_res_price})
+# Invoice Details
+def invoice_details(request):
+    # select_details = Stock_purchase_detail.objects.all().select_related('Bill_no')
+    user = request.user
+    if user.is_authenticated and user.groups.exists():
+        user_group = user.groups.first().id
+    select_details = StockSaleDetail.objects.values(
+                                                    'stock_sale_main',
+                                                    'stock_sale_main__invoice_no',
+                                                    'stock_sale_main__ref_party_profile__name',
+                                                    'stock_sale_main__created_on'
+                                                ).annotate(
+                                                    res_price=Sum('price')
+                                                )
+    sum_res_price = select_details.aggregate(total_res_price = Sum('res_price'))
+    total_res_price = sum_res_price['total_res_price']
+    count_invoice = StockSaleMain.objects.count()
+    return render(request, 'accounts/Sale/invoice_details.html', {'select_details': select_details , 'count_invoice':count_invoice , 'total_res_price':total_res_price ,'user_group':user_group})
 
 
 

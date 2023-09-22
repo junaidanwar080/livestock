@@ -158,9 +158,9 @@ urlpatterns = [
 # Sale
 # ------------------------------------------------------------------------------------------------
 
-    # path('sale_invoice',views.sale_invoice,name='sale_invoice'),
-    # path('sale_invoice_insert', views.sale_invoice_insert),
-    # path('invoice_details', views.invoice_details , name='invoice_details'),
+    path('sale_invoice',views.sale_invoice,name='sale_invoice'),
+    path('sale_invoice_insert', views.sale_invoice_insert),
+    path('invoice_details', views.invoice_details , name='invoice_details'),
     
 # ------------------------------------------------------------------------------------------------
 # Processing
