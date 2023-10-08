@@ -25,7 +25,16 @@ urlpatterns = [
     path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
     path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail'),
     path('list_of_animals', views.list_of_animals , name='list_of_animals'),
-# User Profile
+#Share Animal
+    path('shared_animal_payment_input', views.shared_animal_payment_input, name='shared_animal_payment_input'),
+    path('shared_animal_person_list/', views.shared_animal_person_list, name='shared_animal_person_list' ),
+    path('get_animal_info/<int:animal_id>', views.get_animal_info, name='get_animal_info'),
+    
+    path('edit_animal_profile/<int:animal_id>/', views.edit_animal_profile, name='edit_animal_profile'),
+
+    path('shared_animal_payment_update/<int:animal_id>/', views.shared_animal_payment_update, name='shared_animal_payment_update'),
+   
+# User Profile 
     path('register_user_profile/', views.register_user_profile , name='register_user_profile'),
     path('list_user_profile/', views.list_user_profile, name='list_user_profile' ),
     path('delete_user_profile/<int:id>/', views.delete_user_profile, name="delete_user_profile"),

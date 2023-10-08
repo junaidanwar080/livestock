@@ -1,0 +1,232 @@
+<html>
+  <head>
+    <title>Animal Profile</title>
+  </head>
+<body>
+  
+
+  {% include 'navbar.html' %}
+
+{% block content %}
+
+
+
+  
+{% comment %} <div class="container my-3"> 
+  <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
+<div style="margin:2%;">
+    <form action='/shared_animal_payment_update/{{party_profile.animal_id}}' method="POST" >
+    <div class="alert alert-dark " role="alert" style="margin-top:2%;"><b >Basic Info</b></div>
+    {% if error2 %}
+    <div class="alert alert-danger" role="alert">Please Enter Token No !! </div>
+    {% endif %}  
+    {% if error3 %}
+    <div class="alert alert-danger" role="alert">Please Enter purchased_by !! </div>
+    {% endif %} 
+    {% if error4 %}
+    <div class="alert alert-danger" role="alert">Please Enter Color !! </div>
+    {% endif %} 
+    {% if error5 %}
+    <div class="alert alert-danger" role="alert"> Please Enter Category !! </div>
+    {% endif %} 
+    {% if error6 %}
+    <div class="alert alert-danger" role="alert">Please Enter Gender!! </div>
+    {% endif %} 
+    {% if error7 %}
+    <div class="alert alert-danger" role="alert"> Please Enter Person!! </div>
+    {% endif %} 
+    {% if error8 %}
+    <div class="alert alert-danger" role="alert">Please Enter pragnancy_start_date !! </div>
+    {% endif %} 
+    {% if error9 %}
+    <div class="alert alert-danger" role="alert">Please Enter is_Active Field !! </div>
+    {% endif %} 
+
+
+    {% csrf_token %}
+    {% comment %} <div class="container-fluid" style="margin-left:0%;"> {% endcomment %}
+    <div class="row">
+      <div class="col-sm-3">
+        <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="text" class="form-control" name="id" required maxlength="50" value="{{party_profile.animal_id}}" readonly hidden/>
+       
+        <select id="token_no" name="token_no"  class="form-control" >
+          <option value="">Select Token No</option>
+          {% for x in det %}
+          <option value="{{x.animal_id}}">{{x.token_no}}</option>  
+        {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-3">
+          <label class=" control-label">Name :</label>
+          <input type="text" class="form-control" id="ani_name" name="ani_name" value="{{party_profile.name}}" >
+      </div>
+      <div class="col-sm-3">
+        <label class=" control-label">Color :</label>
+        <input type="text" class="form-control" id="color" name="color"  value="{{party_profile.color}}">
+    </div>
+      <div class="col-sm-3">
+        <label class=" control-label">Weight(KG):</label>
+        <input type="text" class="form-control" id="weight" name="weight"  value="{{party_profile.weight}}">
+    </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-3" >
+        <label class="from-group" >Category :<span style="color:red; font-weight:bold;">*</span></label>
+        <select name="category_id" id="category_id" class="form-control" >
+          {% for y in ani %}
+            {% if party_profile.category_id == y.category_id %}
+              <option  value="{{y.category_id}}" selected>{{y.name}}</option>  
+            {% else %}
+              <option  value="{{y.category_id}}">{{y.name}}</option> 
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      
+     
+      <div class="col-sm-3" >
+        <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
+   <select  name="gender" class="form-control" required="required" id="gender" class="gender" >
+      {% if party_profile.gender == 'male' %}
+        <option value="male" selected >Male</option>
+        <option value="female" >Female</option>
+        
+      {% else  %}
+      <option value="female" selected>Female</option>
+      <option value="male" >male</option>
+      {% endif %}
+      
+    </select>
+      </div>
+      
+      
+      
+      <div class="col-sm-3"  id="hiddenFields1">
+        <label class="from-group">Shared Person :</label>
+        <select name="person_id" id="person_id" class="form-control" >
+            {% for y in per %}
+              {% if party_profile.user_id == y.id %}
+                <option  value="{{y.id}}" selected>{{y.username}}</option>  
+              {% else %}
+                <option  value="{{y.id}}">{{y.username}}</option> 
+              {% endif %}
+            {% endfor %}
+          </select>  
+      </div>
+     
+      <div class="col-sm-3"  id="hiddenFields2" >
+        <label class=" control-label" > Start Date :</label>
+        <input type="date" class="form-control"  name="start_date" value="{{party_profile.start_date|date:'Y-m-d'}}">
+      </div>
+      <div class="col-sm-3"  id="hiddenFields3" >
+        <label for="end_date" class=" control-label" > End Date :</label>
+        <input type="date" class="form-control"  name="end_date" value="{{party_profile.end_date|date:'Y-m-d'}}">
+      </div> 
+   
+    
+
+    
+      
+      <div class="col-sm-3" >
+        <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
+        {% if party_profile.status == 1 %}
+          <input type="checkbox" checked id="status" name="status" value="{{party_profile.status}} ">
+        {% else %}
+          <input type="checkbox"  id="status" name="status" value="{{party_profile.status}} ">
+          {% endif %}
+          <input type="text"  id="status_val" name="status_val"  value="0" hidden>
+      </div>  
+      <div class="col-sm-3">
+        <label class=" control-label">Payment :<span style="color:red; font-weight:bold;">*</span></label>
+        <input type="number" class="form-control" id="payment" name="payment" value="{{party_profile.payment}} ">
+      </div>
+      <div class="col-sm-3">
+        <label class=" control-label">month :<span style="color:red; font-weight:bold;">*</span></label>
+        <select onchange="changeDropdown(this.value);" name="month" class="form-control" required="required" id="month" class="month">
+          <option value="">Select Months</option>
+          <option value="January" >January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November ">November </option>
+          <option value="December">December</option>
+        </select>
+      </div>
+    </div>
+      
+    <div class="row">
+      <div class="col-sm-12">
+        <label for="description" >Description :</label>
+        <textarea id="description" class="form-control" name="description" rows="3" cols="50">{{party_profile.description}}</textarea>
+    </div>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-success my-3" id="animal_voucher_post">Submit</button>  
+    </div>
+  {% comment %} </div> {% endcomment %}
+  </form>
+</div>
+          
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    
+      $("#token_no").change(function() {
+          var selectedAnimalId = $(this).val();
+          $.ajax({
+              url: '/get_animal_info/' + selectedAnimalId,
+              type: 'GET', 
+              success: function(data) {
+                  if (data.error) {
+                      alert("Animal not found");
+                  } else {
+                    
+                      $("#ani_name").val(data.ani_name);
+                      $("#color").val(data.color);
+                      $("#weight").val(data.weight);
+                      $("#category_id").val(data.category_id);
+                      $("#gender").val(data.gender);
+                      $("#person_id").val(data.user_id);
+                      $("#start_date").val(data.start_date);
+                      $("#end_date").val(data.end_date);
+                      $("#status").prop("checked", data.status);
+                  }
+              },
+              error: function() {
+                  alert("Error occurred while fetching animal data.");
+              }
+          });
+      });
+  });
+  </script>
+  
+  <script>
+    // Get the input element by ID
+    var startDateInput = document.getElementById("start_date");
+    var startDateInput = document.getElementById("end_date");
+
+    // Set the default date format
+    var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
+    // Add an event listener to update the input's value with the formatted date
+    startDateInput.addEventListener("input", function() {
+        var selectedDate = new Date(startDateInput.value);
+        startDateInput.value = selectedDate.toLocaleDateString("en-US", options);
+    });
+</script>
+
+
+
+{% endblock content %}
+</body>
+</html>

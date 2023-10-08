@@ -106,7 +106,7 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField(blank=True,null=True, max_length=50) 
     created_on = models.DateField(blank=True, null=True) 
     updated_on = models.DateField(blank=True, null=True) 
-    
+
 #------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------
 # Finance
@@ -414,4 +414,40 @@ class StockPurchaseDetail(models.Model):
 
 
     
+# share_animal
+class ShareAnimal(models.Model):
+   id = models.AutoField(primary_key=True)  
+   animal_id = models.ForeignKey(
+                                Animal_profile, 
+                                null=True, 
+                                on_delete=models.CASCADE,
+                                related_name='animal_profile'
+                            )
+   party_code = models.ForeignKey(
+                                RefPartyProfile, 
+                                null=True, 
+                                on_delete=models.CASCADE,
+                                related_name='animal_profile'
+                            ) 
+   month = models.CharField(max_length = 200, null=True)
+   payment_date = models.DateTimeField( null=True)
+   payment = models.CharField(max_length = 200, null=True)
+   description = models.CharField(max_length = 200, null=True)
+   created_by = models.ForeignKey(
+                                User, 
+                                null=True, 
+                                on_delete=models.CASCADE ,
+                                related_name="Updated_animal_profile"
+                                )
+   created_on = models.DateField(blank=True, null=True) 
+   updated_by = models.ForeignKey(
+                                    User, 
+                                    null=True, 
+                                    on_delete=models.CASCADE ,
+                                    related_name="Updated_animals_profile"
+                                    )
+   updated_on = models.DateField(blank=True, null=True) 
+
+
+
     

@@ -1,0 +1,66 @@
+{% include  'navbar.html' %}
+
+<a href="/shared_animal_payment_input" class="btn btn-primary" style="margin-left: 80%; margin-top: 2%;">Add Animal</a>
+    
+<div class="container my-3">
+  <h4 class="text-center alert alert-info py-3">List of Shared Animal </h4>
+
+  <table class="table table-bordered"  id="animalTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th> 
+        <th scope="col">Name</th>
+        <th scope="col">Phone Number</th>
+       <th scope="col">Address</th> 
+        <th scope="col">Number Of Animals</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for party_profile in party_profiles %}
+<tr>
+    <th scope="row">{{ forloop.counter }}</th> 
+    <td>{{ party_profile.name }}</td>     
+    <td>{{ party_profile.phone_no }}</td>
+    <td>{{ party_profile.address }}</td> 
+    <td>{{ party_profile.number_of_animals }}</td> <!-- Display the number of animals -->
+    {% if party_profile.status == 1 %} 
+    <td>Active</td>
+    {% else %}
+    <td>InActive</td>
+    {% endif %}
+    <td>
+        <a href="/edit_animal_profile/{{party_profile.animal_id}}" class="btn btn-sm btn-warning">Edit</a>
+    </td>
+</tr>
+{% endfor %}
+
+      
+    </tbody>
+  </table>
+</div>    
+
+
+<script>
+ 
+
+$(document).ready(function() {
+  // Initialize DataTable
+  $('#animalTable').DataTable({
+    "paging": true,      // Enable pagination
+    "ordering": true,    // Enable sorting
+    "searching": true,   // Enable search
+    "info": true,        // Show info about entries and pagination
+    "responsive": true,  // Enable responsive behavior
+    "columnDefs": [
+      // Specify column-specific options if needed
+      // Example: {"targets": [0], "searchable": false, "orderable": false}
+      ]
+    });
+  });  
+</script>
+
+
+
