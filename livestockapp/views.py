@@ -1815,10 +1815,10 @@ def shared_animal_payment_input(request):
         #print(token_no)
         name = request.POST['ani_name']
         color = request.POST['color']
-        category_id = request.POST['category_id']
+        category_id = request.POST.get('category_id')
         weight = request.POST['weight']
-        person_id = request.POST['person_id']
-        gender = request.POST['gender']
+        person_id = request.POST.get('person_id')
+        gender = request.POST.get('gender')
         payment = request.POST['payment']
         month = request.POST['month']
         start_date = request.POST['start_date']
@@ -1872,15 +1872,15 @@ def shared_animal_payment_input(request):
         )  
         instanse.save()
         return redirect(reverse('shared_animal_person_list'))
-    ani_cat=Category.objects.all()
+    ani_share=Category.objects.all()    
     per=User.objects.all()
-    return render(request,'share_animal/shared_animal_payment_input.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties , 'det':det})#,'latest_token':latest_token} )
+    return render(request,'share_animal/shared_animal_payment_input.html', {'ani': ani_share ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties , 'det':det})#,'latest_token':latest_token} )
 
 def get_animal_info(request, animal_id):
     animal_data = Animal_profile.objects.get(animal_id=animal_id)
     if animal_data:
         data = {
-            'animal_id': animal_data.animal_id,
+            #'animal_id': animal_data.animal_id,
             'token_no': animal_data.token_no,
             'ani_name': animal_data.name,
             'color': animal_data.color,
@@ -1895,11 +1895,6 @@ def get_animal_info(request, animal_id):
         return JsonResponse(data)
     else:
         return JsonResponse({'error': 'Animal not found'}, status=404)
-  
-
-from .models import RefPartyProfile  # Import your model at the top
-
-
 
 def shared_animal_person_list(request):
     user = request.user
@@ -1911,6 +1906,12 @@ def shared_animal_person_list(request):
     print(party_profiles)
     det = Animal_profile.objects.all()
     return render(request, 'share_animal/shared_animal_person_list.html', {'party_profiles': party_profiles, 'user_group': user_group, 'det': det})
+
+
+
+
+
+
 
 
 

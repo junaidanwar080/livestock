@@ -30,9 +30,9 @@ urlpatterns = [
     path('shared_animal_person_list/', views.shared_animal_person_list, name='shared_animal_person_list' ),
     path('get_animal_info/<int:animal_id>', views.get_animal_info, name='get_animal_info'),
     
-    path('edit_animal_profile/<int:animal_id>/', views.edit_animal_profile, name='edit_animal_profile'),
+  #  path('edit_animal_profile/<int:animal_id>/', views.edit_animal_profile, name='edit_animal_profile'),
 
-    path('shared_animal_payment_update/<int:animal_id>/', views.shared_animal_payment_update, name='shared_animal_payment_update'),
+  #  path('shared_animal_payment_update/<int:animal_id>/', views.shared_animal_payment_update, name='shared_animal_payment_update'),
    
 # User Profile 
     path('register_user_profile/', views.register_user_profile , name='register_user_profile'),

@@ -5,7 +5,7 @@
 <div class="container my-3">
   <h4 class="text-center alert alert-info py-3">List of Shared Animal </h4>
 
-  <table class="table table-bordered"  id="animalTable">
+  <table class="table table-bordered"  id="anima_share_lTable">
     <thead>
       <tr>
         <th scope="col">#</th> 
@@ -25,7 +25,7 @@
     <td>{{ party_profile.name }}</td>     
     <td>{{ party_profile.phone_no }}</td>
     <td>{{ party_profile.address }}</td> 
-    <td>{{ party_profile.number_of_animals }}</td> <!-- Display the number of animals -->
+    <td>{{ party_profile.number_of_animals }}</td>
     {% if party_profile.status == 1 %} 
     <td>Active</td>
     {% else %}
@@ -48,7 +48,7 @@
 
 $(document).ready(function() {
   // Initialize DataTable
-  $('#animalTable').DataTable({
+  $('#anima_share_lTable').DataTable({
     "paging": true,      // Enable pagination
     "ordering": true,    // Enable sorting
     "searching": true,   // Enable search
