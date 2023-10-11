@@ -29,6 +29,9 @@ from django.utils import timezone
 from django.forms.models import model_to_dict
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
+from .functions import get_date
+from .serializers import AnimalProfileSerializer
+from rest_framework.generics import ListAPIView
 
 x = datetime.now() 
 date = x.strftime('%Y-%m-%d')
@@ -40,10 +43,12 @@ y = x.strftime('%Y-%m-%d')
 # Home
 # -----------------------------------------------------------------------------------------------------
 def home(request):
+    get_date()
     return render(request,'before_login/home.html')
 # -----------------------------------------------------------------------------------------------------
 # Dashboard
 # -----------------------------------------------------------------------------------------------------
+@login_required(login_url='/home')
 def dashboard(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -53,7 +58,7 @@ def dashboard(request):
 # -----------------------------------------------------------------------------------------------------
 # Catergory Insert
 # -----------------------------------------------------------------------------------------------------
-
+@login_required(login_url='/home')
 def cat_insert(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -73,6 +78,7 @@ def cat_insert(request):
 # -----------------------------------------------------------------------------------------------------
 # List Category 
 # -----------------------------------------------------------------------------------------------------
+@login_required(login_url='/home')
 def cat_show(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -121,12 +127,13 @@ def cat_updated(request, category_id):
 # -----------------------------------------------------------------------------------------------------              
 # Insert Animal Profile
 # -----------------------------------------------------------------------------------------------------
+@login_required(login_url='/home')
 def insert_animal_profile(request): 
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
-    per=User.objects.all()
+    animal_list=Animal_profile.objects.filter(gender='male')
    # animal_token=Animal_profile.objects.filter(gender = 'female', status=1).latest('animal_id')
    # animal_token = Animal_profile.objects.filter(gender='female', status=1).order_by('-animal_id').first()
 
@@ -145,21 +152,18 @@ def insert_animal_profile(request):
         purchase_price = request.POST['purchase_price']
         purchased_on = request.POST['purchased_on']
         purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
-        person_id = request.POST['person_id']
-        purchased_by = request.POST['purchased_by']
+        shared_party_id = request.POST['shared_party_id']
+        purchase_party_id = request.POST['purchase_party_id']
         date_of_birth = request.POST['date_of_birth']
-        # voucher_date = request.POST['voucher_date']
-        # if voucher_date == '':
-        #     voucher_date = None
-        # else:
-        #     voucher_date = datetime.strptime(voucher_date,  '%Y-%m-%d')
-        # print(voucher_date)
+        # image = request.FILES['image']
+        # print(image)
+        parent_id = request.POST['parent_id']
         if date_of_birth == '':
             date_of_birth = None
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        is_shared = request.POST['is_shared']
+        animal_type = request.POST['animal_type']
         start_date = request.POST['start_date']
         if start_date == '':
             start_date = None
@@ -173,25 +177,21 @@ def insert_animal_profile(request):
         status = request.POST['status_val']
         description = request.POST['description']        
         ani=Category.objects.all()
+                          
         if token_no == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#'latest_token':latest_token})
-        if purchased_by == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
-        # if color == "":
-        #     return render(request,'animal_profile/insert_animal_profile.html', {'error4': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
+            return render(request,'animal_profile/insert_animal_profile.html', {'error2': True , 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})
+        # if purchase_party_id == "":
+        #     return render(request,'animal_profile/insert_animal_profile.html', {'error3': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})       
         if category_id == "":
-             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token}) 
+             return render(request,'animal_profile/insert_animal_profile.html', {'error5': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})
         if purchase_price == '':
             purchase_price = 0
         if gender == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token})  
+            return render(request,'animal_profile/insert_animal_profile.html', {'error6': True, 'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})
         
-        if status == "":
-            return render(request,'animal_profile/insert_animal_profile.html', {'error9': True, 'ani': ani,'per':per,'date':date,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token})       
-        per=User.objects.all() 
-        if person_id == "":
+        if shared_party_id == "":
             # return render(request,'animal_profile/insert_animal_profile.html', {'error7': True, 'per': per,'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
-            person_id == None
+            shared_party_id == None
             
         try:
             bill_no = StockPurchaseMain.objects.latest('bill_no')
@@ -199,46 +199,53 @@ def insert_animal_profile(request):
         except ObjectDoesNotExist:
             bill_no = 1
             
+        # Check if a record with the entered token already exists
+        if Animal_profile.objects.filter(token_no=token_no).exists():
+            print("Duplicate Token number")
+        else:
             
-        ins=Animal_profile(
-                token_no=token_no,
-                name=name,color=color,
-                weight=weight,
-                category_id=category_id,
-                purchase_price=purchase_price,
-                purchased_on=purchased_on,
-                ref_party_profile_id=purchased_by,
-                date_of_birth=date_of_birth,
-                gender=gender,
-                is_shared=is_shared,
-                user_id = person_id,
-                start_date=start_date,
-                end_date=end_date,
-                status=status,
-                updated_by=1,
-                description=description
-            )
-        ins.save()   
+            ins=Animal_profile(
+                    token_no=token_no,
+                    name=name,color=color,
+                    weight=weight,
+                    category_id=category_id,
+                    purchase_price=purchase_price,
+                    purchased_on=purchased_on,
+                    date_of_birth=date_of_birth,
+                    gender=gender,
+                    purchased_party_id=purchase_party_id,
+                    shared_party_id=shared_party_id,
+                    parent_id=parent_id,
+                    animal_type=animal_type,
+                    start_date=start_date,
+                    end_date=end_date,
+                    status=status,
+                    created_by=user.id,
+                    created_on = date,
+                    description=description
+                )
+            ins.save()   
         
-        insert_purchase_main=StockPurchaseMain(
-                bill_no = bill_no,
-                # Bill_date = voucher_date,
-                ref_party_profile_id = purchased_by,
-                created_on = date,
-                created_by_id = user.id
-            )
-        insert_purchase_main.save()
-        insert_purchase_detail=StockPurchaseDetail(
-                stock_purchase_main_id = insert_purchase_main.bill_no,
-                animal_profile_id  = ins.animal_id,
-                quantity = 1,
-                price = purchase_price
-            )
-        insert_purchase_detail.save()
+            insert_purchase_main=StockPurchaseMain(
+                    bill_no = bill_no,
+                    # Bill_date = voucher_date,
+                    ref_party_profile_id = purchase_party_id,
+                    created_on = date,
+                    created_by_id = user.id
+                )
+            insert_purchase_main.save()
+            insert_purchase_detail=StockPurchaseDetail(
+                    stock_purchase_main_id = insert_purchase_main.bill_no,
+                    animal_profile_id  = ins.animal_id,
+                    quantity = 1,
+                    price = purchase_price
+                )
+            insert_purchase_detail.save()
         return redirect(reverse('list_animal_profile'))
     ani_cat=Category.objects.all()
     per=User.objects.all()
-    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties})#,'latest_token':latest_token} )
+    return render(request,'animal_profile/insert_animal_profile.html', {'ani': ani_cat ,'date':date ,'user_group':user_group,'all_parties':all_parties,'animal_list':animal_list})
+@login_required(login_url='/home')
 def list_animal_profile(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -261,15 +268,17 @@ def animal_pro_edit(request , animal_id ):
         user_group = user.groups.first().id 
     animal = Animal_profile.objects.get(animal_id=animal_id)
     ani=Category.objects.all()
-    per=User.objects.all()
+    parent_list=Animal_profile.objects.all()
+    # per=User.objects.all()
     all_parties = RefPartyProfile.objects.all()
     purchase_detial = ''
     try:
         purchase_detial = StockPurchaseDetail.objects.get(animal_profile_id=animal_id)
     except ObjectDoesNotExist:
         purchase_detial = None
-    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani, 'per':per,'user_group':user_group,'all_parties':all_parties,'purchase_detial':purchase_detial })
+    return render(request, 'animal_profile/update_animal_profile.html',{'animal':animal,'ani': ani,'user_group':user_group,'all_parties':all_parties,'purchase_detial':purchase_detial ,'parent_list':parent_list})
 
+@login_required(login_url='/home')
 def update_animal(request, animal_id):
     user = request.user
     if user.is_authenticated and user.groups.exists():
@@ -287,21 +296,20 @@ def update_animal(request, animal_id):
             purchased_on = None
         else:
             purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
-        purchased_by = request.POST['purchased_by']
+        # purchased_by = request.POST['purchased_by']
         date_of_birth = request.POST['date_of_birth']
         if date_of_birth == '':
             date_of_birth = None
         else:
             date_of_birth = datetime.strptime(date_of_birth,  '%Y-%m-%d')
         gender = request.POST['gender']
-        is_shared = request.POST['is_shared']
+        animal_type = request.POST['animal_type']
         category_id=int(category_id)
         status = request.POST['status_val']
-        print(status)
         description = request.POST['description']
-        person_id = request.POST['person_id']
-        person_id=int(person_id)
-        print(person_id)
+        purchase_party_id = request.POST['purchase_party_id'] 
+        shared_party_id = request.POST['shared_party_id']
+        parent_id = request.POST['parent_id']
         start_date = request.POST['start_date']
         if start_date == '':
             start_date = None
@@ -313,8 +321,9 @@ def update_animal(request, animal_id):
         else:
             end_date = datetime.strptime(end_date,  '%Y-%m-%d')
         anim=Category.objects.all()
-        if purchased_by == "":
-            return render(request,'animal_profile/update_animal_profile.html', {'error3': True , 'anim': anim,'user_group':user_group})
+        if purchase_party_id == "":
+            purchase_party_id = None
+            #return render(request,'animal_profile/update_animal_profile.html', {'error3': True , 'anim': anim,'user_group':user_group})
         if category_id == "":
              return render(request,'animal_profile/update_animal_profile.html', {'error5': True, 'anim': anim,'user_group':user_group})    
         if purchase_price == '':
@@ -328,7 +337,6 @@ def update_animal(request, animal_id):
             print(category_id)
 
             edit = Animal_profile.objects.get(animal_id = animal_id)  
-
             edit.token_no = token_no
             edit.name = name
             edit.color = color
@@ -336,19 +344,20 @@ def update_animal(request, animal_id):
             edit.category_id =category_id
             edit.purchase_price = float(purchase_price)
             edit.purchased_on = purchased_on
-            edit.purchased_by = purchased_by
             edit.date_of_birth = date_of_birth
             edit.gender = gender
-            edit.is_shared=is_shared
-            edit.status=status 
-            print(status)
-            edit.description = description 
-            edit.user_id = person_id
-           # edit.user_id = int(user_id)
+            edit.purchased_party_id=purchase_party_id
+            edit.shared_party_id=shared_party_id
+            edit.parent_id=parent_id
+            edit.animal_type=animal_type
+            edit.status=status
+            edit.description = description
             edit.start_date=start_date
             edit.end_date=end_date
-            edit.updated_on = date    
-            edit.save()
+            edit.updated_on = date  
+            edit.updated_by=user.id
+            edit.save()            
+            
             
             return redirect(reverse('list_animal_profile')) 
     animals=Category.objects.all()
@@ -412,7 +421,7 @@ def insert_pregnancy_detail(request):
         pregnancy_end_date=pregnancy_end_date,
         description=description)
         ins.save()   
-        return redirect(reverse('list_of_animals'))
+        return redirect('list_of_animals')
     # det=Animal_profile.objects.all()
     return render(request,'pregnancy_details/insert_pregnancy_detail.html', {'det': det ,'date':date ,'user_group':user_group} )
 # -----------------------------------------------------------------------------------------------------              
@@ -1797,8 +1806,9 @@ def invoice_details(request):
     return render(request, 'accounts/Sale/invoice_details.html', {'select_details': select_details , 'count_invoice':count_invoice , 'total_res_price':total_res_price ,'user_group':user_group})
 
 
-
-
+class AnimalListAPI(ListAPIView):
+    queryset = Animal_profile.objects.all()
+    serializer_class = AnimalProfileSerializer
 # -----------------------------------------------------------------------------------------------------              
 # Insert Animal Profile
 # -----------------------------------------------------------------------------------------------------

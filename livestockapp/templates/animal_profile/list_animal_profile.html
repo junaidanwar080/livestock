@@ -1,3 +1,8 @@
+<html>
+  <head>
+    <title>Animal List</title>
+  </head>
+  <body>
 {% include  'navbar.html' %}
 
 <a href="/insert_animal_profile" class="btn btn-primary" style="margin-left: 80%; margin-top: 2%;">Add Animal</a>
@@ -14,17 +19,21 @@
         <th scope="col">Color</th>
         <th scope="col">Weight</th>{% endcomment %}
         <th scope="col">Category</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Status</th>
+        <th scope="col">Animal Type</th>
+
         {% comment %} <th scope="col">Image</th> {% endcomment %}
         {% comment %} <th scope="col">Purchase Price</th> {% endcomment %}
-        <th scope="col">Purchased By</th>
-        <th scope="col">Purchased Date</th>
+
         {% comment %} <th scope="col">Date Of Birth</th> 
         <th scope="col">Description</th>{% endcomment %}
-        <th scope="col">Gender</th>
-        {% comment %}  <th scope="col">Person</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th> {% endcomment %}
-        <th scope="col">Status</th>
+      
+        <th scope="col">Created By</th>
+        <th scope="col">Created On</th>
+        <th scope="col">Updated By</th>
+        <th scope="col">Updated On</th>
+        
         <th scope="col">Action</th>
 
       </tr>
@@ -38,21 +47,32 @@
       <td>{{animal.color}}</td>
       <td>{{animal.weight}}</td>{% endcomment %}
       <td>{{animal.category.name}}</td>
-      {% comment %} <td>{{animal.image}}</td> {% endcomment %}
-      {% comment %}  <td>{{animal.ref_party_profile}}</td>{% endcomment %}
-      <td>{{animal.ref_party_profile.name}}</td> 
-      <td>{{animal.purchased_on|date:"d-m-Y"}}</td> 
-      {% comment %} <td>{{animal.date_of_birth|date:"d-m-Y"}}</td> 
-      <td>{{animal.description}}</td>{% endcomment %}
       <td>{{animal.gender}}</td> 
-      {% comment %}  <td>{{animal.user.username}}</td>
-      <td>{{animal.start_date|date:"d-m-Y"}}</td>
-      <td>{{animal.end_date|date:"d-m-Y"}}</td>       {% endcomment %}
       {% if  animal.status == 1 %} 
       <td>Active</td>
       {% else %}
       <td>InActive</td>
       {% endif %}
+      {% if  animal.animal_type == '1' %} 
+      <td>Purchased</td>
+      {% elif animal.animal_type == '2' %}
+      <td>Shared</td>
+      {% elif animal.animal_type == '3' %}
+      <td>New Born</td>
+      {% else %}
+      <td></td>
+      {% endif %}
+      {% comment %} <td>{{animal.image}}</td> {% endcomment %}
+      {% comment %}  <td>{{animal.ref_party_profile}}</td>{% endcomment %}
+
+      {% comment %} <td>{{animal.date_of_birth|date:"d-m-Y"}}</td> 
+      <td>{{animal.description}}</td>{% endcomment %}
+      
+       <td>{{animal.created_by}}</td>
+      <td>{{animal.created_on|date:"d-m-Y"}}</td>    
+      <td>{{animal.updated_by}}</td>
+      <td>{{animal.updated_on|date:"d-m-Y"}}</td> 
+      
 
        <td><a href="/animal_pro_edit/{{animal.animal_id}}" class="btn btn-sm btn-warning">Edit</a>
         {% comment %} <a href="/animal_pro_delete/{{animal.animal_id}}" class="btn btn-sm btn-danger">Delete</a></td> {% endcomment %}
@@ -76,13 +96,13 @@ $(document).ready(function() {
     "searching": true,   // Enable search
     "info": true,        // Show info about entries and pagination
     "responsive": true,  // Enable responsive behavior
-    "columnDefs": [
+    // "columnDefs": [
       // Specify column-specific options if needed
-      // Example: {"targets": [0], "searchable": false, "orderable": false}
-      ]
+      // Category: {"targets": [0], "searchable": false, "orderable": false}
+    //  ]
     });
   });  
 </script>
 
 
-
+</body>

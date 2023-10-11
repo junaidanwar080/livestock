@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from livestockapp import views
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
 # Home Page Before Login
    path('home', views.home, name='home'),
@@ -180,6 +182,14 @@ urlpatterns = [
     # path('under_process_vouchers',views.under_process_vouchers , name='under_process_vouchers'),
     # path('complete_under_process/<int:processing_id>',views.complete_under_process,name = 'complete_under_process'),
     # path('finish_processing',views.finish_processing,name='finish_processing'),
-
+# --------------------------------------------------------------------------------------------------
+# APIs
+# ------------------------------------------------------------------------------------------------
+    path('animalapi',views.AnimalListAPI.as_view()),
 
 ] 
+
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

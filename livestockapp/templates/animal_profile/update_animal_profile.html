@@ -22,10 +22,7 @@
     <div class="alert alert-danger" role="alert">Please Enter Token No !! </div>
     {% endif %}  
     {% if error3 %}
-    <div class="alert alert-danger" role="alert">Please Enter Purchase by !! </div>
-    {% endif %} 
-    {% if error4 %}
-    <div class="alert alert-danger" role="alert">Please Enter Color !! </div>
+    <div class="alert alert-danger" role="alert">Please Enter purchased_by !! </div>
     {% endif %} 
     {% if error5 %}
     <div class="alert alert-danger" role="alert"> Please Enter Category !! </div>
@@ -36,17 +33,13 @@
     {% if error7 %}
     <div class="alert alert-danger" role="alert"> Please Enter Person!! </div>
     {% endif %} 
-    {% if error8 %}
-    <div class="alert alert-danger" role="alert">Please Enter pragnancy_start_date !! </div>
-    {% endif %} 
-    {% if error9 %}
-    <div class="alert alert-danger" role="alert">Please Enter is_Active Field !! </div>
-    {% endif %} 
+
+
 
     {% csrf_token %}
-    {% comment %} <div class="container-fluid" style="margin-left:0%;"> {% endcomment %}
+
     <div class="row">
-      <div class="col">
+      <div class="col-sm-3">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
 
         <input type="text" class="form-control" name="animal_id" required maxlength="50" value="{{animal.animal_id}}" readonly hidden/>
@@ -56,22 +49,22 @@
 
         
       </div>
-      <div class="col">
-          <label class=" control-label">Name :<span style="color:red; font-weight:bold;">*</span></label>
+      <div class="col-sm-3">
+          <label class=" control-label">Name :</label>
           <input type="text" class="form-control" id="ani_name" name="ani_name" value="{{animal.name}}" >
       </div>
-      <div class="col">
-        <label class=" control-label">Color :<span style="color:red; font-weight:bold;">*</span></label>
+      <div class="col-sm-3">
+        <label class=" control-label">Color :</label>
         <input type="text" class="form-control" id="color" name="color"  value="{{animal.color}}">
       </div>
-      <div class="col">
-        <label class=" control-label">Weight :</label>
+      <div class="col-sm-3">
+        <label class=" control-label">Weight(KG):</label>
         <input type="text" class="form-control" id="weight" name="weight"  value="{{animal.weight}}">
       </div>
     </div>
     
     <div class="row">
-      <div class="col" >
+      <div class="col-sm-3" >
         <label class="from-group" >Category :<span style="color:red; font-weight:bold;">*</span></label>
         <select name="category_id" id="category_id" class="form-control" >
           {% for y in ani %}
@@ -83,30 +76,6 @@
           {% endfor %}
         </select>
       </div>
-      <div class="col" >
-        <label for="purchase_price ">Purchase Price :</label>
-        <input type="text" class="form-control" id="purchase_price" name="purchase_price" value="{{animal.purchase_price}}" >
-      </div>
-      <div class="col" >
-        <label for="purchased_date">Purchased Date :</label>
-        <input type="date" class="form-control" id="purchased_on" name="purchased_on" value="{{animal.purchased_on|date:'Y-m-d'}}" >
-      </div>
-    
-      <div class="col" >
-        <label for="purchased_by">Purchased By :<span style="color:red; font-weight:bold;">*</span></label>
-        <select class="form-control" id="purchased_by" name="purchased_by">
-          {% for party in all_parties %}
-            {% if animal.ref_party_profile_id   == party.party_code %}
-            <option value="{{party.party_code}}" selected>{{party.name}}</option>
-            {% else %}
-            <option value="{{party.party_code}}" >{{party.name}}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-        
-      </div>
-    </div>
-    <div class="row">
       <div class="col-sm-3" >
         <label class=" control-label">Date of Birth :</label>
         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="{{animal.date_of_birth|date:'Y-m-d'}}">
@@ -124,71 +93,124 @@
           {% endif %}
           
         </select>
-      </div><div class="col-sm-3" >
-         
       </div>
+      {% comment %} <div class="col-sm-3" >
+        <label class=" control-label">Uplod Image</label>
+        <input class="form-control" type="file" id="image" name="image">
+      </div> {% endcomment %}
       <div  class="col-sm-3">
         
       </div>
-      <div class="col-sm-3" >
-        <label class="from-group" >Is Shared:<span style="color:red; font-weight:bold;">*</span></label>
-       
-        <select id="is_shared" name="is_shared"  class="form-control">
-          {% if animal.is_shared == '1' %}
-          <option value="1" selected >Yes</option>
-          <option value="0" >No</option>         
-        {% else  %}
-        <option value="1" selected>NO</option>
-        <option value="0" >Yes</option>
-        {% endif %}
-          </select>  
-      
-
-      </div>
-      <div class="col-sm-3"  id="hiddenFields1">
-        <label class="from-group" >Animal Partner:<span style="color:red; font-weight:bold;">*</span></label>
-        <select name="person_id" id="person_id" class="form-control" >
-          {% for y in per %}
-            {% if animal.user_id == y.id %}
-              <option  value="{{y.id}}" selected>{{y.username}}</option>  
-            {% else %}
-              <option  value="{{y.id}}">{{y.username}}</option> 
-            {% endif %}
-          {% endfor %}
-        </select>  
-      </div>
-      <div class="col-sm-3"  id="hiddenFields2" >
-        <label class=" control-label" > Start Date :</label>
-        <input type="date" class="form-control"  name="start_date" value="{{animal.start_date|date:'Y-m-d'}}">
-      </div>
-      <div class="col-sm-3"  id="hiddenFields3" >
-        <label for="end_date" class=" control-label" > End Date :</label>
-        <input type="date" class="form-control"  name="end_date" value="{{animal.end_date|date:'Y-m-d'}}">
-      </div> 
     </div>
+ 
 
+<div class="row">
+  <div class="col-sm-3"  >
+    <label class="from-group" >Animal Type:<span style="color:red; font-weight:bold;">*</span></label>
+    <select id="animal_type" name="animal_type"  class="form-control" required>
+      {% if animal.animal_type == '1' %}
+      <option value="1" selected>Purchased</option>
+      <option value="2" >Shared</option>
+      <option value="3" >New Born</option>
+      {% elif animal.animal_type == '2' %}
+      <option value="1" >Purchased</option>
+      <option value="2" selected>Shared</option>
+      <option value="3" >New Born</option>
+      {% elif animal.animal_type == '3' %}
+      <option value="1" >Purchased</option>
+      <option value="2" >Shared</option>
+      <option value="3" selected>New Born</option>
+      {% else %}
+      <option value="" selected>Select Option</option>
+      <option value="1" >Purchased</option>
+      <option value="2" >Shared</option>
+      <option value="3" >New Born</option>
+      {% endif %}
+    </select>
+  </div>
 
+  <div class="col-sm-3" >
+    <label for="status" style="margin-top: 10%">is Active :</label>
+    {% if animal.status == 1 %}
+    <input type="checkbox" checked id="status" name="status" value="{{animal.status}} ">
+  {% else %}
+    <input type="checkbox"  id="status" name="status" value="{{animal.status}} ">
+    {% endif %}
+    <input type="text"  id="status_val" name="status_val"  value="0" hidden>
+  </div>
+</div>
+<div class="row" id = 'purchased_detail'>
 
-
-
-    <div class="row">
-      <div class="col" >
-        <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
-        {% if animal.status == 1 %}
-          <input type="checkbox" checked id="status" name="status" value="{{animal.status}} ">
+  <div class="col-sm-3" >
+    <label class="from-group" >Party:</label>
+    <select class="form-control" id="purchase_party_id" name="purchase_party_id">
+      <option value="">Select Party</option>
+      {% for party in all_parties %}
+        {% if animal.purchased_party_id == party.party_code %}
+        <option value="{{party.party_code}}" selected>{{party.name}}</option>
         {% else %}
-          <input type="checkbox"  id="status" name="status" value="{{animal.status}} ">
-          {% endif %}
-          <input type="text"  id="status_val" name="status_val"  value="0" hidden>
-      </div>  
-      <div class="col"  >
-      </div>
-      <div class="col"  >
-      </div>
-      <div class="col" id="hiddenFields4" style="margin-top: 1%;">
-        <button class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#update_animal_pro" id="voucher_view">View Voucher</button>
-      </div>    
-    </div>
+        <option value="{{party.party_code}}" >{{party.name}}</option>
+        {% endif %}
+      {% endfor %}
+    </select>   
+  </div>
+  <div class="col-sm-3" >
+    <label for="purchase_price ">Purchase Price :</label>
+    <input type="text" class="form-control" id="purchase_price" name="purchase_price" value="{{animal.purchase_price}}" >
+  </div>
+  <div class="col-sm-3" >
+    <label for="purchased_date">Purchased Date :</label>
+    <input type="date" class="form-control" id="purchased_on" name="purchased_on" value="{{animal.purchased_on|date:'Y-m-d'}}" >
+  </div>
+
+  <div class="col-sm-3"  >
+    <button type="button" class="btn btn-sm btn-primary" id="btn_save" style="margin-left: 28%;" data-toggle="modal" data-target="#update_animal_profile">View Voucher</button>
+  </div> 
+</div>
+<div class="row" id='shared_detail'>
+
+  <div class="col-sm-3">
+    <label class="from-group" >Party:<span style="color:red; font-weight:bold;">*</span></label>
+    <select id="shared_party_id" name="shared_party_id"  class="form-control">
+        <option value="">Select Party</option>
+      {% for party in all_parties %}
+        {% if animal.shared_party_id == party.party_code %}
+        <option value="{{party.party_code}}" selected>{{party.name}}</option>
+        {% else %}
+        
+        <option value="{{party.party_code}}" >{{party.name}}</option>
+        {% endif %}
+      {% endfor %}
+    </select>    
+  </div>
+
+  <div class="col-sm-3"  >
+    <label class=" control-label" > Start Date :</label>
+    <input type="date" class="form-control"  name="start_date" value="{{animal.start_date|date:'Y-m-d'}}">
+  </div>
+  <div class="col-sm-3" >
+    <label for="end_date" class=" control-label" > End Date :</label>
+    <input type="date" class="form-control"  name="end_date" value="{{animal.end_date|date:'Y-m-d'}}">
+  </div>  
+</div>
+
+<div class="row" id='new_born_detail'>
+  <div class="col-sm-3">
+    <label class="from-group" >Parent:<span style="color:red; font-weight:bold;">*</span></label>
+    <select id="parent_id" name="parent_id"  class="form-control">
+      <option value="">Select Partner</option>
+      {% for parents in parent_list %}
+      {% if parents.animal_id == animal.parent_id %}
+      <option value="{{parents.animal_id}}" selected>{{parents.token_no}}</option>  
+      {% else %}
+      <option value="{{parents.animal_id}}" >{{parents.token_no}}</option>  
+      {% endif %}
+    {% endfor %}
+    </select>    
+  </div>
+</div>
+
+
     <div class="row">
       <div class="col">
         <label for="description" >Description :</label>
@@ -205,7 +227,7 @@
 
 <!--------------------------------------------------------------------->
 <!-- Modal of Animal VOucher Start -->
-<div class=" modal fade" id="update_animal_pro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class=" modal fade" id="update_animal_profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="width: 1100px; margin-left: -300px;">
         <div class="modal-header">
@@ -225,7 +247,7 @@
                         <td><label style="margin-left: 370px;"><b>Vendor</b><span style="color:red; font-weight:bold">*</span></label></td>
                         <td>
                           
-                          <input type="text" name="" id="vendor_name" class="form-control" value="{{animal.ref_party_profile.name}}" readonly>
+                          <input type="text" name="" id="vendor_name" class="form-control" value="{{animal.purchased_party.name}}" readonly>
                         
                         </td>
                     </tr>
@@ -283,6 +305,48 @@
 <script type="text/javascript">
  
   $(document).ready(function() {
+      // Animal Type Dependancies 
+      var animal_type_on_load = $("#animal_type").val();
+      if(animal_type_on_load == 1){
+        $("#purchased_detail").show()
+        $("#shared_detail").hide()
+        $("#new_born_detail").hide()
+      }else if(animal_type_on_load == 2){
+        $("#purchased_detail").hide()
+        $("#shared_detail").show()
+        $("#new_born_detail").hide()
+
+      }else if(animal_type_on_load == 3){
+        $("#purchased_detail").hide()
+        $("#shared_detail").hide()
+        $("#new_born_detail").show()
+      }else{
+        $("#purchased_detail").hide()
+        $("#shared_detail").hide()
+        $("#new_born_detail").hide()
+      }
+
+
+ 
+  $("#animal_type").on('change',function(){
+    var animal_type = $("#animal_type").val();
+   
+    if (animal_type == 1){
+     $("#purchased_detail").show()
+     $("#shared_detail").hide()
+     $("#new_born_detail").hide()
+
+    } else if( animal_type==2){
+      $("#purchased_detail").hide()
+      $("#shared_detail").show()
+      $("#new_born_detail").hide()
+
+    } else{
+      $("#new_born_detail").show()
+      $("#purchased_detail").hide()
+      $("#shared_detail").hide()
+    }
+  })
    
   if($('#status').is(":checked")){
     $("#status_val").val(1);
@@ -299,40 +363,8 @@
         $("#status_val").val(0);
       }
     })
-    $("#is_shared").on('change',function(){
-      var is_shared = $("#is_shared").val();
-  
-      if(is_shared == "0"){
-       
-        $("#hiddenFields1").hide();
-        $("#hiddenFields2").hide();
-        $("#hiddenFields3").hide();
-        $("#hiddenFields4").hide();
-        $("#pregnant_val").val(0);
-      }
-      else{
-        $("#hiddenFields1").show();
-        $("#hiddenFields2").show();
-        $("#hiddenFields3").show();
-        $("#hiddenFields4").show();
-       
-      }
-         
-    });
-    $("#is_shared").on('change',function(){
-      var is_shared = $("#is_shared").val();
-  
-      if(is_shared == "1"){
-       
-        $("#hiddenFields4").hide();
-        $("#pregnant_val").val(0);
-      }
-      else{
-        $("#hiddenFields4").show();
-       
-      }
-         
-    });
+   
+   
 
 
     // Voucer Code Start

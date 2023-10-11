@@ -16,7 +16,7 @@ class Category(models.Model):
 #Animal Profile
 class Animal_profile(models.Model):
     animal_id = models.AutoField(primary_key=True)  
-    token_no = models.CharField(max_length=50,null=True)
+    token_no = models.CharField(max_length=50,null=True, unique=True)
     name = models.CharField(max_length=50,null=True) 
     color = models.CharField(max_length=50,null=True) 
     weight = models.CharField(max_length=50,null=True) 
@@ -26,25 +26,33 @@ class Animal_profile(models.Model):
                                 on_delete=models.CASCADE,
                                 related_name='animal'
                                     )
-    image = models.ImageField(upload_to='images/',null=True)
+    image = models.FileField(upload_to='images/',null=True)
     purchase_price = models.DecimalField(max_digits=13, decimal_places=2,null=True) 
-    ref_party_profile = models.ForeignKey(
-                                'RefPartyProfile',
-                                null=True,
-                                on_delete=models.CASCADE,
-                                related_name='animal_pro'
-                                    )
     purchased_on = models.DateField(blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     description= models.TextField(null=True, max_length=50)
     gender = models.CharField(max_length=50,null=True)
-    is_shared = models.CharField(max_length=50, null=True)
-    user = models.ForeignKey(
-                                User, 
-                                null=True, 
+    # is_shared = models.CharField(max_length=50, null=True)
+    animal_type = models.CharField(blank=True, null=True, max_length=50)
+    purchased_party = models.ForeignKey(
+                                'RefPartyProfile',
+                                null=True,
                                 on_delete=models.CASCADE,
-                                related_name='animal_profile'
-                            )
+                                related_name='purchased_animal'
+                                    )
+    shared_party = models.ForeignKey(
+                                'RefPartyProfile',
+                                null=True,
+                                on_delete=models.CASCADE,
+                                related_name='shared_animal'
+                                    )
+    parent = models.ForeignKey(
+                                'Animal_profile',
+                                null=True,
+                                on_delete=models.CASCADE,
+                                related_name='animal_parent'
+                                    )
+
     start_date = models.DateField(blank=True, null=True) 
     end_date = models.DateField(blank=True, null=True) 
     status =  models.BooleanField(default=True,null=True)
