@@ -1912,7 +1912,7 @@ def shared_animal_person_list(request):
         user_group = user.groups.first().id 
 
     # Annotate the number of animals each user owns
-    party_profiles = RefPartyProfile.objects.annotate(number_of_animals=Count('animal_pro'))
+    party_profiles = RefPartyProfile.objects.annotate(number_of_animals=Count('animal_profile'))
     print(party_profiles)
     det = Animal_profile.objects.all()
     return render(request, 'share_animal/shared_animal_person_list.html', {'party_profiles': party_profiles, 'user_group': user_group, 'det': det})
