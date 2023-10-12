@@ -14,7 +14,7 @@ class Category(models.Model):
        return str(self.category_id)
     
 #Animal Profile
-class Animal_profile(models.Model):
+class AnimalProfile(models.Model):
     animal_id = models.AutoField(primary_key=True)  
     token_no = models.CharField(max_length=50,null=True, unique=True)
     name = models.CharField(max_length=50,null=True) 
@@ -47,7 +47,7 @@ class Animal_profile(models.Model):
                                 related_name='shared_animal'
                                     )
     parent = models.ForeignKey(
-                                'Animal_profile',
+                                'AnimalProfile',
                                 null=True,
                                 on_delete=models.CASCADE,
                                 related_name='animal_parent'
@@ -77,7 +77,7 @@ class PregnancyDetails(models.Model):
     pregnancy_start_date  = models.DateField(blank=True, null=True)
     pregnancy_end_date  = models.DateField(blank=True, null=True) 
     animal_profile = models.ForeignKey(
-                                'Animal_profile', 
+                                AnimalProfile, 
                                 null=True, 
                                 on_delete=models.CASCADE ,
                                 related_name="pregnancy_details"
@@ -411,7 +411,7 @@ class StockPurchaseDetail(models.Model):
         on_delete=models.CASCADE,
     )
     animal_profile = models.ForeignKey(
-        'Animal_profile', 
+        'AnimalProfile', 
         related_name='animal_purchase_detail' ,
         null=True,
         on_delete=models.CASCADE,
@@ -426,7 +426,7 @@ class StockPurchaseDetail(models.Model):
 class ShareAnimal(models.Model):
    id = models.AutoField(primary_key=True)  
    animal_id = models.ForeignKey(
-                                Animal_profile, 
+                                AnimalProfile, 
                                 null=True, 
                                 on_delete=models.CASCADE,
                                 related_name='animal_profile'

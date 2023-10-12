@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Animal_profile
+from .models import AnimalProfile
 
 # Register your models here.
-@admin.register(Animal_profile)
-class Animal_profile(admin.ModelAdmin):
+@admin.register(AnimalProfile)
+class AnimalProfile(admin.ModelAdmin):
     list_display = (
         'animal_id' ,
         'token_no' ,

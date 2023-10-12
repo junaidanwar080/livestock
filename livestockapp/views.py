@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.urls import reverse
-from livestockapp.models import Category, Animal_profile, PregnancyDetails, UserProfile, ShareAnimal
+from livestockapp.models import Category, AnimalProfile, PregnancyDetails, UserProfile, ShareAnimal
 from .models import (
     RefPartyType, 
     ChartOfAccount, 
@@ -133,9 +133,9 @@ def insert_animal_profile(request):
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
-    animal_list=Animal_profile.objects.filter(gender='male')
-   # animal_token=Animal_profile.objects.filter(gender = 'female', status=1).latest('animal_id')
-   # animal_token = Animal_profile.objects.filter(gender='female', status=1).order_by('-animal_id').first()
+    animal_list=AnimalProfile.objects.filter(gender='male')
+   # animal_token=AnimalProfile.objects.filter(gender = 'female', status=1).latest('animal_id')
+   # animal_token = AnimalProfile.objects.filter(gender='female', status=1).order_by('-animal_id').first()
 
 
 #    if animal_token is None:
@@ -200,11 +200,11 @@ def insert_animal_profile(request):
             bill_no = 1
             
         # Check if a record with the entered token already exists
-        if Animal_profile.objects.filter(token_no=token_no).exists():
+        if AnimalProfile.objects.filter(token_no=token_no).exists():
             print("Duplicate Token number")
         else:
             
-            ins=Animal_profile(
+            ins=AnimalProfile(
                     token_no=token_no,
                     name=name,color=color,
                     weight=weight,
@@ -250,13 +250,13 @@ def list_animal_profile(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id 
-    allTasks = Animal_profile.objects.all()
+    allTasks = AnimalProfile.objects.all()
     return render(request,'animal_profile/list_animal_profile.html', {'animal_pro': allTasks,'user_group':user_group})
 # -----------------------------------------------------------------------------------------------------              
 # Delete Animal profile 
 # -----------------------------------------------------------------------------------------------------
 def animal_pro_delete(request,animal_id):
-    delete = Animal_profile.objects.get(animal_id=animal_id)
+    delete = AnimalProfile.objects.get(animal_id=animal_id)
     delete.delete()
     return redirect('/list_animal_profile')
 # -----------------------------------------------------------------------------------------------------              
@@ -266,9 +266,9 @@ def animal_pro_edit(request , animal_id ):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id 
-    animal = Animal_profile.objects.get(animal_id=animal_id)
+    animal = AnimalProfile.objects.get(animal_id=animal_id)
     ani=Category.objects.all()
-    parent_list=Animal_profile.objects.all()
+    parent_list=AnimalProfile.objects.all()
     # per=User.objects.all()
     all_parties = RefPartyProfile.objects.all()
     purchase_detial = ''
@@ -336,7 +336,7 @@ def update_animal(request, animal_id):
         else:  
             print(category_id)
 
-            edit = Animal_profile.objects.get(animal_id = animal_id)  
+            edit = AnimalProfile.objects.get(animal_id = animal_id)  
             edit.token_no = token_no
             edit.name = name
             edit.color = color
@@ -370,7 +370,7 @@ def insert_pregnancy_detail(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id
-    det=Animal_profile.objects.filter(gender = 'female', status=1)
+    det=AnimalProfile.objects.filter(gender = 'female', status=1)
     
     
     if request.method == "POST":     
@@ -455,7 +455,7 @@ def pregnancy_det_edit(request , pregnancy_id ):
     print(miscarriage)
     is_infartility = PregnancyDetails.objects.filter(infartility = 1).count()
     print(is_infartility)
-    det=Animal_profile.objects.all()
+    det=AnimalProfile.objects.all()
     return render(request, 'pregnancy_details/update_pregnancy_detail.html',
                   {'detail':detail,'det': det ,"pregnancy_count":pregnancy_count, 'miscarriage':miscarriage, 'is_infartility':is_infartility,'user_group':user_group})
 
@@ -497,7 +497,7 @@ def update_pregnancy_detail(request, pregnancy_id):
        else: 
            pregnancy_end_date = datetime.strptime(pregnancy_end_date,  '%Y-%m-%d')
        description = request.POST['description']        
-       det=Animal_profile.objects.all()
+       det=AnimalProfile.objects.all()
        if animal_id == "":
            return render(request,'pregnancy_details/update_pregnancy_detail.html', {'error2': True , 'det': det,'date':date,'user_group':user_group})
        else:
@@ -517,7 +517,7 @@ def update_pregnancy_detail(request, pregnancy_id):
            edit.updated_on = date  
            edit.save()         
            return redirect('/list_of_animals')
-    det=Animal_profile.objects.all()
+    det=AnimalProfile.objects.all()
     return render(request,'pregnancy_details/update_pregnancy_detail.html', {'det': det ,'date':date ,'user_group':user_group} )
 # -----------------------------------------------------------------------------------------------------              
 # List of Animals
@@ -526,7 +526,7 @@ def list_of_animals(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id
-    category_counts = Animal_profile.objects.raw('SELECT ani.animal_id,preg.`pregnancy_id`,preg.`animal_profile_id`, ani.token_no, ani.name, count(is_pregnant) as pregnancy_count, COUNT(CASE WHEN preg.`is_miscarriage` = 1 THEN 1 ELSE NULL END) as Miscarage_count, COUNT(CASE WHEN preg.`infartility` = 1 THEN 1 ELSE NULL END) as Infirtality_count, count(case when (preg.`is_pregnancy_confirmed` =1 AND preg.`is_delivery_completed`=1) THEN 1 ELSE NULL END) as Complete_Deliveries FROM `livestockapp_pregnancydetails` preg join livestockapp_animal_profile ani on ani.animal_id = preg.animal_profile_id WHERE ani.status = 1 group by ani.animal_id')
+    category_counts = AnimalProfile.objects.raw('SELECT ani.animal_id,preg.`pregnancy_id`,preg.`animal_profile_id`, ani.token_no, ani.name, count(is_pregnant) as pregnancy_count, COUNT(CASE WHEN preg.`is_miscarriage` = 1 THEN 1 ELSE NULL END) as Miscarage_count, COUNT(CASE WHEN preg.`infartility` = 1 THEN 1 ELSE NULL END) as Infirtality_count, count(case when (preg.`is_pregnancy_confirmed` =1 AND preg.`is_delivery_completed`=1) THEN 1 ELSE NULL END) as Complete_Deliveries FROM `livestockapp_pregnancydetails` preg join livestockapp_animal_profile ani on ani.animal_id = preg.animal_profile_id WHERE ani.status = 1 group by ani.animal_id')
     
     return render(request,'pregnancy_details/list_of_animals.html', {'category_counts': category_counts,'user_group':user_group})
 # -----------------------------------------------------------------------------------------------------
@@ -1807,7 +1807,7 @@ def invoice_details(request):
 
 
 class AnimalListAPI(ListAPIView):
-    queryset = Animal_profile.objects.all()
+    queryset = AnimalProfile.objects.all()
     serializer_class = AnimalProfileSerializer
 # -----------------------------------------------------------------------------------------------------              
 # Insert Animal Profile
@@ -1818,7 +1818,7 @@ def shared_animal_payment_input(request):
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
     per=User.objects.all()
-    det=Animal_profile.objects.all()
+    det=AnimalProfile.objects.all()
     
     if request.method == "POST":     
         token_no = request.POST['token_no']
@@ -1861,7 +1861,7 @@ def shared_animal_payment_input(request):
             # return render(request,'share_animal/shared_animal_payment_input.html', {'error7': True, 'per': per,'ani': ani,'date':date,'user_group':user_group,'all_parties':all_parties})    
             person_id == None
             
-        ins=Animal_profile(
+        ins=AnimalProfile(
                 token_no=token_no,
 
                 name=name,color=color,
@@ -1887,7 +1887,7 @@ def shared_animal_payment_input(request):
     return render(request,'share_animal/shared_animal_payment_input.html', {'ani': ani_share ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties , 'det':det})#,'latest_token':latest_token} )
 
 def get_animal_info(request, animal_id):
-    animal_data = Animal_profile.objects.get(animal_id=animal_id)
+    animal_data = AnimalProfile.objects.get(animal_id=animal_id)
     if animal_data:
         data = {
             #'animal_id': animal_data.animal_id,
@@ -1914,7 +1914,7 @@ def shared_animal_person_list(request):
     # Annotate the number of animals each user owns
     party_profiles = RefPartyProfile.objects.annotate(number_of_animals=Count('animal_profile'))
     print(party_profiles)
-    det = Animal_profile.objects.all()
+    det = AnimalProfile.objects.all()
     return render(request, 'share_animal/shared_animal_person_list.html', {'party_profiles': party_profiles, 'user_group': user_group, 'det': det})
 
 
@@ -1930,7 +1930,7 @@ def edit_animal_profile(request , animal_id):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id 
-    party_profile = Animal_profile.objects.get(id=animal_id)
+    party_profile = AnimalProfile.objects.get(id=animal_id)
     ani=Category.objects.all()
     per=User.objects.all()
     all_parties = RefPartyProfile.objects.all()
@@ -1943,7 +1943,7 @@ def shared_animal_payment_update(request,id):
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
     per=User.objects.all()
-    det=Animal_profile.objects.all()
+    det=AnimalProfile.objects.all()
     
     if request.method == "POST":     
         token_no = request.POST['token_no']
@@ -1975,7 +1975,7 @@ def shared_animal_payment_update(request,id):
         else:  
             print(category_id)
 
-            edit = Animal_profile.objects.get(animal_id = id)  
+            edit = AnimalProfile.objects.get(animal_id = id)  
 
             edit.token_no = token_no
             edit.name = name
