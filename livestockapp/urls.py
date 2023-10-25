@@ -20,21 +20,22 @@ urlpatterns = [
     path('animal_pro_delete/<int:animal_id>/', views.animal_pro_delete, name="animal_pro_delete"),
     path('animal_pro_edit/<int:animal_id>/', views.animal_pro_edit, name="animal_pro_edit"),
     path('update_animal/<int:animal_id>', views.update_animal, name='update_animal'),
-#Pregnancy Details
+    
+# Pregnancy Details
     path('insert_pregnancy_detail', views.insert_pregnancy_detail , name='insert_pregnancy_detail'),
     path('list_pregnancy_detail/<int:ani_id>', views.list_pregnancy_detail, name='list_pregnancy_detail' ),
     path('pregnancy_det_delete/<int:pregnancy_id>/', views.pregnancy_det_delete, name="pregnancy_det_delete"),
     path('pregnancy_det_edit/<int:pregnancy_id>/', views.pregnancy_det_edit, name="pregnancy_det_edit"),
     path('update_pregnancy_detail/<int:pregnancy_id>', views.update_pregnancy_detail, name='update_pregnancy_detail'),
     path('list_of_animals', views.list_of_animals , name='list_of_animals'),
-#Share Animal
+    
+# Share Animal and Payment processing
     path('shared_animal_payment_input', views.shared_animal_payment_input, name='shared_animal_payment_input'),
     path('shared_animal_person_list/', views.shared_animal_person_list, name='shared_animal_person_list' ),
     path('get_animal_info/<int:animal_id>', views.get_animal_info, name='get_animal_info'),
-    
-  #  path('edit_animal_profile/<int:animal_id>/', views.edit_animal_profile, name='edit_animal_profile'),
-
-  #  path('shared_animal_payment_update/<int:animal_id>/', views.shared_animal_payment_update, name='shared_animal_payment_update'),
+    path('edit_animal_profile/<int:animal_id>/', views.edit_animal_profile, name='edit_animal_profile'),
+    path('shared_animal_list/<int:party_code>', views.shared_animal_list,name='shared_animal_list'),
+    path('update_animal_payment/<int:animal_id>', views.update_animal_payment, name='update_animal_payment'),
    
 # User Profile 
     path('register_user_profile/', views.register_user_profile , name='register_user_profile'),

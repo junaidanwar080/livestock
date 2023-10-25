@@ -26,7 +26,6 @@
         <th scope="col">Updated by</th>
         <th scope="col">Updated on</th> {% endcomment %}
         <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
 
       </tr>
     </thead>
@@ -73,7 +72,6 @@
        <td>{{det.updated_by}}</td>  
        <td>{{det.updated_on|date:"d-m-Y"}}</td>  {% endcomment %}
        <td><a href="/pregnancy_det_edit/{{det.pregnancy_id}}" class="btn btn-sm btn-warning"/>Edit</td>
-       <td><a href="/pregnancy_det_delete/{{det.pregnancy_id}}" class="btn btn-sm btn-danger"/>Delete</td>
       </tr>
       {% endfor %}
     </tbody>

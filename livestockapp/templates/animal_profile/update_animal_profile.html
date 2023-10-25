@@ -1,11 +1,79 @@
 <html>
   <head>
     <title>Animal Profile</title>
-  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body {
+      margin: 0;
+      font-family: "Lato", sans-serif;
+    }
+    
+    .sidebar {
+      margin: 0;
+      padding: 0;
+      width: 200px;
+      background-color: #f1f1f1;
+      position: fixed;
+      height: 100%;
+      overflow: auto;
+    }
+    
+    .sidebar a {
+      display: block;
+      color: black;
+      padding: 16px;
+      text-decoration: none;
+    }
+     
+    .sidebar a.active {
+      background-color: #04AA6D;
+      color: white;
+    }
+    
+    .sidebar a:hover:not(.active) {
+      background-color: #555;
+      color: white;
+    }
+    
+    div.content {
+      margin-left: 200px;
+      padding: 1px 16px;
+      height: 1000px;
+    }
+    
+    @media screen and (max-width: 700px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .sidebar a {float: left;}
+      div.content {margin-left: 0;}
+    }
+    
+    @media screen and (max-width: 400px) {
+      .sidebar a {
+        text-align: center;
+        float: none;
+      }
+    }
+    </style>
+    </head>
 <body>
   
-
   {% include 'navbar.html' %}
+
+  <div class="sidebar">
+    {% if animal.image == '' %}
+    <img src="" alt="Image do not exist" width="200" height="200">
+    {% else %}
+    <img src="{{animal.image.url}}" alt="Image do not exist" width="200" height="200">
+    {% endif %}
+    <a href="">Animal Liat</a>
+    {% comment %} <a href="#contact">Contact</a>
+    <a href="#about">About</a> {% endcomment %}
+  </div>                         
+
 
 
 
@@ -13,7 +81,7 @@
 
 {% comment %} <div class="container my-3"> 
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
-<div style="  margin:2%">
+<div class="content">
   
   <form action='/update_animal/{{animal.animal_id}}' method="POST" >
     <div class="alert alert-dark " role="alert" style="margin-top:5%;"><b >Basic Info</b></div>

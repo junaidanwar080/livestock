@@ -19,7 +19,6 @@ from .models import (
     StockPurchaseDetail,
     StockSaleMain,
     StockSaleDetail,
-
 )
 from datetime import datetime
 from django.contrib.auth.models import User , Group
@@ -133,7 +132,7 @@ def insert_animal_profile(request):
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id  
     all_parties = RefPartyProfile.objects.all()
-    animal_list=AnimalProfile.objects.filter(gender='male')
+    animal_list=AnimalProfile.objects.filter(gender='female')
    # animal_token=AnimalProfile.objects.filter(gender = 'female', status=1).latest('animal_id')
    # animal_token = AnimalProfile.objects.filter(gender='female', status=1).order_by('-animal_id').first()
 
@@ -155,7 +154,7 @@ def insert_animal_profile(request):
         shared_party_id = request.POST['shared_party_id']
         purchase_party_id = request.POST['purchase_party_id']
         date_of_birth = request.POST['date_of_birth']
-        # image = request.FILES['image']
+        image = request.FILES.get('image')
         # print(image)
         parent_id = request.POST['parent_id']
         if date_of_birth == '':
@@ -222,25 +221,26 @@ def insert_animal_profile(request):
                     status=status,
                     created_by=user.id,
                     created_on = date,
-                    description=description
+                    description=description,
+                    image = image
                 )
-            ins.save()   
-        
-            insert_purchase_main=StockPurchaseMain(
-                    bill_no = bill_no,
-                    # Bill_date = voucher_date,
-                    ref_party_profile_id = purchase_party_id,
-                    created_on = date,
-                    created_by_id = user.id
-                )
-            insert_purchase_main.save()
-            insert_purchase_detail=StockPurchaseDetail(
-                    stock_purchase_main_id = insert_purchase_main.bill_no,
-                    animal_profile_id  = ins.animal_id,
-                    quantity = 1,
-                    price = purchase_price
-                )
-            insert_purchase_detail.save()
+            ins.save()  
+            if animal_type == '1': 
+                insert_purchase_main=StockPurchaseMain(
+                        bill_no = bill_no,
+                        # Bill_date = voucher_date,
+                        ref_party_profile_id = purchase_party_id,
+                        created_on = date,
+                        created_by_id = user.id
+                    )
+                insert_purchase_main.save()
+                insert_purchase_detail=StockPurchaseDetail(
+                        stock_purchase_main_id = insert_purchase_main.bill_no,
+                        animal_profile_id  = ins.animal_id,
+                        quantity = 1,
+                        price = purchase_price
+                    )
+                insert_purchase_detail.save()
         return redirect(reverse('list_animal_profile'))
     ani_cat=Category.objects.all()
     per=User.objects.all()
@@ -291,12 +291,16 @@ def update_animal(request, animal_id):
         weight = request.POST['weight']
         category_id = request.POST['category_id']
         purchase_price = request.POST['purchase_price']
+        # image = request.FILES.get('image')
+        # print(image)
         purchased_on = request.POST['purchased_on']
         if purchased_on == '':
             purchased_on = None
         else:
             purchased_on = datetime.strptime(purchased_on,  '%Y-%m-%d')
         # purchased_by = request.POST['purchased_by']
+        
+        
         date_of_birth = request.POST['date_of_birth']
         if date_of_birth == '':
             date_of_birth = None
@@ -334,8 +338,6 @@ def update_animal(request, animal_id):
             return render(request,'animal_profile/update_animal_profile.html', {'error9': True, 'anim': anim,'user_group':user_group})       
         
         else:  
-            print(category_id)
-
             edit = AnimalProfile.objects.get(animal_id = animal_id)  
             edit.token_no = token_no
             edit.name = name
@@ -356,6 +358,7 @@ def update_animal(request, animal_id):
             edit.end_date=end_date
             edit.updated_on = date  
             edit.updated_by=user.id
+            # edit.image = image
             edit.save()            
             
             
@@ -526,7 +529,7 @@ def list_of_animals(request):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id
-    category_counts = AnimalProfile.objects.raw('SELECT ani.animal_id,preg.`pregnancy_id`,preg.`animal_profile_id`, ani.token_no, ani.name, count(is_pregnant) as pregnancy_count, COUNT(CASE WHEN preg.`is_miscarriage` = 1 THEN 1 ELSE NULL END) as Miscarage_count, COUNT(CASE WHEN preg.`infartility` = 1 THEN 1 ELSE NULL END) as Infirtality_count, count(case when (preg.`is_pregnancy_confirmed` =1 AND preg.`is_delivery_completed`=1) THEN 1 ELSE NULL END) as Complete_Deliveries FROM `livestockapp_pregnancydetails` preg join livestockapp_animal_profile ani on ani.animal_id = preg.animal_profile_id WHERE ani.status = 1 group by ani.animal_id')
+    category_counts = AnimalProfile.objects.raw('SELECT ani.animal_id,preg.`pregnancy_id`,preg.`animal_profile_id`, ani.token_no, ani.name, count(is_pregnant) as pregnancy_count, COUNT(CASE WHEN preg.`is_miscarriage` = 1 THEN 1 ELSE NULL END) as Miscarage_count, COUNT(CASE WHEN preg.`infartility` = 1 THEN 1 ELSE NULL END) as Infirtality_count, count(case when (preg.`is_pregnancy_confirmed` =1 AND preg.`is_delivery_completed`=1) THEN 1 ELSE NULL END) as Complete_Deliveries FROM `livestockapp_pregnancydetails` preg join livestockapp_animalProfile ani on ani.animal_id = preg.animal_profile_id WHERE ani.status = 1 group by ani.animal_id')
     
     return render(request,'pregnancy_details/list_of_animals.html', {'category_counts': category_counts,'user_group':user_group})
 # -----------------------------------------------------------------------------------------------------
@@ -1887,7 +1890,9 @@ def shared_animal_payment_input(request):
     return render(request,'share_animal/shared_animal_payment_input.html', {'ani': ani_share ,'date':date , 'per':per,'user_group':user_group,'all_parties':all_parties , 'det':det})#,'latest_token':latest_token} )
 
 def get_animal_info(request, animal_id):
-    animal_data = AnimalProfile.objects.get(animal_id=animal_id)
+    animal_data = AnimalProfile.objects.select_related('shared_animal').get(animal_id=animal_id)
+    print(animal_data)
+    
     if animal_data:
         data = {
             #'animal_id': animal_data.animal_id,
@@ -1897,12 +1902,13 @@ def get_animal_info(request, animal_id):
             'weight': animal_data.weight,
             'category_id': animal_data.category_id,
             'gender': animal_data.gender,
-            'user_id': animal_data.user_id,
+            'shared_party_id': animal_data.shared_party,
             'start_date': animal_data.start_date,
             'end_date': animal_data.end_date,
             'status': animal_data.status,
         }
         return JsonResponse(data)
+        # return JsonResponse(model_to_dict(data))
     else:
         return JsonResponse({'error': 'Animal not found'}, status=404)
 
@@ -1912,91 +1918,79 @@ def shared_animal_person_list(request):
         user_group = user.groups.first().id 
 
     # Annotate the number of animals each user owns
-    party_profiles = RefPartyProfile.objects.annotate(number_of_animals=Count('animal_profile'))
-    print(party_profiles)
-    det = AnimalProfile.objects.all()
-    return render(request, 'share_animal/shared_animal_person_list.html', {'party_profiles': party_profiles, 'user_group': user_group, 'det': det})
+    # shared_animal_detail = RefPartyProfile.objects.annotate(number_of_animals=Count('animal_profile'))
+    shared_animal_detail = RefPartyProfile.objects.raw('SELECT pp.party_code , pp.name,pp.address,ap.token_no,ap.status,COUNT(ap.animal_id) as total_animal_count FROM livestockapp_refpartyprofile pp join livestockapp_refpartytype pt on pt.party_type_code = pp.ref_party_type_id join livestockapp_animalprofile ap on ap.shared_party_id = pp.party_code where pt.description = "shared" group by pp.party_code')
+
+    # shared_animal_detail = AnimalProfile.objects.values('shared_animal__party_code').annotate(count=Count('animal_id'))
+    return render(request, 'share_animal/shared_animal_person_list.html', {'shared_animal_detail': shared_animal_detail, 'user_group': user_group})
 
 
 
 
-
-
-
-
+def shared_animal_list(request, party_code):
+    animal_profile = AnimalProfile.objects.filter(shared_party=party_code)
+    return render(request, 'share_animal/shared_animal_list.html',{'animal_profile':animal_profile})
+    
 
 def edit_animal_profile(request , animal_id):
-    print("sdddd")
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id 
-    party_profile = AnimalProfile.objects.get(id=animal_id)
-    ani=Category.objects.all()
-    per=User.objects.all()
-    all_parties = RefPartyProfile.objects.all()
+    party_profile = AnimalProfile.objects.get(animal_id=animal_id)
+    category=Category.objects.all()
+    # per=User.objects.all()
+    # all_parties = RefPartyProfile.objects.all()
     share = ShareAnimal.objects.all()
-    return render(request, 'share_animal/shared_animal_payment_update.html',{'party_profile':party_profile,'ani': ani, 'per':per,'user_group':user_group,'all_parties':all_parties,'share':share })
+    
+    shared_animal_paymet_detail = ShareAnimal.objects.filter(animal_id=animal_id)
+    # return render(request, 'share_animal/shared_animal_payment_update.html',{'party_profile':party_profile,'ani': ani, 'per':per,'user_group':user_group,'all_parties':all_parties,'share':share })
+    return render(request, 'share_animal/shared_animal_payment_update.html',{'category':category,'party_profile':party_profile,'user_group':user_group , 'shared_animal_paymet_detail':shared_animal_paymet_detail})
 
-def shared_animal_payment_update(request,id):
+
+def update_animal_payment(request , animal_id):
     user = request.user
     if user.is_authenticated and user.groups.exists():
         user_group = user.groups.first().id  
-    all_parties = RefPartyProfile.objects.all()
-    per=User.objects.all()
-    det=AnimalProfile.objects.all()
     
-    if request.method == "POST":     
-        token_no = request.POST['token_no']
-        #print(token_no)
-        name = request.POST['ani_name']
-        color = request.POST['color']
-        category_id = request.POST['category_id']
-        weight = request.POST['weight']
-        person_id = request.POST['person_id']
-        gender = request.POST['gender']
+    if request.method == "POST":  
+        # animal_id = request.POST['animal_id']   
+        party_code = request.POST['party_code']   
         payment = request.POST['payment']
         month = request.POST['month']
         start_date = request.POST['start_date']
         if start_date == '':
             start_date = None
-        #else:
-          #  start_date = datetime.strptime(start_date,  '%Y-%m-%d')
         end_date = request.POST['end_date']  
         if end_date == '':
             end_date = None
-       # else:
-          #  end_date = datetime.strptime(end_date,  '%Y-%m-%d')
-        status = request.POST['status_val']
-        description = request.POST['description']   
-        anim=Category.objects.all()     
-        if status == "":
-            return render(request,'share_animal/shared_animal_payment_update.html', {'error9': True, 'anim': anim,'user_group':user_group})       
-        
-        else:  
-            print(category_id)
+        description = request.POST['description']
+        animal_profile = AnimalProfile.objects.get(animal_id=animal_id)
+        party_profile = RefPartyProfile.objects.get(party_code = party_code)
+        user=User.objects.get(id = user.id)
 
-            edit = AnimalProfile.objects.get(animal_id = id)  
-
-            edit.token_no = token_no
-            edit.name = name
-            edit.color = color
-            edit.weight = weight
-            edit.category_id =category_id
+        add_payment = ShareAnimal (
+            animal_id = animal_profile,
+            party_code = party_profile,
+            month = month,
+            payment = payment,
+            description = description,
+            created_on = date,
+            payment_date = date,
+            created_by = user
+        )
+        add_payment.save()
            
-            edit.payment = payment
-            edit.gender = gender
-            edit.month=month
-            edit.status=status 
-            print(status)
-            edit.description = description 
-            edit.user_id = person_id
-           # edit.user_id = int(user_id)
-            edit.start_date=start_date
-            edit.end_date=end_date
-            edit.updated_on = date    
-            edit.save()
-            
-            return redirect(reverse('shared_animal_person_list')) 
+        # edit = AnimalProfile.objects.get(animal_id = id)  
+        # edit.payment = payment
+        # edit.month=month
+        # edit.description = description 
+        # edit.start_date=start_date
+        # edit.end_date=end_date
+        # edit.updated_on = date    
+        # edit.save()
+        # return redirect(reverse('edit_animal_profile/animal_id')) 
+        return redirect(f'/edit_animal_profile/{animal_id}')
+    
     animals=Category.objects.all()
     per=User.objects.all()
     return render(request,'share_animal/shared_animal_payment_update.html', {'animals': animals ,'date':date , 'per':per,'user_group':user_group} )
