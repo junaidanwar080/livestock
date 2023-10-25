@@ -20,7 +20,7 @@
         <th scope="col">Created by</th>
         <th scope="col">Updated by</th>
         <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
+        {% comment %} <th scope="col">Delete</th> {% endcomment %}
 
       </tr>
     </thead>
@@ -39,7 +39,7 @@
        <td>{{cat.created_by}}</td>  
        <td>{{cat.updated_by}}</td> 
        <td><a href="/edit/{{cat.category_id}}" class="btn btn-sm btn-warning">Edit</td>
-       <td><a href="/delete/{{cat.category_id}}" class="btn btn-sm btn-danger">Delete</td>
+       {% comment %} <td><a href="/delete/{{cat.category_id}}" class="btn btn-sm btn-danger">Delete</td> {% endcomment %}
       </tr>
       {% endfor %}
     </tbody>

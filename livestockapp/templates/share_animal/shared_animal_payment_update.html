@@ -5,17 +5,12 @@
 <body>
   
 
-  {% include 'navbar.html' %}
+{% include 'navbar.html' %}
 
-{% block content %}
-
-
-
-  
 {% comment %} <div class="container my-3"> 
   <div  style="margin-left:30%; margin-top:-42%; "><b></b></div> {% endcomment %}
 <div style="margin:2%;">
-    <form action='/shared_animal_payment_update/{{party_profile.animal_id}}' method="POST" >
+    <form action='/update_animal_payment/{{party_profile.animal_id}}' method="POST" >
     <div class="alert alert-dark " role="alert" style="margin-top:2%;"><b >Basic Info</b></div>
     {% if error2 %}
     <div class="alert alert-danger" role="alert">Please Enter Token No !! </div>
@@ -48,38 +43,33 @@
     <div class="row">
       <div class="col-sm-3">
         <label class=" control-label">Token No :<span style="color:red; font-weight:bold;">*</span></label>
-        <input type="text" class="form-control" name="id" required maxlength="50" value="{{party_profile.animal_id}}" readonly hidden/>
+        <input type="text" class="form-control" name="animal_id" required maxlength="50" value="{{party_profile.animal_id}}" hidden />
+        <input type="text" class="form-control"  required maxlength="50" value="{{party_profile.token_no}}" readonly />
        
-        <select id="token_no" name="token_no"  class="form-control" >
-          <option value="">Select Token No</option>
-          {% for x in det %}
-          <option value="{{x.animal_id}}">{{x.token_no}}</option>  
-        {% endfor %}
-        </select>
       </div>
       <div class="col-sm-3">
           <label class=" control-label">Name :</label>
-          <input type="text" class="form-control" id="ani_name" name="ani_name" value="{{party_profile.name}}" >
+          <input type="text" class="form-control" id="ani_name" name="ani_name" value="{{party_profile.name}}" readonly>
       </div>
       <div class="col-sm-3">
         <label class=" control-label">Color :</label>
-        <input type="text" class="form-control" id="color" name="color"  value="{{party_profile.color}}">
+        <input type="text" class="form-control" id="color" name="color"  value="{{party_profile.color}}" readonly>
     </div>
       <div class="col-sm-3">
         <label class=" control-label">Weight(KG):</label>
-        <input type="text" class="form-control" id="weight" name="weight"  value="{{party_profile.weight}}">
+        <input type="text" class="form-control" id="weight" name="weight"  value="{{party_profile.weight}}" readonly>
     </div>
     </div>
     
     <div class="row">
       <div class="col-sm-3" >
         <label class="from-group" >Category :<span style="color:red; font-weight:bold;">*</span></label>
-        <select name="category_id" id="category_id" class="form-control" >
-          {% for y in ani %}
-            {% if party_profile.category_id == y.category_id %}
-              <option  value="{{y.category_id}}" selected>{{y.name}}</option>  
+        <select name="category_id" id="category_id" class="form-control" readonly>
+          {% for category in category %}
+            {% if party_profile.category_id == category.category_id %}
+              <option  value="{{category.category_id}}" selected>{{category.name}}</option>  
             {% else %}
-              <option  value="{{y.category_id}}">{{y.name}}</option> 
+              <option  value="{{category.category_id}}">{{category.name}}</option> 
             {% endif %}
           {% endfor %}
         </select>
@@ -88,7 +78,7 @@
      
       <div class="col-sm-3" >
         <label class=" control-label">Gender : <span style="color:red; font-weight:bold;">*</span></label>
-   <select  name="gender" class="form-control" required="required" id="gender" class="gender" >
+   <select  name="gender" class="form-control" required="required" id="gender" class="gender" readonly>
       {% if party_profile.gender == 'male' %}
         <option value="male" selected >Male</option>
         <option value="female" >Female</option>
@@ -103,20 +93,14 @@
       
       
       
-      <div class="col-sm-3"  id="hiddenFields1">
+      <div class="col-sm-3">
         <label class="from-group">Shared Person :</label>
-        <select name="person_id" id="person_id" class="form-control" >
-            {% for y in per %}
-              {% if party_profile.user_id == y.id %}
-                <option  value="{{y.id}}" selected>{{y.username}}</option>  
-              {% else %}
-                <option  value="{{y.id}}">{{y.username}}</option> 
-              {% endif %}
-            {% endfor %}
-          </select>  
+        <input type="text" class="form-control"  name="party_code" value="{{party_profile.shared_party_id}}" hidden>
+
+        <input type="text" class="form-control"  value="{{party_profile.shared_party.name}}" readonly>
       </div>
      
-      <div class="col-sm-3"  id="hiddenFields2" >
+      <div class="col-sm-3" >
         <label class=" control-label" > Start Date :</label>
         <input type="date" class="form-control"  name="start_date" value="{{party_profile.start_date|date:'Y-m-d'}}">
       </div>
@@ -132,9 +116,9 @@
       <div class="col-sm-3" >
         <label for="status" >is Active :<span style="color:red; font-weight:bold;">*</span></label>
         {% if party_profile.status == 1 %}
-          <input type="checkbox" checked id="status" name="status" value="{{party_profile.status}} ">
+          <input type="checkbox" checked id="status" name="status" value="{{party_profile.status}} " disable>
         {% else %}
-          <input type="checkbox"  id="status" name="status" value="{{party_profile.status}} ">
+          <input type="checkbox"  id="status" name="status" value="{{party_profile.status}} " disable>
           {% endif %}
           <input type="text"  id="status_val" name="status_val"  value="0" hidden>
       </div>  
@@ -174,41 +158,50 @@
   {% comment %} </div> {% endcomment %}
   </form>
 </div>
+
+<div class="alert alert-dark " role="alert" style=""><b >Ravenue Detail</b></div>
           
+
+
+<div class="container my-3">
+  <h6 class="text-center alert alert-info ">Payment Detail of {{party_profile.shared_party.name}}</h6>
+
+  <table class="table table-bordered"  id="anima_share_lTable">
+    <thead>
+      <tr>
+        <th scope="col">Party</th>
+
+        <th scope="col">Payment</th>
+        <th scope="col">Date</th>
+        <th scope="col">Month</th>
+        <th scope="col">Description</th>
+        <th scope="col">Created by</th>
+
+        
+      </tr>
+    </thead>
+    <tbody>
+{% for shared_animal_paymet_detail in shared_animal_paymet_detail %}
+
+<tr>
+    <td>{{ shared_animal_paymet_detail.party_code.name }}</td>     
+    <td>{{ shared_animal_paymet_detail.payment }}</td>     
+    <td>{{ shared_animal_paymet_detail.payment_date|date:'d-m-Y' }}</td>
+    <td>{{ shared_animal_paymet_detail.month }}</td>
+    <td>{{ shared_animal_paymet_detail.description }}</td>
+    <td>{{ shared_animal_paymet_detail.created_by.username }}</td>
+
+
+</tr>
+{% endfor %}
+
+      
+    </tbody>
+  </table>
+</div> 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-  $(document).ready(function() {
-    
-      $("#token_no").change(function() {
-          var selectedAnimalId = $(this).val();
-          $.ajax({
-              url: '/get_animal_info/' + selectedAnimalId,
-              type: 'GET', 
-              success: function(data) {
-                  if (data.error) {
-                      alert("Animal not found");
-                  } else {
-                    
-                      $("#ani_name").val(data.ani_name);
-                      $("#color").val(data.color);
-                      $("#weight").val(data.weight);
-                      $("#category_id").val(data.category_id);
-                      $("#gender").val(data.gender);
-                      $("#person_id").val(data.user_id);
-                      $("#start_date").val(data.start_date);
-                      $("#end_date").val(data.end_date);
-                      $("#status").prop("checked", data.status);
-                  }
-              },
-              error: function() {
-                  alert("Error occurred while fetching animal data.");
-              }
-          });
-      });
-  });
-  </script>
   
   <script>
     // Get the input element by ID
@@ -227,6 +220,5 @@
 
 
 
-{% endblock content %}
 </body>
 </html>
